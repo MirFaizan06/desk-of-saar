@@ -79,6 +79,7 @@ The built files will be in the `dist/` folder, ready for deployment to Vercel, N
 │   ├── illustrations/     # Page illustrations (Unsplash)
 │   ├── music/             # Background music tracks (.mp3)
 │   ├── credits.txt        # Attribution file (downloadable)
+│   ├── version.txt        # App version number
 │   └── favicon.svg        # Custom book icon
 ├── src/
 │   ├── components/        # React components
@@ -109,7 +110,6 @@ The built files will be in the `dist/` folder, ready for deployment to Vercel, N
 │   ├── main.jsx           # Entry point
 │   └── index.css          # Global styles (dark/light themes)
 ├── vite.config.js         # Vite config (optimized for production)
-├── version.txt            # App version number
 ├── SETUP_BOOKS.md         # Guide for adding real books
 └── package.json
 ```
