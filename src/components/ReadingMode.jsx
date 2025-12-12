@@ -82,6 +82,12 @@ export default function ReadingMode({ book, isOpen, onClose, pdfUrl }) {
     }
   }, [volume, isMuted]);
 
+  // Reset time when track changes
+  useEffect(() => {
+    setCurrentTime(0);
+    setDuration(0);
+  }, [currentTrack]);
+
   useEffect(() => {
     if (audioRef.current) {
       if (isPlaying) {
@@ -97,19 +103,39 @@ export default function ReadingMode({ book, isOpen, onClose, pdfUrl }) {
     const audio = audioRef.current;
     if (!audio) return;
 
-    const updateTime = () => setCurrentTime(audio.currentTime);
-    const updateDuration = () => setDuration(audio.duration);
+    const updateTime = () => {
+      if (audio.currentTime) {
+        setCurrentTime(audio.currentTime);
+      }
+    };
+
+    const updateDuration = () => {
+      if (audio.duration && !isNaN(audio.duration)) {
+        setDuration(audio.duration);
+      }
+    };
+
+    const handleCanPlay = () => {
+      updateDuration();
+    };
 
     audio.addEventListener('timeupdate', updateTime);
     audio.addEventListener('loadedmetadata', updateDuration);
     audio.addEventListener('durationchange', updateDuration);
+    audio.addEventListener('canplay', handleCanPlay);
+
+    // Try to get duration immediately if available
+    if (audio.duration && !isNaN(audio.duration)) {
+      setDuration(audio.duration);
+    }
 
     return () => {
       audio.removeEventListener('timeupdate', updateTime);
       audio.removeEventListener('loadedmetadata', updateDuration);
       audio.removeEventListener('durationchange', updateDuration);
+      audio.removeEventListener('canplay', handleCanPlay);
     };
-  }, [currentTrack]);
+  }, [currentTrack, isOpen]);
 
   // Handle track end
   const handleTrackEnd = () => {
@@ -219,6 +245,7 @@ export default function ReadingMode({ book, isOpen, onClose, pdfUrl }) {
             ref={audioRef}
             src={musicTracks[currentTrack].file}
             onEnded={handleTrackEnd}
+            preload="metadata"
             loop={false}
           />
 
