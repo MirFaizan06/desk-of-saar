@@ -33,7 +33,7 @@ export default function Bookshelf({ title, subtitle, books, onBookClick, icon, c
         <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-r from-transparent via-white/20 to-transparent rounded-full"></div>
 
         {/* Books Grid - Horizontal Scrolling */}
-        <div className="overflow-x-auto pb-12 px-2 scroll-smooth">
+        <div className="overflow-x-auto overflow-y-visible pb-12 px-2 scroll-smooth">
           <div className="flex gap-6 min-w-max">
             {books.map((book, index) => (
               <motion.div
@@ -100,7 +100,7 @@ export default function Bookshelf({ title, subtitle, books, onBookClick, icon, c
                   </div>
 
                   {/* Book Info Below - Fixed height structure for alignment */}
-                  <div className="mt-4 px-1 flex flex-col flex-grow">
+                  <div className="mt-4 px-1 h-[120px] flex flex-col">
                     {/* Title - Fixed height container */}
                     <div className="h-[48px] mb-3">
                       <h3 className="text-white font-bold text-base leading-tight line-clamp-2 drop-shadow-md group-hover:text-[#D4AF6A] transition-colors">
@@ -109,7 +109,7 @@ export default function Bookshelf({ title, subtitle, books, onBookClick, icon, c
                     </div>
 
                     {/* Tags - Subtle and secondary, fixed height */}
-                    <div className="h-[24px] mb-3 flex items-start gap-1.5 overflow-hidden">
+                    <div className="h-[22px] mb-3 flex items-start gap-1.5 overflow-hidden">
                       {book.tags.slice(0, 2).map((tag) => {
                         const tagInfo = tagAtlas[tag];
                         if (!tagInfo) return null;
@@ -129,7 +129,7 @@ export default function Bookshelf({ title, subtitle, books, onBookClick, icon, c
                     </div>
 
                     {/* FREE badge - Always aligned at same position */}
-                    <div className="mt-auto">
+                    <div>
                       <motion.div
                         className="inline-block bg-white/25 text-white font-semibold text-[10px] py-1.5 px-3 rounded-md border border-white/35 backdrop-blur-sm shadow-sm"
                         whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.3)' }}
