@@ -11,7 +11,7 @@ export default function Bookshelf({ title, subtitle, books, onBookClick, icon, c
   };
 
   return (
-    <div className="mb-20">
+    <div className="mb-32">
       {/* Header */}
       <div className="flex items-center gap-4 mb-12">
         <motion.div
@@ -33,7 +33,7 @@ export default function Bookshelf({ title, subtitle, books, onBookClick, icon, c
         <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-r from-transparent via-white/20 to-transparent rounded-full"></div>
 
         {/* Books Grid - Horizontal Scrolling */}
-        <div className="overflow-x-auto pb-6 px-2 scroll-smooth">
+        <div className="overflow-x-auto pb-12 px-2 scroll-smooth">
           <div className="flex gap-6 min-w-max">
             {books.map((book, index) => (
               <motion.div
@@ -49,9 +49,9 @@ export default function Bookshelf({ title, subtitle, books, onBookClick, icon, c
                   ease: [0.25, 0.1, 0.25, 1]
                 }}
               >
-                {/* Book Card */}
+                {/* Book Card - Fixed structure for alignment */}
                 <motion.div
-                  className="relative w-[200px]"
+                  className="relative w-[200px] flex flex-col"
                   whileHover={{ y: -12 }}
                   transition={{ duration: 0.3, ease: "easeOut" }}
                 >
@@ -99,14 +99,17 @@ export default function Bookshelf({ title, subtitle, books, onBookClick, icon, c
                     <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-[85%] h-3 bg-black/30 blur-lg rounded-full"></div>
                   </div>
 
-                  {/* Book Info Below */}
-                  <div className="mt-4 px-1">
-                    <h3 className="text-white font-bold text-base mb-1 line-clamp-2 drop-shadow-md group-hover:text-[#D4AF6A] transition-colors">
-                      {book.title}
-                    </h3>
+                  {/* Book Info Below - Fixed height structure for alignment */}
+                  <div className="mt-4 px-1 flex flex-col flex-grow">
+                    {/* Title - Fixed height container */}
+                    <div className="h-[48px] mb-3">
+                      <h3 className="text-white font-bold text-base leading-tight line-clamp-2 drop-shadow-md group-hover:text-[#D4AF6A] transition-colors">
+                        {book.title}
+                      </h3>
+                    </div>
 
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-2 mt-2">
+                    {/* Tags - Subtle and secondary, fixed height */}
+                    <div className="h-[24px] mb-3 flex items-start gap-1.5 overflow-hidden">
                       {book.tags.slice(0, 2).map((tag) => {
                         const tagInfo = tagAtlas[tag];
                         if (!tagInfo) return null;
@@ -114,7 +117,7 @@ export default function Bookshelf({ title, subtitle, books, onBookClick, icon, c
                         return (
                           <motion.span
                             key={tag}
-                            className={`px-2 py-1 rounded-md text-xs ${tagInfo.color} shadow-md`}
+                            className="px-2 py-0.5 rounded text-[10px] font-medium bg-white/25 text-white/85 border border-white/30 shadow-sm"
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.3, delay: index * 0.05 + 0.2 }}
@@ -125,13 +128,15 @@ export default function Bookshelf({ title, subtitle, books, onBookClick, icon, c
                       })}
                     </div>
 
-                    {/* FREE badge */}
-                    <motion.div
-                      className="inline-block mt-3 bg-white text-[#6B8E7F] font-bold text-xs py-1.5 px-4 rounded-full shadow-lg border-2 border-[#6B8E7F]/30"
-                      whileHover={{ scale: 1.05 }}
-                    >
-                      FREE DOWNLOAD
-                    </motion.div>
+                    {/* FREE badge - Always aligned at same position */}
+                    <div className="mt-auto">
+                      <motion.div
+                        className="inline-block bg-white/25 text-white font-semibold text-[10px] py-1.5 px-3 rounded-md border border-white/35 backdrop-blur-sm shadow-sm"
+                        whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.3)' }}
+                      >
+                        FREE
+                      </motion.div>
+                    </div>
                   </div>
                 </motion.div>
               </motion.div>
