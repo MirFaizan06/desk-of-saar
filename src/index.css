@@ -45,10 +45,10 @@
   --color-emerald-light-mode: #10B981;
   --color-olive-light-mode: #84CC16;
 
-  /* Text Colors - White for Sage Green Theme */
+  /* Text Colors - Pure White for Sage Green Theme */
   --color-text: #FFFFFF;
   --color-text-light: #FFFFFF;
-  --color-text-dim: rgba(255, 255, 255, 0.7);
+  --color-text-dim: rgba(255, 255, 255, 0.95);
   --color-text-dark: #1F2937;
   --color-text-light-secondary: #4B5563;
   --color-text-light-dim: #6B7280;

@@ -124,9 +124,6 @@ export default function Hero() {
                   {/* Book spine details */}
                   <div className="absolute inset-0 flex items-center justify-between px-4">
                     <div className="w-1 h-full bg-white/20 rounded-full"></div>
-                    <div className="text-white/70 text-xs font-bold tracking-wider transform -rotate-0">
-                      BOOK
-                    </div>
                     <div className="w-1 h-full bg-white/20 rounded-full"></div>
                   </div>
 

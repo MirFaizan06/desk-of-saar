@@ -147,14 +147,18 @@ function App() {
 
             {/* Footer Bottom */}
             <div className="border-t border-primary/20 pt-6">
-              <p className="text-text-dim text-sm text-center mb-2">
+              <p className="text-white text-sm text-center mb-3 font-medium drop-shadow-sm">
                 © {new Date().getFullYear()} Desk of Saar Website. All books are free to download.
               </p>
-              <p className="text-text-dim text-xs text-center mb-2">
-                This website is a part of The NxT LvL Studios © 2025-2026. All Rights Reserved.
+              <p className="text-white text-sm text-center mb-3 font-medium drop-shadow-sm">
+                This website is a part of{' '}
+                <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#6B8E7F] via-[#B89968] to-[#D4AF6A] drop-shadow-lg">
+                  The NxT LvL Studios
+                </span>
+                {' '}© 2025-2026. All Rights Reserved.
               </p>
               {version && (
-                <p className="text-text-dim text-xs text-center opacity-70">
+                <p className="text-white/80 text-xs text-center font-medium">
                   {version}
                 </p>
               )}
