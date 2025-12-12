@@ -1,23 +1,23 @@
 export const faqs = [
   {
     id: "faq-1",
-    question: "Are all the eBooks really free?",
-    answer: "Yes! All eBooks on this platform are completely free to download and enjoy. We believe in making quality literature accessible to everyone."
+    question: "Are all the books really free?",
+    answer: "Yes! All books on this platform are completely free to download and enjoy. We believe in making quality literature accessible to everyone."
   },
   {
     id: "faq-2",
-    question: "What formats are the eBooks available in?",
-    answer: "Currently, all eBooks are available in PDF format, which can be read on any device including computers, tablets, and smartphones."
+    question: "What formats are the books available in?",
+    answer: "Currently, all books are available in PDF format, which can be read on any device including computers, tablets, and smartphones."
   },
   {
     id: "faq-3",
-    question: "How do I download an eBook?",
+    question: "How do I download a book?",
     answer: "Simply click on any book card to view its details, then click the 'Download' button. The book will be downloaded directly to your device."
   },
   {
     id: "faq-4",
     question: "Do I need to create an account?",
-    answer: "No account is required! You can browse and download any eBook without signing up or logging in."
+    answer: "No account is required! You can browse and download any book without signing up or logging in."
   },
   {
     id: "faq-5",

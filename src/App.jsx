@@ -109,10 +109,10 @@ function App() {
             </motion.div>
 
             <h3 className="text-2xl font-bold mb-3 gradient-text">
-              eBooks Collection
+              Books Collection
             </h3>
             <p className="text-text-dim mb-8 max-w-2xl mx-auto">
-              Discover and download free eBooks. No sign-up required.
+              Discover and download free books. No sign-up required.
             </p>
 
             {/* Navigation */}

@@ -1,8 +1,8 @@
 import { useState, useMemo, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Star, TrendingUp, Grid, MessageCircle, Search, X, BookOpen, Clock, Flame } from 'lucide-react';
+import { Sparkles, Star, TrendingUp, Grid, MessageCircle, Search, X, BookOpen, Clock, Flame, Rocket } from 'lucide-react';
 import Hero from '../components/Hero';
-import Carousel from '../components/Carousel';
+import Bookshelf from '../components/Bookshelf';
 import BookCard from '../components/BookCard';
 import BookModal from '../components/BookModal';
 import HeroBackground from '../components/HeroBackground';
@@ -111,25 +111,24 @@ export default function Home({ onModalChange }) {
       {/* Background Effects */}
       <HeroBackground scrollY={scrollY} />
       
-      {/* Floating Particles - Reduced for performance */}
+      {/* Floating Particles - Sage green theme */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        {[...Array(6)].map((_, i) => (
+        {[...Array(8)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-1 h-1 rounded-full"
+            className="absolute w-1 h-1 rounded-full bg-white/30"
             style={{
-              backgroundColor: ['#8B5CF6', '#10B981', '#F59E0B'][i % 3],
-              left: `${(i * 16) % 100}%`,
+              left: `${(i * 12) % 100}%`,
               top: `${(i * 14) % 100}%`,
             }}
             animate={{
-              y: [0, -20, 0],
-              opacity: [0.2, 0.8, 0.2],
+              y: [0, -30, 0],
+              opacity: [0.2, 0.6, 0.2],
             }}
             transition={{
-              duration: 4 + i * 0.3,
+              duration: 5 + i * 0.4,
               repeat: Infinity,
-              delay: i * 0.2,
+              delay: i * 0.3,
             }}
           />
         ))}
@@ -152,19 +151,19 @@ export default function Home({ onModalChange }) {
                 <motion.button
                   key={category.id}
                   onClick={() => setActiveCategory(category.id)}
-                  className={`flex items-center gap-3 px-5 py-3 rounded-xl font-medium transition-all ${
+                  className={`flex items-center gap-3 px-5 py-3 rounded-xl font-semibold transition-all drop-shadow-md ${
                     activeCategory === category.id
-                      ? 'gradient-primary text-white shadow-glow'
-                      : 'glass text-text-light hover:text-primary hover:shadow-medium'
+                      ? 'bg-white/35 text-white shadow-xl backdrop-blur-md border-2 border-white/40'
+                      : 'glass text-white hover:bg-white/25 hover:shadow-medium border border-white/20'
                   }`}
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                   transition={{ duration: 0.2 }}
                 >
                   {category.icon}
-                  <span>{category.label}</span>
-                  <span className={`px-2 py-1 rounded-full text-xs ${
-                    activeCategory === category.id ? 'bg-white/20' : 'bg-primary/10'
+                  <span className="drop-shadow-sm">{category.label}</span>
+                  <span className={`px-2 py-1 rounded-full text-xs font-bold ${
+                    activeCategory === category.id ? 'bg-white/25' : 'bg-white/15'
                   }`}>
                     {category.count}
                   </span>
@@ -182,15 +181,15 @@ export default function Home({ onModalChange }) {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <div className="relative">
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-primary/20 via-secondary/20 to-accent/20 blur-xl opacity-50"></div>
-              <div className="relative flex items-center glass-strong rounded-2xl p-2 border border-primary/30">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-primary" />
+              <div className="absolute inset-0 rounded-2xl bg-white/10 blur-xl"></div>
+              <div className="relative flex items-center glass-strong rounded-2xl p-2 border border-white/30">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white" />
                 <input
                   type="text"
                   placeholder="Search books by title, author, or genre..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-12 py-4 bg-transparent text-text placeholder:text-text-dim/70 focus:outline-none focus:ring-0 text-lg"
+                  className="w-full pl-12 pr-12 py-4 bg-transparent text-white placeholder:text-white/70 focus:outline-none focus:ring-0 text-lg font-medium drop-shadow-sm"
                   id="search-input"
                 />
                 {searchQuery && (
@@ -198,11 +197,11 @@ export default function Home({ onModalChange }) {
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     onClick={() => setSearchQuery('')}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full hover:bg-primary/10 transition-colors"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full hover:bg-white/10 transition-colors"
                     whileHover={{ rotate: 90 }}
                     whileTap={{ scale: 0.9 }}
                   >
-                    <X className="w-5 h-5 text-text-dim" />
+                    <X className="w-5 h-5 text-white/70" />
                   </motion.button>
                 )}
               </div>
@@ -218,7 +217,7 @@ export default function Home({ onModalChange }) {
                   <motion.button
                     key={hint}
                     onClick={() => setSearchQuery(hint)}
-                    className="text-xs px-3 py-1.5 rounded-full glass border border-primary/20 hover:border-primary/40 transition-colors"
+                    className="text-xs px-3 py-1.5 rounded-full glass border border-white/30 hover:border-white/50 text-white font-semibold transition-colors drop-shadow-sm"
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                   >
@@ -238,11 +237,11 @@ export default function Home({ onModalChange }) {
               transition={{ duration: 0.5 }}
             >
               <div className="text-center mb-10">
-                <h2 className="text-4xl font-bold text-white mb-3">
+                <h2 className="text-4xl font-bold text-white mb-3 drop-shadow-lg">
                   {displayBooks.length} {displayBooks.length === 1 ? 'Book Found' : 'Books Found'}
                 </h2>
-                <p className="text-text-light text-lg">
-                  Results for: <span className="text-accent">"{searchQuery}"</span>
+                <p className="text-white/90 text-lg font-medium drop-shadow-sm">
+                  Results for: <span className="text-white font-bold">"{searchQuery}"</span>
                 </p>
                 
                 {/* Divider */}
@@ -278,12 +277,12 @@ export default function Home({ onModalChange }) {
                   animate={{ opacity: 1 }}
                 >
                   <div className="max-w-md mx-auto">
-                    <Search className="w-16 h-16 text-primary mx-auto mb-4 opacity-50" />
-                    <h3 className="text-2xl font-bold text-text-light mb-3">
+                    <Search className="w-16 h-16 text-white mx-auto mb-4 opacity-70 drop-shadow-lg" />
+                    <h3 className="text-2xl font-bold text-white mb-3 drop-shadow-md">
                       No Books Found
                     </h3>
-                    <p className="text-text-dim mb-6">
-                      We couldn't find any books matching your search. 
+                    <p className="text-white/80 mb-6 text-base font-medium drop-shadow-sm">
+                      We couldn't find any books matching your search.
                       Try different keywords or browse all books.
                     </p>
                     <motion.button
@@ -352,14 +351,13 @@ export default function Home({ onModalChange }) {
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ duration: 0.6 }}
                   >
-                    <Carousel
+                    <Bookshelf
                       title="New Arrivals"
                       subtitle="Recently added books"
                       books={newBooks}
                       onBookClick={handleBookClick}
-                      icon={<Sparkles className="w-8 h-8 text-mystic" />}
+                      icon={<Sparkles className="w-8 h-8 text-white" />}
                       color="mystic"
-                      autoScroll={autoScrollCarousels}
                     />
                   </motion.div>
                 )}
@@ -372,14 +370,13 @@ export default function Home({ onModalChange }) {
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ duration: 0.6, delay: 0.1 }}
                   >
-                    <Carousel
+                    <Bookshelf
                       title="Recommended"
                       subtitle="Curated selections"
                       books={recommendedBooks}
                       onBookClick={handleBookClick}
-                      icon={<Star className="w-8 h-8 text-accent" />}
+                      icon={<Star className="w-8 h-8 text-white" />}
                       color="accent"
-                      autoScroll={autoScrollCarousels}
                     />
                   </motion.div>
                 )}
@@ -392,14 +389,13 @@ export default function Home({ onModalChange }) {
                     viewport={{ once: true, margin: "-100px" }}
                     transition={{ duration: 0.6, delay: 0.2 }}
                   >
-                    <Carousel
+                    <Bookshelf
                       title="Popular Reads"
                       subtitle="Most downloaded books"
                       books={popularBooks}
                       onBookClick={handleBookClick}
-                      icon={<Flame className="w-8 h-8 text-primary" />}
+                      icon={<Flame className="w-8 h-8 text-white" />}
                       color="primary"
-                      autoScroll={autoScrollCarousels}
                     />
                   </motion.div>
                 )}
@@ -459,14 +455,13 @@ export default function Home({ onModalChange }) {
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: index * 0.1 }}
                       >
-                        <Carousel
+                        <Bookshelf
                           title={genre}
                           subtitle={`${genreBooks.length} books`}
                           books={genreBooks}
                           onBookClick={handleBookClick}
-                          icon={<BookOpen className="w-7 h-7 text-secondary" />}
+                          icon={<BookOpen className="w-7 h-7 text-white" />}
                           color={['primary', 'secondary', 'accent', 'mystic'][index % 4]}
-                          autoScroll={autoScrollCarousels}
                         />
                       </motion.div>
                     );
@@ -497,6 +492,105 @@ export default function Home({ onModalChange }) {
                   )}
                 </motion.div>
 
+                {/* Comics & Manga - Coming Soon Section */}
+                <motion.div
+                  className="mt-32 mb-20"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <div className="relative overflow-hidden rounded-3xl border border-white/30 shadow-2xl min-h-[500px]">
+                    {/* Blurred Anime/Manga Background Image */}
+                    <div className="absolute inset-0">
+                      <img
+                        src="https://images.unsplash.com/photo-1612036782180-6f0b6cd846fe?w=1600&q=80"
+                        alt="Anime and Manga collection"
+                        className="w-full h-full object-cover blur-sm"
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.src = 'https://images.unsplash.com/photo-1618519764620-7403abdbdfe9?w=1600&q=80';
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#8E9E93]/95 via-[#8E9E93]/80 to-[#8E9E93]/60"></div>
+                    </div>
+
+                    {/* Glass Card Overlay */}
+                    <div className="relative glass-strong p-16 text-center min-h-[500px] flex flex-col items-center justify-center">
+                      <motion.div
+                        animate={{
+                          rotate: [0, 5, -5, 0],
+                        }}
+                        transition={{
+                          duration: 4,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }}
+                      >
+                        <Rocket className="w-24 h-24 mx-auto mb-8 text-white" />
+                      </motion.div>
+
+                      <motion.h2
+                        className="text-5xl md:text-6xl font-bold text-white mb-6 font-serif"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 }}
+                      >
+                        Comics & Manga
+                      </motion.h2>
+
+                      <motion.div
+                        className="h-1 w-32 bg-white/60 rounded-full mx-auto mb-8"
+                        initial={{ scaleX: 0 }}
+                        whileInView={{ scaleX: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.3, duration: 0.8 }}
+                      />
+
+                      <motion.p
+                        className="text-3xl text-white mb-6 font-semibold"
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.4 }}
+                      >
+                        Coming Soon
+                      </motion.p>
+
+                      <motion.p
+                        className="text-white/90 text-xl mb-10 max-w-2xl mx-auto leading-relaxed"
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.5 }}
+                      >
+                        We're working on bringing you an amazing collection of comics and manga.
+                        Get ready to dive into exciting new worlds!
+                      </motion.p>
+
+                      {/* Animated circles */}
+                      <div className="flex gap-3 justify-center">
+                        {[0, 1, 2].map((i) => (
+                          <motion.div
+                            key={i}
+                            className="w-4 h-4 rounded-full bg-white/80"
+                            animate={{
+                              scale: [1, 1.5, 1],
+                              opacity: [0.5, 1, 0.5],
+                            }}
+                            transition={{
+                              duration: 1.5,
+                              repeat: Infinity,
+                              delay: i * 0.2,
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+
                 {/* Call to Action */}
                 <motion.div
                   className="mt-20"
@@ -505,7 +599,7 @@ export default function Home({ onModalChange }) {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6 }}
                 >
-                  <div className="relative overflow-hidden rounded-3xl border border-primary/30 shadow-2xl">
+                  <div className="relative overflow-hidden rounded-3xl border border-white/30 shadow-2xl">
                     {/* Background Image */}
                     <div className="absolute inset-0">
                       <img
@@ -514,23 +608,23 @@ export default function Home({ onModalChange }) {
                         className="w-full h-full object-cover"
                         loading="lazy"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-bg via-bg/90 to-bg/70"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#8E9E93]/95 via-[#8E9E93]/80 to-[#8E9E93]/70"></div>
                     </div>
 
                     <div className="relative glass-strong p-12 text-center">
-                      <MessageCircle className="w-20 h-20 mx-auto mb-6 text-primary" />
-                      
-                      <h2 className="text-3xl font-bold text-text mb-6">
+                      <MessageCircle className="w-20 h-20 mx-auto mb-6 text-white" />
+
+                      <h2 className="text-3xl font-bold text-white mb-6">
                         Can't Find What You're Looking For?
                       </h2>
 
-                      <p className="text-text-light text-lg mb-8 max-w-3xl mx-auto leading-relaxed">
+                      <p className="text-white/90 text-lg mb-8 max-w-3xl mx-auto leading-relaxed">
                         We're constantly adding new books. Check back soon or contact us with suggestions!
                       </p>
-                      
+
                       <div className="flex flex-wrap justify-center gap-4">
                         <motion.button
-                          className="gradient-primary text-white font-bold py-4 px-10 rounded-xl shadow-glow hover:shadow-2xl transition-all"
+                          className="glass-strong text-white font-bold py-4 px-10 rounded-xl shadow-lg hover:shadow-2xl transition-all border border-white/30"
                           whileHover={{ scale: 1.05, y: -4 }}
                           whileTap={{ scale: 0.95 }}
                           onClick={() => {
@@ -556,7 +650,7 @@ export default function Home({ onModalChange }) {
 
       {/* Scroll to Top Button */}
       <motion.button
-        className="fixed bottom-8 right-8 z-40 p-4 rounded-full gradient-primary shadow-glow"
+        className="fixed bottom-8 right-8 z-40 p-4 rounded-full glass-strong shadow-lg border border-white/30"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: scrollY > 500 ? 1 : 0, y: scrollY > 500 ? 0 : 20 }}
         whileHover={{ scale: 1.1 }}

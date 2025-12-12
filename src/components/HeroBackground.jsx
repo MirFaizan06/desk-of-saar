@@ -2,10 +2,10 @@ import { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-// Optimized particle system for best performance
-function SimpleParticles() {
+// Optimized particle system for sage green theme
+function SageParticles() {
   const pointsRef = useRef();
-  const count = 150; // Reduced from 300 for even better performance
+  const count = 100; // Reduced for subtle effect
 
   const positions = useMemo(() => {
     const positions = new Float32Array(count * 3);
@@ -19,10 +19,11 @@ function SimpleParticles() {
 
   const colors = useMemo(() => {
     const colors = new Float32Array(count * 3);
+    // Sage green themed colors
     const colorPalette = [
-      new THREE.Color('#8B5CF6'),
-      new THREE.Color('#10B981'),
-      new THREE.Color('#F59E0B'),
+      new THREE.Color('#FFFFFF'),
+      new THREE.Color('#E8F0ED'),
+      new THREE.Color('#D5E3DC'),
     ];
 
     for (let i = 0; i < count * 3; i += 3) {
@@ -36,7 +37,8 @@ function SimpleParticles() {
 
   useFrame((state) => {
     if (pointsRef.current) {
-      pointsRef.current.rotation.y = state.clock.elapsedTime * 0.02;
+      pointsRef.current.rotation.y = state.clock.elapsedTime * 0.015;
+      pointsRef.current.rotation.x = state.clock.elapsedTime * 0.01;
     }
   });
 
@@ -57,10 +59,10 @@ function SimpleParticles() {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.08}
+        size={0.06}
         vertexColors
         transparent
-        opacity={0.3}
+        opacity={0.25}
         sizeAttenuation
         blending={THREE.AdditiveBlending}
       />
@@ -76,14 +78,14 @@ export default function HeroBackground() {
         dpr={[1, 1.5]}
         performance={{ min: 0.5 }}
       >
-        <ambientLight intensity={0.3} />
-        <pointLight position={[10, 10, 10]} intensity={0.5} color="#8B5CF6" />
-        <SimpleParticles />
-        <fog attach="fog" args={['#0F172A', 30, 80]} />
+        <ambientLight intensity={0.4} />
+        <pointLight position={[10, 10, 10]} intensity={0.3} color="#FFFFFF" />
+        <SageParticles />
+        <fog attach="fog" args={['#8E9E93', 30, 80]} />
       </Canvas>
 
-      {/* Simple gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-bg/20 to-bg"></div>
+      {/* Sage green gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#8E9E93]/30"></div>
     </div>
   );
 }

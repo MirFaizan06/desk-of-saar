@@ -149,7 +149,7 @@ export default function WelcomeModal({ onClose, onAutoScrollChange, onModalState
                     <Sparkles className="w-6 h-6 sm:w-8 sm:h-8 text-accent" />
                   </h2>
                   <p className="text-text-light text-sm sm:text-base md:text-lg leading-relaxed max-w-xl mx-auto px-2">
-                    Discover and download hundreds of free eBooks. No sign-up required,
+                    Discover and download hundreds of free books. No sign-up required,
                     just pure reading pleasure at your fingertips.
                   </p>
                 </motion.div>

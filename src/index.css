@@ -1,38 +1,38 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  /* Dark Mode Colors */
-  --color-bg: #0F172A;
-  --color-bg-soft: #1E293B;
-  --color-bg-card: #1A2332;
+  /* Sage Green Theme Colors */
+  --color-bg: #8E9E93;
+  --color-bg-soft: #9BAA9F;
+  --color-bg-card: rgba(255, 255, 255, 0.15);
 
   /* Light Mode Colors - Clean White Theme */
   --color-bg-light: #FFFFFF;
   --color-bg-soft-light: #F9FAFB;
   --color-bg-card-light: #FFFFFF;
 
-  /* Main Colors - Dark Mode */
-  --color-blue: #4A90E2;
-  --color-blue-dark: #2E5C8A;
-  --color-blue-light: #6FA8E8;
-  --color-orange: #FF8C42;
-  --color-orange-light: #FFB674;
-  --color-yellow: #FFB84D;
-  --color-yellow-light: #FFCA7A;
+  /* Main Colors - Sage Green Theme */
+  --color-blue: #6B8E7F;
+  --color-blue-dark: #5A7D6E;
+  --color-blue-light: #7C9F90;
+  --color-orange: #B89968;
+  --color-orange-light: #C9AA79;
+  --color-yellow: #D4AF6A;
+  --color-yellow-light: #E0BF7B;
 
-  /* Primary Colors - Dark Mode */
-  --color-primary: #8B5CF6;
-  --color-primary-dark: #7C3AED;
-  --color-primary-light: #A78BFA;
-  --color-secondary: #10B981;
-  --color-secondary-light: #34D399;
-  --color-accent: #F59E0B;
-  --color-accent-light: #FBBF24;
-  --color-mystic: #06B6D4;
-  --color-mystic-light: #22D3EE;
-  --color-arcane: #EC4899;
-  --color-arcane-light: #F472B6;
+  /* Primary Colors - Sage Green Theme */
+  --color-primary: #6B8E7F;
+  --color-primary-dark: #5A7D6E;
+  --color-primary-light: #7C9F90;
+  --color-secondary: #8E9E93;
+  --color-secondary-light: #A0AFA5;
+  --color-accent: #B89968;
+  --color-accent-light: #C9AA79;
+  --color-mystic: #7BA098;
+  --color-mystic-light: #8CB1A9;
+  --color-arcane: #9B8B7E;
+  --color-arcane-light: #AC9C8F;
 
   /* Light Mode Primary Colors - New Palette */
   --color-primary-light-mode: #0D9488;
@@ -45,10 +45,10 @@
   --color-emerald-light-mode: #10B981;
   --color-olive-light-mode: #84CC16;
 
-  /* Text Colors */
-  --color-text: #E2E8F0;
-  --color-text-light: #CBD5E1;
-  --color-text-dim: #94A3B8;
+  /* Text Colors - White for Sage Green Theme */
+  --color-text: #FFFFFF;
+  --color-text-light: #FFFFFF;
+  --color-text-dim: rgba(255, 255, 255, 0.7);
   --color-text-dark: #1F2937;
   --color-text-light-secondary: #4B5563;
   --color-text-light-dim: #6B7280;
@@ -58,10 +58,12 @@
   --font-serif: 'Playfair Display', serif;
 }
 
-/* Dark Mode (default) */
+/* Sage Green Theme (default) */
 :root, .dark {
-  background-color: var(--color-bg);
+  background: linear-gradient(135deg, #8E9E93 0%, #Aebdb2 100%);
+  background-attachment: fixed;
   color: var(--color-text);
+  min-height: 100vh;
 }
 
 /* Light Mode - New Warm Theme */
@@ -196,14 +198,15 @@ body {
   transition: background-color 0.3s ease;
 }
 
-/* Scrollbar */
+/* Scrollbar - Visible Sage Green Design */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 12px;
+  height: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-bg-soft);
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
 }
 
 .light ::-webkit-scrollbar-track {
@@ -212,6 +215,7 @@ body {
 
 .light ::-webkit-scrollbar-thumb {
   background: rgba(13, 148, 136, 0.3);
+  border-radius: 10px;
 }
 
 .light ::-webkit-scrollbar-thumb:hover {
@@ -219,43 +223,45 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-primary);
-  border-radius: 4px;
+  background: #5A7D6E;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary-dark);
+  background: #4A6D5E;
+  border: 2px solid rgba(255, 255, 255, 0.5);
 }
 
-/* Glass Effects */
+/* Glass Effects - Sage Green Theme with White Glassmorphism */
 .glass {
-  background: rgba(30, 41, 59, 0.75);
+  background: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(139, 92, 246, 0.2);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 .glass-strong {
-  background: rgba(26, 35, 50, 0.9);
+  background: rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(139, 92, 246, 0.3);
-  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
 }
 
 .glass-soft {
-  background: rgba(30, 41, 59, 0.6);
+  background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
 .glass-dark {
-  background: rgba(15, 23, 42, 0.8);
+  background: rgba(255, 255, 255, 0.18);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(139, 92, 246, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.35);
 }
 
 .light .glass-dark {
@@ -264,21 +270,21 @@ body {
   box-shadow: 0 8px 32px rgba(74, 144, 226, 0.12);
 }
 
-/* Gradients */
+/* Gradients - Sage Green Theme */
 .gradient-primary {
-  background: linear-gradient(120deg, #4A90E2 0%, #6FA8E8 100%);
+  background: linear-gradient(120deg, #6B8E7F 0%, #7C9F90 100%);
 }
 
 .gradient-secondary {
-  background: linear-gradient(120deg, #FF8C42 0%, #FFB674 100%);
+  background: linear-gradient(120deg, #8E9E93 0%, #A0AFA5 100%);
 }
 
 .gradient-accent {
-  background: linear-gradient(120deg, #FFB84D 0%, #FFCA7A 100%);
+  background: linear-gradient(120deg, #B89968 0%, #C9AA79 100%);
 }
 
 .gradient-text {
-  background: linear-gradient(120deg, #4A90E2 0%, #FF8C42 50%, #FFB84D 100%);
+  background: linear-gradient(120deg, #FFFFFF 0%, #F5F5F5 50%, #FFFFFF 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

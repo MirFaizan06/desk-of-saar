@@ -48,18 +48,6 @@ export const books = [
     genre: "Fiction"
   },
   {
-    id: "book-005",
-    title: "Atomic Habits",
-    author: "James Clear",
-    priceINR: 0,
-    description: "No matter your goals, Atomic Habits offers a proven framework for improving--every day. James Clear, one of the world's leading experts on habit formation, reveals practical strategies that will teach you exactly how to form good habits, break bad ones, and master the tiny behaviors that lead to remarkable results.",
-    cover: "/covers/book-005.jpg",
-    file: "book-005.pdf",
-    tags: ["recommended", "self-help", "productivity"],
-    createdAt: "2025-11-10",
-    genre: "Self-Help"
-  },
-  {
     id: "book-006",
     title: "Mexican Gothic",
     author: "Silvia Moreno-Garcia",

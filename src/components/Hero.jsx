@@ -1,63 +1,9 @@
 import { motion } from 'framer-motion';
-import { BookOpen, ArrowRight, Sparkles, Download, Users, Clock } from 'lucide-react';
+import { BookOpen, ArrowRight } from 'lucide-react';
 
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center px-4 py-20 overflow-hidden">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 -z-10">
-        {[...Array(3)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-primary/10"
-            style={{
-              width: `${300 + i * 150}px`,
-              height: `${300 + i * 150}px`,
-            }}
-            animate={{
-              rotate: 360,
-              scale: [1, 1.05, 1],
-            }}
-            transition={{
-              rotate: {
-                duration: 40 + i * 10,
-                repeat: Infinity,
-                ease: "linear",
-              },
-              scale: {
-                duration: 3,
-                repeat: Infinity,
-                delay: i * 0.5,
-              },
-            }}
-          />
-        ))}
-        
-        {/* Floating Icons - Reduced for performance */}
-        {[BookOpen, Download].map((Icon, i) => (
-          <motion.div
-            key={i}
-            className="absolute"
-            style={{
-              left: `${20 + i * 40}%`,
-              top: `${25 + i * 20}%`,
-            }}
-            animate={{
-              y: [0, -20, 0],
-            }}
-            transition={{
-              y: {
-                duration: 5 + i,
-                repeat: Infinity,
-                ease: "easeInOut",
-              },
-            }}
-          >
-            <Icon className="w-8 h-8 text-primary/20" />
-          </motion.div>
-        ))}
-      </div>
-
       <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-16 items-center z-10">
         {/* Left Side - Text Content */}
         <motion.div
@@ -66,76 +12,61 @@ export default function Hero() {
           transition={{ duration: 0.8 }}
           className="space-y-8"
         >
-          {/* Badge */}
-          <motion.div
-            className="inline-flex items-center gap-3 glass px-6 py-3 rounded-full border border-primary/30"
-            initial={{ scale: 0, rotate: -10 }}
-            animate={{ scale: 1, rotate: 0 }}
-            transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-          >
-            <div className="relative">
-              <Sparkles className="w-5 h-5 text-primary" />
-              <motion.div
-                className="absolute -inset-1 rounded-full bg-primary/20 blur-sm"
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-            </div>
-            <span className="text-text-light text-sm font-medium">
-              Free eBook Collection
-            </span>
-          </motion.div>
-
           {/* Main Title */}
-          <motion.div className="space-y-4">
-            <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold leading-[1.1] hero-title">
-              <span className="block text-text-light">Discover Your Next</span>
-              <span className="gradient-text block">
-                Adventure
-              </span>
+          <motion.div className="space-y-6">
+            <h1 className="text-6xl lg:text-7xl xl:text-8xl font-bold leading-[1.1] font-serif text-white drop-shadow-lg">
+              <span className="block">Welcome to</span>
+              <span className="block text-white/95 tracking-wide">Desk of Saar</span>
             </h1>
-            
-            {/* Animated Underline */}
+
+            {/* Decorative Underline */}
             <motion.div
-              className="h-1 bg-gradient-to-r from-primary via-secondary to-accent rounded-full"
+              className="h-1 bg-white/70 rounded-full shadow-lg"
               initial={{ width: 0 }}
-              animate={{ width: '200px' }}
+              animate={{ width: '280px' }}
               transition={{ delay: 0.5, duration: 1 }}
             />
           </motion.div>
 
-          {/* Description */}
+          {/* Tagline */}
           <motion.p
-            className="text-xl text-text-light leading-relaxed max-w-xl"
+            className="text-2xl lg:text-3xl text-white/95 leading-relaxed max-w-xl font-serif italic drop-shadow-md"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.8 }}
           >
-            Explore my free eBook collection. Download instantly with no sign-up required.
-            From fiction to non-fiction, find your next favorite book today.
+            "A room without books is like a body without a soul."
           </motion.p>
 
-          {/* Action Buttons */}
-          <motion.div
-            className="flex flex-wrap items-center gap-4 pt-4"
+          <motion.p
+            className="text-lg lg:text-xl text-white/90 leading-relaxed max-w-xl font-medium drop-shadow-sm"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9, duration: 0.8 }}
           >
+            Explore our curated collection of timeless books. Download instantly, no sign-up required.
+          </motion.p>
+
+          {/* Start Reading Button with Glassmorphism */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.1, duration: 0.8 }}
+          >
             <motion.button
-              className="group relative overflow-hidden gradient-primary text-white font-semibold py-4 px-8 rounded-xl shadow-medium hover:shadow-strong transition-all"
-              whileHover={{ scale: 1.03, y: -2 }}
+              className="group relative overflow-hidden glass-strong text-white font-bold text-lg py-5 px-10 rounded-2xl shadow-medium hover:shadow-strong transition-all"
+              whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.97 }}
               onClick={() => {
                 document.getElementById('books-section')?.scrollIntoView({ behavior: 'smooth' });
               }}
             >
               <span className="relative z-10 flex items-center gap-3">
-                <BookOpen className="w-5 h-5" />
-                <span>Browse Books</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+                <BookOpen className="w-6 h-6" />
+                <span>Start Reading</span>
+                <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
               </span>
-              
+
               {/* Shimmer effect */}
               <motion.div
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
@@ -144,167 +75,104 @@ export default function Hero() {
                 transition={{ duration: 0.8 }}
               />
             </motion.button>
-
-            <motion.button
-              className="glass text-text-light font-semibold py-4 px-8 rounded-xl shadow-soft hover:shadow-medium border border-primary/20 hover:border-primary/40 transition-all"
-              whileHover={{ scale: 1.03, y: -2 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => {
-                document.getElementById('faqs')?.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              <span className="flex items-center gap-3">
-                <Sparkles className="w-5 h-5" />
-                <span>How It Works</span>
-              </span>
-            </motion.button>
-          </motion.div>
-
-          {/* Stats */}
-          <motion.div
-            className="grid grid-cols-3 gap-6 pt-12"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.1, duration: 0.8 }}
-          >
-            {[
-              { value: '100+', label: 'Free Books', icon: <BookOpen className="w-6 h-6" />, color: 'text-primary' },
-              { value: '24/7', label: 'Available', icon: <Clock className="w-6 h-6" />, color: 'text-secondary' },
-              { value: 'No', label: 'Sign-up', icon: <Users className="w-6 h-6" />, color: 'text-accent' }
-            ].map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                className="text-center group"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.2 + index * 0.1 }}
-              >
-                <div className={`inline-flex items-center justify-center w-12 h-12 rounded-full mb-3 ${stat.color} bg-opacity-10`}>
-                  {stat.icon}
-                </div>
-                <div className="text-2xl font-bold text-white mb-1">{stat.value}</div>
-                <div className="text-sm text-text-dim">{stat.label}</div>
-                
-                {/* Hover line */}
-                <div className="h-0.5 w-0 mx-auto bg-gradient-to-r from-transparent via-current to-transparent group-hover:w-16 transition-all duration-300 mt-2"></div>
-              </motion.div>
-            ))}
           </motion.div>
         </motion.div>
 
-        {/* Right Side - Book Display */}
+        {/* Right Side - Book Stack Illustration */}
         <motion.div
           className="relative"
           initial={{ opacity: 0, x: 50, rotateY: 90 }}
           animate={{ opacity: 1, x: 0, rotateY: 0 }}
           transition={{ delay: 0.4, duration: 1, type: "spring" }}
         >
-          <div className="relative w-full h-[500px] flex items-center justify-center">
-            {/* Stacked Books */}
-            <div className="relative">
-              {[0, 1, 2].map((i) => (
+          <div className="relative w-full h-[600px] flex items-end justify-center">
+            {/* Stacked Books - Vertical Stack like in reference image */}
+            <div className="relative flex flex-col-reverse items-center">
+              {[
+                { color: 'linear-gradient(135deg, #E57373 0%, #F06292 100%)', width: 180, height: 40, delay: 0 },
+                { color: 'linear-gradient(135deg, #BA68C8 0%, #9575CD 100%)', width: 200, height: 45, delay: 0.1 },
+                { color: 'linear-gradient(135deg, #4FC3F7 0%, #4DD0E1 100%)', width: 170, height: 42, delay: 0.2 },
+                { color: 'linear-gradient(135deg, #81C784 0%, #66BB6A 100%)', width: 190, height: 38, delay: 0.3 },
+                { color: 'linear-gradient(135deg, #FFD54F 0%, #FFCA28 100%)', width: 175, height: 44, delay: 0.4 },
+                { color: 'linear-gradient(135deg, #FF8A65 0%, #FF7043 100%)', width: 185, height: 41, delay: 0.5 },
+                { color: 'linear-gradient(135deg, #A1887F 0%, #8D6E63 100%)', width: 195, height: 39, delay: 0.6 },
+                { color: 'linear-gradient(135deg, #90A4AE 0%, #78909C 100%)', width: 165, height: 43, delay: 0.7 },
+              ].map((book, i) => (
                 <motion.div
                   key={i}
-                  className="absolute w-64 h-80 rounded-xl shadow-2xl overflow-hidden"
+                  className="rounded-lg shadow-2xl relative mb-1"
                   style={{
-                    transform: `translate(${i * 20}px, ${i * 15}px) rotate(${i * 2}deg)`,
-                    zIndex: 3 - i,
+                    background: book.color,
+                    width: `${book.width}px`,
+                    height: `${book.height}px`,
+                    transform: `rotate(${(Math.random() - 0.5) * 3}deg)`,
                   }}
-                  animate={{
-                    y: [0, -10, 0],
-                  }}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{
-                    duration: 3 + i,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: i * 0.5
+                    delay: book.delay,
+                    duration: 0.5,
+                    type: "spring",
+                    stiffness: 100
+                  }}
+                  whileHover={{
+                    scale: 1.05,
+                    zIndex: 10,
+                    transition: { duration: 0.2 }
                   }}
                 >
-                  <div className={`w-full h-full ${
-                    i === 0 ? 'gradient-primary' : 
-                    i === 1 ? 'gradient-secondary' : 'gradient-accent'
-                  } relative`}>
-                    {/* Book Details */}
-                    <div className="absolute inset-0 p-6 flex flex-col justify-between">
-                      <div>
-                        <div className="w-12 h-1 bg-white/50 rounded-full mb-3"></div>
-                        <div className="w-8 h-1 bg-white/30 rounded-full"></div>
-                      </div>
-                      
-                      <div className="text-center">
-                        <h3 className="text-white text-lg font-bold mb-2">FREE EBOOK</h3>
-                        <div className="w-16 h-0.5 bg-white/50 mx-auto mb-2"></div>
-                        <p className="text-white/70 text-sm">Instant Download</p>
-                      </div>
-                      
-                      <div className="flex justify-end">
-                        <BookOpen className="w-8 h-8 text-white/50" />
-                      </div>
+                  {/* Book spine details */}
+                  <div className="absolute inset-0 flex items-center justify-between px-4">
+                    <div className="w-1 h-full bg-white/20 rounded-full"></div>
+                    <div className="text-white/70 text-xs font-bold tracking-wider transform -rotate-0">
+                      BOOK
                     </div>
-                    
-                    {/* Embossed Effect */}
-                    <div className="absolute inset-0 border-2 border-white/10 rounded-xl pointer-events-none"></div>
+                    <div className="w-1 h-full bg-white/20 rounded-full"></div>
                   </div>
-                  
-                  {/* Glow Effect */}
-                  <div className="absolute -inset-4 bg-gradient-to-r from-primary/30 via-secondary/20 to-accent/30 blur-xl rounded-3xl -z-10"></div>
+
+                  {/* Embossed Effect */}
+                  <div className="absolute inset-0 border-2 border-white/10 rounded-lg pointer-events-none"></div>
+
+                  {/* Subtle shadow for depth */}
+                  <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-full h-2 bg-black/20 blur-sm rounded-full"></div>
                 </motion.div>
               ))}
             </div>
 
-            {/* Floating Download Icons */}
-            {[
-              { color: 'primary', delay: 0 },
-              { color: 'secondary', delay: 0.3 },
-              { color: 'accent', delay: 0.6 }
-            ].map((item, index) => (
+            {/* Glass surface/shelf under books */}
+            <motion.div
+              className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[400px] h-3 rounded-full"
+              style={{
+                background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
+                boxShadow: '0 2px 20px rgba(0,0,0,0.1)'
+              }}
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ delay: 1, duration: 0.8 }}
+            />
+
+            {/* Floating particles around books */}
+            {[...Array(5)].map((_, i) => (
               <motion.div
-                key={index}
-                className={`absolute w-12 h-12 rounded-full flex items-center justify-center shadow-glow ${
-                  item.color === 'primary' ? 'gradient-primary' :
-                  item.color === 'secondary' ? 'gradient-secondary' : 'gradient-accent'
-                }`}
+                key={i}
+                className="absolute w-2 h-2 rounded-full bg-white/40"
                 style={{
-                  left: `${15 + index * 25}%`,
-                  top: `${5 + index * 30}%`,
+                  left: `${20 + i * 15}%`,
+                  top: `${10 + i * 10}%`,
                 }}
                 animate={{
                   y: [0, -20, 0],
-                  rotate: 360,
+                  opacity: [0.4, 0.8, 0.4],
                 }}
                 transition={{
-                  y: {
-                    duration: 2,
-                    repeat: Infinity,
-                    delay: item.delay,
-                    ease: "easeInOut"
-                  },
-                  rotate: {
-                    duration: 8,
-                    repeat: Infinity,
-                    ease: "linear"
-                  }
+                  duration: 3 + i * 0.5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: i * 0.2
                 }}
-              >
-                <Download className="w-5 h-5 text-white" />
-                
-                {/* Pulsing ring */}
-                <motion.div
-                  className="absolute inset-0 rounded-full border-2 border-white/30"
-                  animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0, 0.5] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: item.delay }}
-                />
-              </motion.div>
+              />
             ))}
           </div>
-
-          {/* Bottom Decorative Line */}
-          <motion.div
-            className="absolute -bottom-8 left-1/2 -translate-x-1/2 h-px w-64 bg-gradient-to-r from-transparent via-primary to-transparent"
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ delay: 1, duration: 1 }}
-          />
         </motion.div>
       </div>
 
@@ -315,13 +183,13 @@ export default function Hero() {
         animate={{ opacity: 1 }}
         transition={{ delay: 1.5 }}
       >
-        <span className="text-xs text-text-dim tracking-widest">SCROLL TO EXPLORE</span>
+        <span className="text-xs text-white/70 tracking-widest">SCROLL TO EXPLORE</span>
         <motion.div
-          className="w-6 h-10 rounded-full border-2 border-primary/50 flex justify-center"
+          className="w-6 h-10 rounded-full border-2 border-white/50 flex justify-center"
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 1.5, repeat: Infinity }}
         >
-          <div className="w-1 h-3 rounded-full gradient-primary mt-2"></div>
+          <div className="w-1 h-3 rounded-full bg-white/70 mt-2"></div>
         </motion.div>
       </motion.div>
     </section>

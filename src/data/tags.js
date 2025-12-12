@@ -1,62 +1,62 @@
 export const tagAtlas = {
   recommended: {
     display: "Recommended",
-    color: "bg-yellow dark:bg-yellow text-text dark:text-text font-semibold shadow-soft"
+    color: "bg-[#D4AF6A] text-[#2C3E2F] font-bold shadow-lg"
   },
   new: {
     display: "New",
-    color: "bg-blue dark:bg-blue text-white dark:text-white font-semibold shadow-soft"
+    color: "bg-[#6B8E7F] text-white font-bold shadow-lg"
   },
   fiction: {
     display: "Fiction",
-    color: "bg-blue/10 dark:bg-blue/20 text-blue-dark dark:text-blue border border-blue/20 dark:border-blue/30 font-medium"
+    color: "bg-white/90 text-[#5A7D6E] border-2 border-[#6B8E7F] font-semibold shadow-md"
   },
   "science-fiction": {
     display: "Sci-Fi",
-    color: "bg-blue/15 dark:bg-blue/25 text-blue dark:text-blue-light border border-blue/25 dark:border-blue/35 font-medium"
+    color: "bg-white/90 text-[#5A7D6E] border-2 border-[#7C9F90] font-semibold shadow-md"
   },
   thriller: {
     display: "Thriller",
-    color: "bg-orange/10 dark:bg-orange/20 text-orange dark:text-orange-light border border-orange/20 dark:border-orange/30 font-medium"
+    color: "bg-white/90 text-[#B89968] border-2 border-[#C9AA79] font-semibold shadow-md"
   },
   mystery: {
     display: "Mystery",
-    color: "bg-text/10 dark:bg-text/20 text-text dark:text-text-light border border-text/20 dark:border-text/30 font-medium"
+    color: "bg-white/90 text-[#2C3E2F] border-2 border-[#8E9E93] font-semibold shadow-md"
   },
   horror: {
     display: "Horror",
-    color: "bg-text/15 dark:bg-text/25 text-text dark:text-text-light border border-text/25 dark:border-text/35 font-medium"
+    color: "bg-[#2C3E2F] text-white border-2 border-white/30 font-semibold shadow-lg"
   },
   romance: {
     display: "Romance",
-    color: "bg-orange/10 dark:bg-orange/20 text-orange dark:text-orange-light border border-orange/20 dark:border-orange/30 font-medium"
+    color: "bg-white/90 text-[#B89968] border-2 border-[#C9AA79] font-semibold shadow-md"
   },
   "self-help": {
     display: "Self-Help",
-    color: "bg-yellow/15 dark:bg-yellow/25 text-text dark:text-text-light border border-yellow/25 dark:border-yellow/35 font-medium"
+    color: "bg-white/90 text-[#D4AF6A] border-2 border-[#E0BF7B] font-semibold shadow-md"
   },
   productivity: {
     display: "Productivity",
-    color: "bg-blue/10 dark:bg-blue/20 text-blue dark:text-blue-light border border-blue/20 dark:border-blue/30 font-medium"
+    color: "bg-white/90 text-[#6B8E7F] border-2 border-[#7C9F90] font-semibold shadow-md"
   },
   "non-fiction": {
     display: "Non-Fiction",
-    color: "bg-text-dim/10 dark:bg-text-dim/20 text-text dark:text-text-light border border-text-dim/20 dark:border-text-dim/30 font-medium"
+    color: "bg-white/90 text-[#5A7D6E] border-2 border-[#6B8E7F] font-semibold shadow-md"
   },
   history: {
     display: "History",
-    color: "bg-text-dim/10 dark:bg-text-dim/20 text-text dark:text-text-light border border-text-dim/20 dark:border-text-dim/30 font-medium"
+    color: "bg-white/90 text-[#8E9E93] border-2 border-[#A0AFA5] font-semibold shadow-md"
   },
   mythology: {
     display: "Mythology",
-    color: "bg-blue/10 dark:bg-blue/20 text-blue-dark dark:text-blue border border-blue/20 dark:border-blue/30 font-medium"
+    color: "bg-white/90 text-[#7BA098] border-2 border-[#8CB1A9] font-semibold shadow-md"
   },
   adventure: {
     display: "Adventure",
-    color: "bg-orange/15 dark:bg-orange/25 text-orange dark:text-orange-light border border-orange/25 dark:border-orange/35 font-medium"
+    color: "bg-white/90 text-[#B89968] border-2 border-[#C9AA79] font-semibold shadow-md"
   },
   gothic: {
     display: "Gothic",
-    color: "bg-text/10 dark:bg-text/20 text-text dark:text-text-light border border-text/20 dark:border-text/30 font-medium"
+    color: "bg-[#2C3E2F] text-white border-2 border-white/30 font-semibold shadow-lg"
   }
 };

@@ -47,9 +47,9 @@ export default function Header({ currentPage, onNavigate, isHidden = false }) {
         transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
       >
         {/* Animated top border */}
-        <motion.div 
-          className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary to-transparent"
-          animate={{ 
+        <motion.div
+          className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/50 to-transparent"
+          animate={{
             backgroundPosition: ['0% 50%', '100% 50%', '0% 50%']
           }}
           transition={{ duration: 3, repeat: Infinity }}
@@ -65,46 +65,26 @@ export default function Header({ currentPage, onNavigate, isHidden = false }) {
               onClick={() => onNavigate('home')}
             >
               <motion.div
-                className="relative w-12 h-12 gradient-primary rounded-2xl flex items-center justify-center shadow-glow"
+                className="relative w-12 h-12 bg-white/25 backdrop-blur-md rounded-2xl flex items-center justify-center shadow-lg"
                 whileHover={{ rotate: 360 }}
-                animate={{ 
+                animate={{
                   rotate: [0, 5, 0, -5, 0],
                   scale: [1, 1.05, 1]
                 }}
-                transition={{ 
+                transition={{
                   rotate: { duration: 0.6 },
                   scale: { duration: 2, repeat: Infinity, ease: "easeInOut" }
                 }}
               >
                 <BookOpen className="w-6 h-6 text-white" />
-                {/* Floating particles around logo */}
-                {[...Array(3)].map((_, i) => (
-                  <motion.div
-                    key={i}
-                    className="absolute w-2 h-2 rounded-full bg-white"
-                    style={{
-                      left: `${Math.cos((i * 120 * Math.PI) / 180) * 20}px`,
-                      top: `${Math.sin((i * 120 * Math.PI) / 180) * 20}px`,
-                    }}
-                    animate={{
-                      scale: [0.5, 1, 0.5],
-                      opacity: [0.3, 0.8, 0.3],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      delay: i * 0.3,
-                    }}
-                  />
-                ))}
               </motion.div>
               
               <div className="flex flex-col">
                 <span className="text-xl font-bold text-white tracking-wider font-serif">
                   Desk of Saar
                 </span>
-                <motion.span 
-                  className="text-xs text-text-dim font-serif tracking-widest"
+                <motion.span
+                  className="text-xs text-white/70 font-serif tracking-widest"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.5 }}
@@ -114,8 +94,8 @@ export default function Header({ currentPage, onNavigate, isHidden = false }) {
               </div>
             </motion.div>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-1">
+            {/* Desktop Navigation - Centered */}
+            <nav className="hidden md:flex items-center gap-2 absolute left-1/2 -translate-x-1/2">
               {navItems.map((item) => (
                 <motion.button
                   key={item.id}
@@ -123,7 +103,7 @@ export default function Header({ currentPage, onNavigate, isHidden = false }) {
                   className={`relative px-6 py-3 rounded-xl font-medium transition-all group ${
                     currentPage === item.id
                       ? 'text-white'
-                      : 'text-text-light hover:text-primary'
+                      : 'text-white/90 hover:text-white'
                   }`}
                   whileHover={{ y: -2 }}
                   whileTap={{ scale: 0.97 }}
@@ -132,55 +112,33 @@ export default function Header({ currentPage, onNavigate, isHidden = false }) {
                   {/* Background glow for active item */}
                   {currentPage === item.id && (
                     <motion.div
-                      className="absolute inset-0 rounded-xl gradient-primary shadow-glow -z-10"
+                      className="absolute inset-0 rounded-xl bg-white/25 backdrop-blur-md shadow-lg -z-10"
                       layoutId="headerNavIndicator"
                       transition={{ type: "spring", stiffness: 300, damping: 25 }}
                     />
                   )}
-                  
+
                   <div className="flex items-center gap-2">
                     {item.icon}
                     <span>{item.label}</span>
-                    
+
                     {/* Hover effect line */}
                     <motion.div
-                      className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-transparent via-accent to-transparent"
+                      className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-transparent via-white to-transparent"
                       initial={false}
-                      animate={{ 
+                      animate={{
                         width: currentPage === item.id ? '80%' : '0%',
                         x: '-50%'
                       }}
                       transition={{ duration: 0.3 }}
                     />
                   </div>
-                  
-                  {/* Sparkle effect on hover */}
-                  <div className="absolute inset-0 overflow-hidden rounded-xl opacity-0 group-hover:opacity-100 transition-opacity">
-                    {[...Array(5)].map((_, i) => (
-                      <motion.div
-                        key={i}
-                        className="absolute w-1 h-1 rounded-full bg-white"
-                        style={{
-                          left: `${Math.random() * 100}%`,
-                          top: `${Math.random() * 100}%`,
-                        }}
-                        initial={{ scale: 0, opacity: 0 }}
-                        animate={{ 
-                          scale: [0, 1, 0],
-                          opacity: [0, 1, 0],
-                        }}
-                        transition={{
-                          duration: 0.8,
-                          repeat: Infinity,
-                          delay: i * 0.1,
-                        }}
-                      />
-                    ))}
-                  </div>
                 </motion.button>
               ))}
-              
-              {/* Search Button */}
+            </nav>
+
+            {/* Right side - Search Button */}
+            <div className="hidden md:flex items-center gap-2">
               <motion.button
                 onClick={() => {
                   const searchInput = document.getElementById('search-input');
@@ -189,27 +147,14 @@ export default function Header({ currentPage, onNavigate, isHidden = false }) {
                     setTimeout(() => searchInput.focus(), 500);
                   }
                 }}
-                className="ml-4 p-3 rounded-xl glass border border-primary/20 hover:border-primary/40 transition-all"
+                className="p-3 rounded-xl glass border border-white/30 hover:border-white/50 transition-all"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Search className="w-5 h-5 text-primary" />
+                <Search className="w-5 h-5 text-white" />
               </motion.button>
               
-              {/* Theme Toggle - Hidden for now */}
-              <motion.button
-                onClick={toggleDarkMode}
-                className="ml-2 p-3 rounded-xl glass border border-primary/20 hover:border-primary/40 transition-all hidden"
-                whileHover={{ scale: 1.05, rotate: 15 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {darkMode ? (
-                  <Sun className="w-5 h-5 text-accent" />
-                ) : (
-                  <Moon className="w-5 h-5 text-primary" />
-                )}
-              </motion.button>
-            </nav>
+            </div>
 
             {/* Mobile Menu Button */}
             <motion.button
