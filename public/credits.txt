@@ -1,0 +1,115 @@
+# Credits - eBooks Website
+
+This file contains attribution for all third-party resources used in this project.
+
+## Format Guide
+Each entry should follow this format:
+```
+[TYPE] [NAME/TITLE]
+Author: [Author Name]
+Source: [Platform Name]
+URL: [Direct Link]
+License: [License Type]
+---
+```
+
+## Images
+
+[IMAGE] Cozy Reading Corner with Books
+Author: Jaredd Craig
+Source: Unsplash
+URL: https://unsplash.com/photos/HH4WBGNyltc
+License: Unsplash License (Free to use)
+---
+
+[IMAGE] Library Shelves with Books
+Author: Susan Q Yin
+Source: Unsplash
+URL: https://unsplash.com/photos/2JIvboGLeho
+License: Unsplash License (Free to use)
+---
+
+[IMAGE] Person Reading in Cozy Library
+Author: Blaz Photo
+Source: Unsplash
+URL: https://unsplash.com/photos/zMiHdExtcn8
+License: Unsplash License (Free to use)
+---
+
+## Music
+
+[MUSIC] Chopin - Nocturne in E Flat Major (Op. 9 No. 2)
+Author: Rousseau
+Source: YouTube
+URL: https://www.youtube.com/watch?v=p29JUpsOSTE&list=RDp29JUpsOSTE&start_radio=1
+License: Royalty-Free Music
+---
+
+[MUSIC] Liszt - Liebestraum No. 3 (Love Dream)
+Author: Rousseau
+Source: YouTube
+URL: https://www.youtube.com/watch?v=MBOa-2b4uQQ&list=RDMBOa-2b4uQQ&start_radio=1
+License: Royalty-Free Music
+--- 
+
+[MUSIC] Chopin – Waltz in A minor, B. 150, Op. Posth.
+Author: Kassia
+Source: YouTube
+URL: https://www.youtube.com/watch?v=eN5z1mu6j4M&list=RDeN5z1mu6j4M&start_radio=1
+License: Royalty-Free Music
+---
+
+[MUSIC] Chopin - Nocturne Op. 55 No. 1
+Author: Kassia
+Source: YouTube
+URL: https://www.youtube.com/watch?v=olFHFbijAjM&list=RDolFHFbijAjM&start_radio=1
+License: Royalty-Free Music
+---
+
+[MUSIC] Chopin - Nocturne in C Sharp Minor (No. 20)
+Author: Rousseau
+Source: YouTube
+URL: https://www.youtube.com/watch?v=DqpPRj6UZqc&list=RDDqpPRj6UZqc&start_radio=1
+License: Royalty-Free Music
+---
+
+## Fonts
+
+[FONT] Inter
+Author: Rasmus Andersson
+Source: Google Fonts
+URL: https://fonts.google.com/specimen/Inter
+License: SIL Open Font License
+---
+
+[FONT] Playfair Display
+Author: Claus Eggers Sørensen
+Source: Google Fonts
+URL: https://fonts.google.com/specimen/Playfair+Display
+License: SIL Open Font License
+---
+
+## Instructions for Site Admin
+
+When you add new resources (images, music, etc.), update this file using the format above to maintain proper attribution.
+
+Example for adding a music track:
+```
+[MUSIC] Calm Focus Music
+Author: Artist Name
+Source: YouTube Audio Library
+URL: https://youtube.com/audiolibrary/music
+License: Royalty-Free
+---
+```
+
+After updating this file, the changes will automatically be available for download on the Credits page.
+
+## License Information
+
+- **Unsplash License**: Free to use for commercial and non-commercial purposes. No permission needed. Attribution appreciated but not required.
+- **SIL Open Font License**: Fonts can be used, studied, modified and redistributed freely.
+- **Royalty-Free**: Can be used without paying royalties, but check specific terms.
+
+---
+Last Updated: 2025-12-12

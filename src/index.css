@@ -1,0 +1,437 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* Dark Mode Colors */
+  --color-bg: #0F172A;
+  --color-bg-soft: #1E293B;
+  --color-bg-card: #1A2332;
+
+  /* Light Mode Colors - Clean White Theme */
+  --color-bg-light: #FFFFFF;
+  --color-bg-soft-light: #F9FAFB;
+  --color-bg-card-light: #FFFFFF;
+
+  /* Main Colors - Dark Mode */
+  --color-blue: #4A90E2;
+  --color-blue-dark: #2E5C8A;
+  --color-blue-light: #6FA8E8;
+  --color-orange: #FF8C42;
+  --color-orange-light: #FFB674;
+  --color-yellow: #FFB84D;
+  --color-yellow-light: #FFCA7A;
+
+  /* Primary Colors - Dark Mode */
+  --color-primary: #8B5CF6;
+  --color-primary-dark: #7C3AED;
+  --color-primary-light: #A78BFA;
+  --color-secondary: #10B981;
+  --color-secondary-light: #34D399;
+  --color-accent: #F59E0B;
+  --color-accent-light: #FBBF24;
+  --color-mystic: #06B6D4;
+  --color-mystic-light: #22D3EE;
+  --color-arcane: #EC4899;
+  --color-arcane-light: #F472B6;
+
+  /* Light Mode Primary Colors - New Palette */
+  --color-primary-light-mode: #0D9488;
+  --color-primary-dark-light-mode: #0F766E;
+  --color-secondary-light-mode: #F59E0B;
+  --color-secondary-dark-light-mode: #D97706;
+  --color-accent-light-mode: #8B5CF6;
+  --color-accent-dark-light-mode: #7C3AED;
+  --color-mystic-light-mode: #14B8A6;
+  --color-emerald-light-mode: #10B981;
+  --color-olive-light-mode: #84CC16;
+
+  /* Text Colors */
+  --color-text: #E2E8F0;
+  --color-text-light: #CBD5E1;
+  --color-text-dim: #94A3B8;
+  --color-text-dark: #1F2937;
+  --color-text-light-secondary: #4B5563;
+  --color-text-light-dim: #6B7280;
+  --color-white: #FFFFFF;
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-serif: 'Playfair Display', serif;
+}
+
+/* Dark Mode (default) */
+:root, .dark {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* Light Mode - New Warm Theme */
+.light {
+  background-color: var(--color-bg-light);
+  color: var(--color-text-dark);
+}
+
+.light .glass {
+  background: #FFFFFF;
+  border-color: rgba(13, 148, 136, 0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.light .glass-strong {
+  background: #FFFFFF;
+  border-color: rgba(13, 148, 136, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.light .glass-soft {
+  background: #FFFFFF;
+  border-color: rgba(13, 148, 136, 0.1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.light .glass-dark {
+  background: #F9FAFB;
+  border-color: rgba(13, 148, 136, 0.15);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.light .text-text { color: var(--color-text-dark); }
+.light .text-text-light { color: var(--color-text-light-secondary); }
+.light .text-text-dim { color: var(--color-text-light-dim); }
+.light .bg-bg { background: var(--color-bg-light); }
+.light .bg-bg-soft { background: var(--color-bg-soft-light); }
+.light .bg-bg-card { background: var(--color-bg-card-light); }
+
+/* Light mode gradient overrides */
+.light .gradient-primary {
+  background: linear-gradient(120deg, var(--color-primary-light-mode) 0%, var(--color-mystic-light-mode) 100%);
+}
+
+.light .gradient-secondary {
+  background: linear-gradient(120deg, var(--color-secondary-light-mode) 0%, var(--color-emerald-light-mode) 100%);
+}
+
+.light .gradient-accent {
+  background: linear-gradient(120deg, var(--color-accent-light-mode) 0%, var(--color-arcane) 100%);
+}
+
+.light .gradient-text {
+  background: linear-gradient(120deg, var(--color-primary-light-mode) 0%, var(--color-secondary-light-mode) 50%, var(--color-accent-light-mode) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Light mode text color overrides */
+.light .text-primary { color: var(--color-primary-light-mode); }
+.light .text-secondary { color: var(--color-secondary-light-mode); }
+.light .text-accent { color: var(--color-accent-light-mode); }
+.light .text-mystic { color: var(--color-mystic-light-mode); }
+.light .text-white { color: var(--color-text-dark); }
+
+/* Light mode background overrides */
+.light .bg-primary { background-color: var(--color-primary-light-mode); }
+.light .bg-secondary { background-color: var(--color-secondary-light-mode); }
+.light .bg-accent { background-color: var(--color-accent-light-mode); }
+
+/* Light mode book cards - clean white cards */
+.light .bg-bg-card {
+  background: #FFFFFF;
+}
+
+.light .bg-bg-soft {
+  background: #F9FAFB;
+}
+
+/* Remove backdrop blur in light mode */
+.light .backdrop-blur-sm {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.light .backdrop-blur-xl {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Clean carousel container in light mode */
+.light .overflow-x-auto {
+  background: transparent;
+}
+
+/* Light mode - image overlays should be light */
+.light .bg-gradient-to-t.from-bg {
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.95), transparent);
+}
+
+.light .bg-gradient-to-t.from-bg\/90 {
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.9), transparent);
+}
+
+.light .bg-gradient-to-t.from-bg\/50 {
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.5), transparent);
+}
+
+.light .from-bg {
+  --tw-gradient-from: rgb(255 255 255);
+}
+
+/* Light mode primary/10 backgrounds */
+.light .bg-primary\/10 {
+  background-color: rgba(13, 148, 136, 0.08);
+}
+
+.light .bg-secondary\/10 {
+  background-color: rgba(245, 158, 11, 0.08);
+}
+
+.light .bg-accent\/10 {
+  background-color: rgba(139, 92, 246, 0.08);
+}
+
+body {
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-soft);
+}
+
+.light ::-webkit-scrollbar-track {
+  background: #F9FAFB;
+}
+
+.light ::-webkit-scrollbar-thumb {
+  background: rgba(13, 148, 136, 0.3);
+}
+
+.light ::-webkit-scrollbar-thumb:hover {
+  background: rgba(13, 148, 136, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-dark);
+}
+
+/* Glass Effects */
+.glass {
+  background: rgba(30, 41, 59, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.glass-strong {
+  background: rgba(26, 35, 50, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.2);
+}
+
+.glass-soft {
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(139, 92, 246, 0.15);
+}
+
+.glass-dark {
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(139, 92, 246, 0.25);
+}
+
+.light .glass-dark {
+  background: rgba(238, 242, 246, 0.95);
+  border-color: rgba(74, 144, 226, 0.25);
+  box-shadow: 0 8px 32px rgba(74, 144, 226, 0.12);
+}
+
+/* Gradients */
+.gradient-primary {
+  background: linear-gradient(120deg, #4A90E2 0%, #6FA8E8 100%);
+}
+
+.gradient-secondary {
+  background: linear-gradient(120deg, #FF8C42 0%, #FFB674 100%);
+}
+
+.gradient-accent {
+  background: linear-gradient(120deg, #FFB84D 0%, #FFCA7A 100%);
+}
+
+.gradient-text {
+  background: linear-gradient(120deg, #4A90E2 0%, #FF8C42 50%, #FFB84D 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Shadows */
+.shadow-soft {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.shadow-medium {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.shadow-strong {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.shadow-glow {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+}
+
+.light .shadow-soft {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.light .shadow-medium {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.light .shadow-strong {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.light .shadow-glow {
+  box-shadow: 0 0 0 1px rgba(13, 148, 136, 0.1), 0 2px 8px rgba(13, 148, 136, 0.15);
+}
+
+/* Light mode border overrides - Very subtle */
+.light .border-primary\/10 {
+  border-color: rgba(229, 231, 235, 1);
+}
+
+.light .border-primary\/20 {
+  border-color: rgba(209, 213, 219, 1);
+}
+
+.light .border-primary\/30 {
+  border-color: rgba(13, 148, 136, 0.2);
+}
+
+.light .border-primary\/40 {
+  border-color: rgba(13, 148, 136, 0.3);
+}
+
+.light .border-primary\/50 {
+  border-color: rgba(13, 148, 136, 0.4);
+}
+
+/* Better text contrast in light mode */
+.light h1, .light h2, .light h3, .light h4, .light h5, .light h6 {
+  color: var(--color-text-dark);
+}
+
+.light p {
+  color: var(--color-text-light-secondary);
+}
+
+.light span {
+  color: inherit;
+}
+
+/* Fix white text in light mode */
+.light .text-white {
+  color: var(--color-text-dark) !important;
+}
+
+/* Light mode hover states */
+.light .hover\:text-primary:hover {
+  color: var(--color-primary-light-mode);
+}
+
+.light .hover\:text-secondary:hover {
+  color: var(--color-secondary-light-mode);
+}
+
+.light .hover\:border-primary\/40:hover {
+  border-color: rgba(13, 148, 136, 0.45);
+}
+
+.light .group:hover .group-hover\:text-primary {
+  color: var(--color-primary-light-mode);
+}
+
+/* Light mode - cleaner shadows on hover */
+.light .group:hover .group-hover\:shadow-medium {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.light .group:hover .group-hover\:shadow-glow\/20 {
+  box-shadow: 0 0 0 1px rgba(13, 148, 136, 0.1);
+}
+
+/* Hero Title */
+.hero-title {
+  font-family: var(--font-serif);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* Optimized animations - reduced complexity */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Remove heavy star overlay and complex animations for performance */
+
+/* Range Input Styling for Reading Mode */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #8B5CF6;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
+  transition: all 0.2s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.8);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #8B5CF6;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
+  transition: all 0.2s ease;
+}
+
+input[type="range"]::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.8);
+}

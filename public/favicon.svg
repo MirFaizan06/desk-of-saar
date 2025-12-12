@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <rect width="32" height="32" rx="6" fill="#0F172A"/>
+  <path d="M8 10C8 9.44772 8.44772 9 9 9H14C14.5523 9 15 9.44772 15 10V23C15 23.5523 14.5523 24 14 24H9C8.44772 24 8 23.5523 8 23V10Z" fill="#60A5FA" stroke="#60A5FA" stroke-width="0.5"/>
+  <path d="M17 10C17 9.44772 17.4477 9 18 9H23C23.5523 9 24 9.44772 24 10V23C24 23.5523 23.5523 24 23 24H18C17.4477 24 17 23.5523 17 23V10Z" fill="#818CF8" stroke="#818CF8" stroke-width="0.5"/>
+  <line x1="8" y1="12" x2="15" y2="12" stroke="#0F172A" stroke-width="0.5" opacity="0.3"/>
+  <line x1="8" y1="15" x2="15" y2="15" stroke="#0F172A" stroke-width="0.5" opacity="0.3"/>
+  <line x1="8" y1="18" x2="15" y2="18" stroke="#0F172A" stroke-width="0.5" opacity="0.3"/>
+  <line x1="17" y1="12" x2="24" y2="12" stroke="#0F172A" stroke-width="0.5" opacity="0.3"/>
+  <line x1="17" y1="15" x2="24" y2="15" stroke="#0F172A" stroke-width="0.5" opacity="0.3"/>
+  <line x1="17" y1="18" x2="24" y2="18" stroke="#0F172A" stroke-width="0.5" opacity="0.3"/>
+  <rect x="15" y="10" width="2" height="13" fill="#0F172A" opacity="0.5"/>
+</svg>
