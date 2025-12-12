@@ -101,19 +101,38 @@ export default function BookModal({ book, isOpen, onClose }) {
             onClick={onClose}
           />
 
-          {/* Modal */}
+          {/* Modal with Book Opening Animation */}
           <motion.div
             className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 md:p-6 pointer-events-none overflow-y-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            style={{ perspective: '2000px' }}
           >
             <motion.div
               className="glass-strong border border-primary/30 rounded-2xl sm:rounded-3xl max-w-5xl w-full my-auto max-h-[95vh] sm:max-h-[90vh] overflow-y-auto pointer-events-auto shadow-2xl shadow-primary/20"
-              initial={{ scale: 0.9, y: 50 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 50 }}
-              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              initial={{
+                scale: 0.3,
+                rotateY: -90,
+                opacity: 0
+              }}
+              animate={{
+                scale: 1,
+                rotateY: 0,
+                opacity: 1
+              }}
+              exit={{
+                scale: 0.5,
+                rotateY: 90,
+                opacity: 0
+              }}
+              transition={{
+                type: 'spring',
+                damping: 20,
+                stiffness: 200,
+                duration: 0.6
+              }}
+              style={{ transformStyle: 'preserve-3d' }}
             >
               <div className="relative">
                 {/* Close Button */}
@@ -131,9 +150,10 @@ export default function BookModal({ book, isOpen, onClose }) {
                   <div className="md:col-span-2">
                     <motion.div
                       className="relative rounded-2xl overflow-hidden shadow-2xl"
-                      initial={{ opacity: 0, x: -50 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.2 }}
+                      initial={{ opacity: 0, x: -50, rotateY: -30 }}
+                      animate={{ opacity: 1, x: 0, rotateY: 0 }}
+                      transition={{ delay: 0.3, duration: 0.5, ease: "easeOut" }}
+                      style={{ transformStyle: 'preserve-3d' }}
                     >
                       <img
                         src={book.cover}
@@ -194,9 +214,10 @@ export default function BookModal({ book, isOpen, onClose }) {
                   {/* Right Column - Book Details */}
                   <div className="md:col-span-3 flex flex-col">
                     <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.3 }}
+                      initial={{ opacity: 0, x: 50, rotateY: 30 }}
+                      animate={{ opacity: 1, x: 0, rotateY: 0 }}
+                      transition={{ delay: 0.4, duration: 0.5, ease: "easeOut" }}
+                      style={{ transformStyle: 'preserve-3d' }}
                       className="flex-1"
                     >
                       {/* Title and Author */}
