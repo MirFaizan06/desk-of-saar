@@ -152,7 +152,7 @@ function App() {
               </p>
               <p className="text-white text-sm text-center mb-3 font-medium drop-shadow-sm">
                 This website is a part of{' '}
-                <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#6B8E7F] via-[#B89968] to-[#D4AF6A] drop-shadow-lg">
+                <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#446155] via-[#557265] to-[#668577] drop-shadow-lg">
                   The NxT LvL Studios
                 </span>
                 {' '}© 2025-2026. All Rights Reserved.

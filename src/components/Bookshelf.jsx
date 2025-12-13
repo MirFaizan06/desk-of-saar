@@ -33,7 +33,7 @@ export default function Bookshelf({ title, subtitle, books, onBookClick, icon, c
         <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-r from-transparent via-white/20 to-transparent rounded-full"></div>
 
         {/* Books Grid - Horizontal Scrolling */}
-        <div className="overflow-x-auto overflow-y-visible pb-12 px-2 scroll-smooth">
+        <div className="overflow-x-auto overflow-y-visible pb-12 px-2 scroll-smooth scrollbar-hide">
           <div className="flex gap-6 min-w-max">
             {books.map((book, index) => (
               <motion.div
@@ -144,6 +144,17 @@ export default function Bookshelf({ title, subtitle, books, onBookClick, icon, c
           </div>
         </div>
       </div>
+
+      {/* Hide scrollbar CSS */}
+      <style jsx>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </div>
   );
 }

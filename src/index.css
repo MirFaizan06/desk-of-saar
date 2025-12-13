@@ -2,9 +2,9 @@
 @import "tailwindcss";
 
 @theme {
-  /* Sage Green Theme Colors */
-  --color-bg: #8E9E93;
-  --color-bg-soft: #9BAA9F;
+  /* Sage Green Theme Colors - DARKENED */
+  --color-bg: #6B7C71;  /* Darkened from #8E9E93 */
+  --color-bg-soft: #78897E;  /* Darkened from #9BAA9F */
   --color-bg-card: rgba(255, 255, 255, 0.15);
 
   /* Light Mode Colors - Clean White Theme */
@@ -12,27 +12,27 @@
   --color-bg-soft-light: #F9FAFB;
   --color-bg-card-light: #FFFFFF;
 
-  /* Main Colors - Sage Green Theme */
-  --color-blue: #6B8E7F;
-  --color-blue-dark: #5A7D6E;
-  --color-blue-light: #7C9F90;
-  --color-orange: #B89968;
-  --color-orange-light: #C9AA79;
-  --color-yellow: #D4AF6A;
-  --color-yellow-light: #E0BF7B;
+  /* Main Colors - Sage Green Theme - DARKENED */
+  --color-blue: #557265;  /* Darkened from #6B8E7F */
+  --color-blue-dark: #446155;  /* Darkened from #5A7D6E */
+  --color-blue-light: #668577;  /* Darkened from #7C9F90 */
+  --color-orange: #A08050;  /* Darkened from #B89968 */
+  --color-orange-light: #B19060;  /* Darkened from #C9AA79 */
+  --color-yellow: #BC964A;  /* Darkened from #D4AF6A */
+  --color-yellow-light: #CDA75B;  /* Darkened from #E0BF7B */
 
-  /* Primary Colors - Sage Green Theme */
-  --color-primary: #6B8E7F;
-  --color-primary-dark: #5A7D6E;
-  --color-primary-light: #7C9F90;
-  --color-secondary: #8E9E93;
-  --color-secondary-light: #A0AFA5;
-  --color-accent: #B89968;
-  --color-accent-light: #C9AA79;
-  --color-mystic: #7BA098;
-  --color-mystic-light: #8CB1A9;
-  --color-arcane: #9B8B7E;
-  --color-arcane-light: #AC9C8F;
+  /* Primary Colors - Sage Green Theme - DARKENED */
+  --color-primary: #557265;  /* Darkened from #6B8E7F */
+  --color-primary-dark: #446155;  /* Darkened from #5A7D6E */
+  --color-primary-light: #668577;  /* Darkened from #7C9F90 */
+  --color-secondary: #6B7C71;  /* Darkened from #8E9E93 */
+  --color-secondary-light: #78897E;  /* Darkened from #A0AFA5 */
+  --color-accent: #A08050;  /* Darkened from #B89968 */
+  --color-accent-light: #B19060;  /* Darkened from #C9AA79 */
+  --color-mystic: #5D887F;  /* Darkened from #7BA098 */
+  --color-mystic-light: #6E998F;  /* Darkened from #8CB1A9 */
+  --color-arcane: #7B6B5E;  /* Darkened from #9B8B7E */
+  --color-arcane-light: #8C7C6F;  /* Darkened from #AC9C8F */
 
   /* Light Mode Primary Colors - New Palette */
   --color-primary-light-mode: #0D9488;
@@ -45,10 +45,10 @@
   --color-emerald-light-mode: #10B981;
   --color-olive-light-mode: #84CC16;
 
-  /* Text Colors - Pure White for Sage Green Theme */
+  /* Text Colors - Improved contrast for darker background */
   --color-text: #FFFFFF;
-  --color-text-light: #FFFFFF;
-  --color-text-dim: rgba(255, 255, 255, 0.95);
+  --color-text-light: #F0F4F0;  /* Slightly off-white for better readability */
+  --color-text-dim: rgba(240, 244, 240, 0.95);  /* Adjusted for contrast */
   --color-text-dark: #1F2937;
   --color-text-light-secondary: #4B5563;
   --color-text-light-dim: #6B7280;
@@ -58,9 +58,9 @@
   --font-serif: 'Playfair Display', serif;
 }
 
-/* Sage Green Theme (default) */
+/* Sage Green Theme (default) - UPDATED with darker gradient */
 :root, .dark {
-  background: linear-gradient(135deg, #8E9E93 0%, #Aebdb2 100%);
+  background: linear-gradient(135deg, #6B7C71 0%, #8B9C91 100%);  /* Darkened gradient */
   background-attachment: fixed;
   color: var(--color-text);
   min-height: 100vh;
@@ -198,14 +198,14 @@ body {
   transition: background-color 0.3s ease;
 }
 
-/* Scrollbar - Visible Sage Green Design */
+/* Scrollbar - Updated for darker theme */
 ::-webkit-scrollbar {
   width: 12px;
   height: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.15);  /* Lighter track for contrast */
   border-radius: 10px;
 }
 
@@ -223,45 +223,45 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #5A7D6E;
+  background: #446155;  /* Darkened scrollbar thumb */
   border-radius: 10px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.4);  /* Brighter border for contrast */
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #4A6D5E;
-  border: 2px solid rgba(255, 255, 255, 0.5);
+  background: #355044;  /* Even darker on hover */
+  border: 2px solid rgba(255, 255, 255, 0.6);  /* Brighter border on hover */
 }
 
-/* Glass Effects - Sage Green Theme with White Glassmorphism */
+/* Glass Effects - Updated for darker background */
 .glass {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.25);  /* Increased opacity for better contrast */
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.35);  /* Brighter border */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
 .glass-strong {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.3);  /* Increased opacity */
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.45);  /* Brighter border */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);  /* Darker shadow */
 }
 
 .glass-soft {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.2);  /* Increased opacity */
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.3);  /* Brighter border */
 }
 
 .glass-dark {
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.22);  /* Increased opacity */
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.4);  /* Brighter border */
 }
 
 .light .glass-dark {
@@ -270,41 +270,41 @@ body {
   box-shadow: 0 8px 32px rgba(74, 144, 226, 0.12);
 }
 
-/* Gradients - Sage Green Theme */
+/* Gradients - Updated with darker colors */
 .gradient-primary {
-  background: linear-gradient(120deg, #6B8E7F 0%, #7C9F90 100%);
+  background: linear-gradient(120deg, #557265 0%, #668577 100%);  /* Darkened */
 }
 
 .gradient-secondary {
-  background: linear-gradient(120deg, #8E9E93 0%, #A0AFA5 100%);
+  background: linear-gradient(120deg, #6B7C71 0%, #78897E 100%);  /* Darkened */
 }
 
 .gradient-accent {
-  background: linear-gradient(120deg, #B89968 0%, #C9AA79 100%);
+  background: linear-gradient(120deg, #A08050 0%, #B19060 100%);  /* Darkened */
 }
 
 .gradient-text {
-  background: linear-gradient(120deg, #FFFFFF 0%, #F5F5F5 50%, #FFFFFF 100%);
+  background: linear-gradient(120deg, #FFFFFF 0%, #F0F4F0 50%, #FFFFFF 100%);  /* Brighter for contrast */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Shadows */
+/* Shadows - Darker for better contrast */
 .shadow-soft {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .shadow-medium {
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
 }
 
 .shadow-strong {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
 .shadow-glow {
-  box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
 }
 
 .light .shadow-soft {
@@ -400,8 +400,6 @@ body {
   from { opacity: 0; }
   to { opacity: 1; }
 }
-
-/* Remove heavy star overlay and complex animations for performance */
 
 /* Range Input Styling for Reading Mode */
 input[type="range"] {
