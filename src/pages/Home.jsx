@@ -138,8 +138,8 @@ export default function Home({ onModalChange }) {
 
       <div id="books-section" className="relative z-10">
         <div className="max-w-7xl mx-auto px-4 py-20">
-          {/* Category Filters */}
-          <motion.div
+          {/* Category Filters - Commented out */}
+          {/* <motion.div
             className="mb-12"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -170,10 +170,10 @@ export default function Home({ onModalChange }) {
                 </motion.button>
               ))}
             </div>
-          </motion.div>
+          </motion.div> */}
 
-          {/* Search Bar */}
-          <motion.div
+          {/* Search Bar - Commented out */}
+          {/* <motion.div
             className="mb-16 max-w-3xl mx-auto"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -205,9 +205,8 @@ export default function Home({ onModalChange }) {
                   </motion.button>
                 )}
               </div>
-              
-              {/* Search hints */}
-              <motion.div 
+
+              <motion.div
                 className="flex flex-wrap justify-center gap-3 mt-4"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -226,7 +225,7 @@ export default function Home({ onModalChange }) {
                 ))}
               </motion.div>
             </div>
-          </motion.div>
+          </motion.div> */}
 
           {/* Search Results */}
           {displayBooks !== null && (
@@ -362,8 +361,8 @@ export default function Home({ onModalChange }) {
                   </motion.div>
                 )}
 
-                {/* Recommended */}
-                {recommendedBooks.length > 0 && (
+                {/* Recommended - Commented out */}
+                {/* {recommendedBooks.length > 0 && (
                   <motion.div
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -379,10 +378,10 @@ export default function Home({ onModalChange }) {
                       color="accent"
                     />
                   </motion.div>
-                )}
+                )} */}
 
-                {/* Popular */}
-                {popularBooks.length > 0 && (
+                {/* Popular - Commented out */}
+                {/* {popularBooks.length > 0 && (
                   <motion.div
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -398,9 +397,10 @@ export default function Home({ onModalChange }) {
                       color="primary"
                     />
                   </motion.div>
-                )}
+                )} */}
 
-                {/* Genre Exploration */}
+                {/* Genre Exploration - Commented out */}
+                {/*
                 <motion.div
                   className="mt-20"
                   initial={{ opacity: 0, y: 50 }}
@@ -409,7 +409,7 @@ export default function Home({ onModalChange }) {
                   transition={{ duration: 0.6 }}
                 >
                   <div className="text-center mb-12">
-                    {/* Decorative Image with Icon Overlay */}
+                    // Decorative Image with Icon Overlay
                     <div className="relative rounded-3xl overflow-hidden mb-8 shadow-2xl border border-primary/20 max-w-4xl mx-auto">
                       <img
                         src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1200&q=80"
@@ -432,7 +432,7 @@ export default function Home({ onModalChange }) {
                       Explore books across different genres
                     </p>
 
-                    {/* Divider */}
+                    // Divider
                     <div className="relative my-10">
                       <div className="h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
                       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -479,8 +479,8 @@ export default function Home({ onModalChange }) {
                           View More Genres ({genres.length - 4} more)
                           <Sparkles className="w-5 h-5" />
                         </span>
-                        
-                        {/* Shimmer effect */}
+
+                        // Shimmer effect
                         <motion.div
                           className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
                           initial={{ x: '-100%' }}
@@ -491,8 +491,10 @@ export default function Home({ onModalChange }) {
                     </div>
                   )}
                 </motion.div>
+                */}
 
-                {/* Comics & Manga - Coming Soon Section */}
+                {/* Comics & Manga - Coming Soon Section - Commented out */}
+                {/*
                 <motion.div
                   className="mt-32 mb-20"
                   initial={{ opacity: 0, scale: 0.95 }}
@@ -501,7 +503,7 @@ export default function Home({ onModalChange }) {
                   transition={{ duration: 0.6 }}
                 >
                   <div className="relative overflow-hidden rounded-3xl border border-white/30 shadow-2xl min-h-[500px]">
-                    {/* Blurred Anime/Manga Background Image */}
+                    // Blurred Anime/Manga Background Image
                     <div className="absolute inset-0">
                       <img
                         src="https://images.unsplash.com/photo-1612036782180-6f0b6cd846fe?w=1600&q=80"
@@ -515,7 +517,7 @@ export default function Home({ onModalChange }) {
                       <div className="absolute inset-0 bg-gradient-to-t from-[#8E9E93]/95 via-[#8E9E93]/80 to-[#8E9E93]/60"></div>
                     </div>
 
-                    {/* Glass Card Overlay */}
+                    // Glass Card Overlay
                     <div className="relative glass-strong p-16 text-center min-h-[500px] flex flex-col items-center justify-center">
                       <motion.div
                         animate={{
@@ -569,7 +571,7 @@ export default function Home({ onModalChange }) {
                         Get ready to dive into exciting new worlds!
                       </motion.p>
 
-                      {/* Animated circles */}
+                      // Animated circles
                       <div className="flex gap-3 justify-center">
                         {[0, 1, 2].map((i) => (
                           <motion.div
@@ -590,6 +592,7 @@ export default function Home({ onModalChange }) {
                     </div>
                   </div>
                 </motion.div>
+                */}
 
                 {/* Call to Action */}
                 <motion.div

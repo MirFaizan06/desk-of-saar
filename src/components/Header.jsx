@@ -89,7 +89,7 @@ export default function Header({ currentPage, onNavigate, isHidden = false }) {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.5 }}
                 >
-                  Free Books Collection
+                  Books Collection
                 </motion.span>
               </div>
             </motion.div>

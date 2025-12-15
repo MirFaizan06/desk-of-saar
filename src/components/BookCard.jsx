@@ -26,9 +26,9 @@ export default function BookCard({ book, onClick }) {
             }}
           />
 
-          {/* Tags */}
+          {/* Tags - Only show "new" and "recommended" tags on home page */}
           <div className="absolute top-3 right-3 flex flex-col gap-2">
-            {book.tags.slice(0, 2).map((tag) => {
+            {book.tags.filter(tag => tag === 'new' || tag === 'recommended').slice(0, 1).map((tag) => {
               const tagInfo = tagAtlas[tag];
               if (!tagInfo) return null;
 
@@ -88,7 +88,7 @@ export default function BookCard({ book, onClick }) {
                 </div>
               )}
             </div>
-            <span className="bg-primary text-white font-semibold text-xs py-1 px-2.5 rounded-md">FREE</span>
+            <span className="bg-primary text-white font-semibold text-xs py-1 px-2.5 rounded-md">eBook</span>
           </div>
         </div>
       </motion.div>

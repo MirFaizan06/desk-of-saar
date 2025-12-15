@@ -128,13 +128,13 @@ export default function Bookshelf({ title, subtitle, books, onBookClick, icon, c
                       })}
                     </div>
 
-                    {/* FREE badge - Always aligned at same position */}
+                    {/* eBook badge - Always aligned at same position */}
                     <div>
                       <motion.div
                         className="inline-block bg-white/25 text-white font-semibold text-[10px] py-1.5 px-3 rounded-md border border-white/35 backdrop-blur-sm shadow-sm"
                         whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.3)' }}
                       >
-                        FREE
+                        eBook
                       </motion.div>
                     </div>
                   </div>

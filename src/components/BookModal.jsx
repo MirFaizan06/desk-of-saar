@@ -165,31 +165,10 @@ export default function BookModal({ book, isOpen, onClose }) {
                         }}
                       />
 
-                      {/* Tags */}
-                      <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-                        {book.tags.map((tag) => {
-                          const tagInfo = tagAtlas[tag];
-                          if (!tagInfo) return null;
-
-                          return (
-                            <motion.div
-                              key={tag}
-                              className={`px-3 py-1.5 rounded-full text-xs ${tagInfo.color} backdrop-blur-md shadow-lg`}
-                              initial={{ opacity: 0, scale: 0 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              transition={{ delay: 0.3 }}
-                              whileHover={{ scale: 1.1 }}
-                            >
-                              <span>{tagInfo.display}</span>
-                            </motion.div>
-                          );
-                        })}
-                      </div>
-
-                      {/* Free Badge */}
+                      {/* eBook Badge */}
                       <div className="absolute bottom-4 right-4">
                         <div className="bg-primary text-white font-semibold text-sm py-1.5 px-3 rounded-lg shadow-medium">
-                          FREE
+                          eBook
                         </div>
                       </div>
                     </motion.div>
@@ -234,7 +213,7 @@ export default function BookModal({ book, isOpen, onClose }) {
                         <span className="text-xs sm:text-sm font-medium text-primary bg-primary/10 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-primary/20">
                           {book.genre}
                         </span>
-                        <span className="gradient-text font-bold text-lg sm:text-xl md:text-2xl">FREE DOWNLOAD</span>
+                        <span className="gradient-text font-bold text-lg sm:text-xl md:text-2xl">DOWNLOAD</span>
                       </div>
 
                       {/* Description */}
@@ -246,23 +225,20 @@ export default function BookModal({ book, isOpen, onClose }) {
                         <p className="text-sm sm:text-base text-text-dim leading-relaxed">{book.description}</p>
                       </div>
 
-                      {/* Tags */}
+                      {/* Tags - Less prominent, smaller size */}
                       <div className="mb-6 sm:mb-8">
-                        <h3 className="text-base sm:text-lg font-bold text-text-light mb-3 sm:mb-4">Tags</h3>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-1.5">
                           {book.tags.map((tag) => {
                             const tagInfo = tagAtlas[tag];
                             if (!tagInfo) return null;
 
                             return (
-                              <motion.div
+                              <div
                                 key={tag}
-                                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm ${tagInfo.color}`}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
+                                className="px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md text-[10px] sm:text-xs bg-white/5 text-text-dim border border-white/10"
                               >
                                 <span>{tagInfo.display}</span>
-                              </motion.div>
+                              </div>
                             );
                           })}
                         </div>
@@ -356,7 +332,7 @@ export default function BookModal({ book, isOpen, onClose }) {
                       >
                         <div className="flex items-center gap-2">
                           <Download className="w-3 h-3 sm:w-4 sm:h-4" />
-                          <span>Free Download</span>
+                          <span>Download</span>
                         </div>
                         <div className="hidden sm:block w-1 h-1 rounded-full bg-text-dim"></div>
                         <div className="flex items-center gap-2">

@@ -164,7 +164,7 @@ export default function WelcomeModal({ onClose, onAutoScrollChange, onModalState
                   {[
                     { icon: '📚', title: '100+ Books', desc: 'Growing collection' },
                     { icon: '⚡', title: 'Instant Access', desc: 'No registration' },
-                    { icon: '🎯', title: 'All Free', desc: 'Forever free' },
+                    { icon: '🎯', title: 'All Books', desc: 'Access anytime' },
                   ].map((feature, index) => (
                     <motion.div
                       key={index}

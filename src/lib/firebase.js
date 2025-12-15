@@ -15,10 +15,15 @@ const app = initializeApp(firebaseConfig);
 const storage = getStorage(app);
 
 export const getBookDownloadURL = async (fileName) => {
+  // Using local storage for testing - change to Firebase later
   try {
-    const fileRef = ref(storage, `books/${fileName}`);
-    const url = await getDownloadURL(fileRef);
-    return url;
+    // Return local path from public/books folder
+    return `/books/${fileName}`;
+
+    // Firebase implementation (commented out for now)
+    // const fileRef = ref(storage, `books/${fileName}`);
+    // const url = await getDownloadURL(fileRef);
+    // return url;
   } catch (error) {
     console.error('Error fetching download URL:', error);
     return null;

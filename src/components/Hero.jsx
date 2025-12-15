@@ -78,15 +78,58 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* Right Side - Book Stack Illustration */}
+        {/* Right Side - Book Cover Image */}
         <motion.div
           className="relative"
           initial={{ opacity: 0, x: 50, rotateY: 90 }}
           animate={{ opacity: 1, x: 0, rotateY: 0 }}
           transition={{ delay: 0.4, duration: 1, type: "spring" }}
         >
+          <div className="relative w-full h-[400px] sm:h-[500px] lg:h-[600px] flex items-center justify-center">
+            {/* Book Cover Image */}
+            <motion.div
+              className="relative max-w-[280px] sm:max-w-[320px] lg:max-w-[400px] w-full px-4"
+              initial={{ opacity: 0, scale: 0.8, rotateY: -30 }}
+              animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+              transition={{ delay: 0.6, duration: 0.8, type: "spring" }}
+              whileHover={{ scale: 1.05, rotateY: 5, transition: { duration: 0.3 } }}
+            >
+              <div className="relative rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl border-2 sm:border-4 border-white/20">
+                <img
+                  src="/covers/This is Why I DON'T Read Romance.jpg"
+                  alt="This is Why I Don't Read Romance"
+                  className="w-full h-auto object-cover"
+                  style={{ aspectRatio: '3/4' }}
+                />
+                {/* Glow effect */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none"></div>
+              </div>
+
+              {/* Floating shadow */}
+              <motion.div
+                className="absolute -bottom-2 sm:-bottom-4 left-1/2 -translate-x-1/2 w-3/4 h-6 sm:h-8 bg-black/30 blur-2xl rounded-full"
+                animate={{
+                  scale: [1, 1.1, 1],
+                  opacity: [0.3, 0.5, 0.3]
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              />
+            </motion.div>
+          </div>
+        </motion.div>
+
+        {/* Commented out: Book Stack Illustration */}
+        {/* <motion.div
+          className="relative"
+          initial={{ opacity: 0, x: 50, rotateY: 90 }}
+          animate={{ opacity: 1, x: 0, rotateY: 0 }}
+          transition={{ delay: 0.4, duration: 1, type: "spring" }}
+        >
           <div className="relative w-full h-[600px] flex items-end justify-center">
-            {/* Stacked Books - Vertical Stack like in reference image */}
             <div className="relative flex flex-col-reverse items-center">
               {[
                 { color: 'linear-gradient(135deg, #E57373 0%, #F06292 100%)', width: 180, height: 40, delay: 0 },
@@ -121,22 +164,15 @@ export default function Hero() {
                     transition: { duration: 0.2 }
                   }}
                 >
-                  {/* Book spine details */}
                   <div className="absolute inset-0 flex items-center justify-between px-4">
                     <div className="w-1 h-full bg-white/20 rounded-full"></div>
                     <div className="w-1 h-full bg-white/20 rounded-full"></div>
                   </div>
-
-                  {/* Embossed Effect */}
                   <div className="absolute inset-0 border-2 border-white/10 rounded-lg pointer-events-none"></div>
-
-                  {/* Subtle shadow for depth */}
                   <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-full h-2 bg-black/20 blur-sm rounded-full"></div>
                 </motion.div>
               ))}
             </div>
-
-            {/* Glass surface/shelf under books */}
             <motion.div
               className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[400px] h-3 rounded-full"
               style={{
@@ -147,8 +183,6 @@ export default function Hero() {
               animate={{ scaleX: 1 }}
               transition={{ delay: 1, duration: 0.8 }}
             />
-
-            {/* Floating particles around books */}
             {[...Array(5)].map((_, i) => (
               <motion.div
                 key={i}
@@ -170,7 +204,7 @@ export default function Hero() {
               />
             ))}
           </div>
-        </motion.div>
+        </motion.div> */}
       </div>
 
       {/* Scroll Indicator */}

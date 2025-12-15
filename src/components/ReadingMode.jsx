@@ -16,6 +16,8 @@ import {
   BookmarkCheck,
   Maximize,
   Minimize,
+  ChevronDown,
+  ChevronUp,
 } from 'lucide-react';
 
 export default function ReadingMode({ book, isOpen, onClose, pdfUrl }) {
@@ -30,6 +32,7 @@ export default function ReadingMode({ book, isOpen, onClose, pdfUrl }) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [isMusicPlayerVisible, setIsMusicPlayerVisible] = useState(true);
 
   const audioRef = useRef(null);
   const containerRef = useRef(null);
@@ -380,10 +383,16 @@ export default function ReadingMode({ book, isOpen, onClose, pdfUrl }) {
           </AnimatePresence>
 
           {/* PDF Viewer */}
-          <div className="absolute inset-0 pt-16 sm:pt-20 md:pt-24 pb-28 sm:pb-32 md:pb-36">
+          <div
+            className="absolute inset-0 pt-16 sm:pt-20 md:pt-24 bg-[#525659] transition-all duration-300"
+            style={{
+              paddingBottom: isMusicPlayerVisible ? 'clamp(7rem, 20vh, 9rem)' : '3.5rem'
+            }}
+          >
             {pdfUrl ? (
               <iframe
-                src={pdfUrl}
+                src={`${pdfUrl}#toolbar=0&navpanes=0&scrollbar=1&view=FitH&pagemode=none`}
+                type="application/pdf"
                 className="w-full h-full border-0"
                 title={`${book.title} - PDF Reader`}
               />
@@ -397,19 +406,48 @@ export default function ReadingMode({ book, isOpen, onClose, pdfUrl }) {
                     PDF Not Available
                   </h3>
                   <p className="text-sm sm:text-base text-text-dim">
-                    Please configure Firebase to enable PDF viewing
+                    The PDF file could not be loaded
                   </p>
                 </div>
               </div>
             )}
           </div>
 
+          {/* Music Player Toggle Button */}
+          <motion.button
+            onClick={() => setIsMusicPlayerVisible(!isMusicPlayerVisible)}
+            className="absolute left-1/2 -translate-x-1/2 z-20 glass-strong border-2 border-primary/30 rounded-t-xl px-4 py-1.5 sm:px-6 sm:py-2 hover:bg-primary/10 transition-all shadow-lg backdrop-blur-md"
+            initial={{ y: 100 }}
+            animate={{
+              y: isMusicPlayerVisible ? 'calc(-100% - 8.5rem)' : 0,
+              bottom: 0
+            }}
+            transition={{ type: 'spring', damping: 20, stiffness: 200 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            style={{ bottom: 0 }}
+          >
+            <div className="flex items-center gap-2">
+              {isMusicPlayerVisible ? (
+                <>
+                  <ChevronDown className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+                  <span className="hidden sm:inline text-xs text-text-light font-medium">Hide Player</span>
+                </>
+              ) : (
+                <>
+                  <ChevronUp className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
+                  <span className="hidden sm:inline text-xs text-text-light font-medium">Show Player</span>
+                </>
+              )}
+            </div>
+          </motion.button>
+
           {/* Bottom Music Player */}
           <motion.div
-            className="absolute bottom-0 left-0 right-0 z-10 glass-dark border-t border-primary/20 py-3 sm:py-4 px-3 sm:px-4 md:px-6"
+            className="absolute bottom-0 left-0 right-0 z-10 glass-dark border-t border-primary/20 py-3 sm:py-4 px-3 sm:px-4 md:px-6 overflow-hidden"
             initial={{ y: 100 }}
-            animate={{ y: 0 }}
-            transition={{ delay: 0.3 }}
+            animate={{ y: isMusicPlayerVisible ? 0 : '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
           >
             <div className="max-w-7xl mx-auto">
               <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 md:gap-6">
@@ -558,10 +596,13 @@ export default function ReadingMode({ book, isOpen, onClose, pdfUrl }) {
 
           {/* Keyboard Shortcuts Hint - Hidden on mobile */}
           <motion.div
-            className="hidden sm:block absolute bottom-32 md:bottom-36 right-3 sm:right-4 md:right-6 glass border border-primary/20 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-[10px] sm:text-xs text-text-dim"
+            className="hidden sm:block absolute right-3 sm:right-4 md:right-6 glass border border-primary/20 rounded-lg px-2 sm:px-3 py-1.5 sm:py-2 text-[10px] sm:text-xs text-text-dim z-30"
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
+            animate={{
+              opacity: 1,
+              bottom: isMusicPlayerVisible ? 'clamp(9rem, 22vh, 11rem)' : '4rem'
+            }}
+            transition={{ delay: 1, duration: 0.3 }}
           >
             Press <span className="text-primary font-bold">ESC</span> to exit reading mode
           </motion.div>
