@@ -5,7 +5,7 @@ import * as THREE from 'three';
 
 function SageStarField() {
   const ref = useRef();
-  const count = 800; // Reduced for subtle sage green theme effect
+  const count = 1200; // Increased for better visibility
 
   const positions = useMemo(() => {
     const positions = new Float32Array(count * 3);
@@ -19,12 +19,12 @@ function SageStarField() {
 
   const colors = useMemo(() => {
     const colors = new Float32Array(count * 3);
-    // Sage green themed color palette
+    // Purple/Mauve themed color palette
     const colorPalette = [
       new THREE.Color('#FFFFFF'), // White
-      new THREE.Color('#E8F0ED'), // Light sage
-      new THREE.Color('#D5E3DC'), // Pale sage
-      new THREE.Color('#C2D6CB'), // Soft sage
+      new THREE.Color('#E8DDE8'), // Light mauve
+      new THREE.Color('#D8C8D8'), // Pale mauve
+      new THREE.Color('#C8B3C8'), // Soft mauve
     ];
 
     for (let i = 0; i < count * 3; i += 3) {
@@ -53,10 +53,10 @@ function SageStarField() {
       <PointMaterial
         transparent
         vertexColors
-        size={0.08}
+        size={0.12}
         sizeAttenuation={true}
         depthWrite={false}
-        opacity={0.4}
+        opacity={0.6}
         blending={THREE.AdditiveBlending}
       />
     </Points>
@@ -73,13 +73,13 @@ export default function Starfield() {
       >
         <ambientLight intensity={0.3} />
         <pointLight position={[10, 10, 10]} intensity={0.2} color="#FFFFFF" />
-        <pointLight position={[-10, -10, -10]} intensity={0.15} color="#E8F0ED" />
+        <pointLight position={[-10, -10, -10]} intensity={0.15} color="#E8DDE8" />
         <SageStarField />
-        <fog attach="fog" args={['#8E9E93', 30, 100]} />
+        <fog attach="fog" args={['#5D3C64', 30, 100]} />
       </Canvas>
 
-      {/* Sage green gradient overlay for depth */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#8E9E93]/30 to-[#8E9E93]"></div>
+      {/* Purple/Mauve gradient overlay for depth */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#5D3C64]/30 to-[#5D3C64]"></div>
     </div>
   );
 }

@@ -493,8 +493,7 @@ export default function Home({ onModalChange }) {
                 </motion.div>
                 */}
 
-                {/* Comics & Manga - Coming Soon Section - Commented out */}
-                {/*
+                {/* Manga's Coming Soon Section */}
                 <motion.div
                   className="mt-32 mb-20"
                   initial={{ opacity: 0, scale: 0.95 }}
@@ -503,7 +502,7 @@ export default function Home({ onModalChange }) {
                   transition={{ duration: 0.6 }}
                 >
                   <div className="relative overflow-hidden rounded-3xl border border-white/30 shadow-2xl min-h-[500px]">
-                    // Blurred Anime/Manga Background Image
+                    {/* Blurred Anime/Manga Background Image */}
                     <div className="absolute inset-0">
                       <img
                         src="https://images.unsplash.com/photo-1612036782180-6f0b6cd846fe?w=1600&q=80"
@@ -514,10 +513,10 @@ export default function Home({ onModalChange }) {
                           e.target.src = 'https://images.unsplash.com/photo-1618519764620-7403abdbdfe9?w=1600&q=80';
                         }}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#8E9E93]/95 via-[#8E9E93]/80 to-[#8E9E93]/60"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#4D2C54]/95 via-[#4D2C54]/80 to-[#4D2C54]/60"></div>
                     </div>
 
-                    // Glass Card Overlay
+                    {/* Glass Card Overlay */}
                     <div className="relative glass-strong p-16 text-center min-h-[500px] flex flex-col items-center justify-center">
                       <motion.div
                         animate={{
@@ -539,7 +538,7 @@ export default function Home({ onModalChange }) {
                         viewport={{ once: true }}
                         transition={{ delay: 0.2 }}
                       >
-                        Comics & Manga
+                        Manga's Coming Soon
                       </motion.h2>
 
                       <motion.div
@@ -551,27 +550,17 @@ export default function Home({ onModalChange }) {
                       />
 
                       <motion.p
-                        className="text-3xl text-white mb-6 font-semibold"
+                        className="text-white/90 text-xl mb-10 max-w-2xl mx-auto leading-relaxed"
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.4 }}
                       >
-                        Coming Soon
+                        We're working on bringing you an amazing collection of manga.
+                        Get ready to dive into exciting new worlds of Japanese storytelling, from action-packed adventures to heartwarming slice-of-life tales!
                       </motion.p>
 
-                      <motion.p
-                        className="text-white/90 text-xl mb-10 max-w-2xl mx-auto leading-relaxed"
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.5 }}
-                      >
-                        We're working on bringing you an amazing collection of comics and manga.
-                        Get ready to dive into exciting new worlds!
-                      </motion.p>
-
-                      // Animated circles
+                      {/* Animated circles */}
                       <div className="flex gap-3 justify-center">
                         {[0, 1, 2].map((i) => (
                           <motion.div
@@ -592,7 +581,6 @@ export default function Home({ onModalChange }) {
                     </div>
                   </div>
                 </motion.div>
-                */}
 
                 {/* Call to Action */}
                 <motion.div
@@ -611,7 +599,7 @@ export default function Home({ onModalChange }) {
                         className="w-full h-full object-cover"
                         loading="lazy"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#8E9E93]/95 via-[#8E9E93]/80 to-[#8E9E93]/70"></div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#4D2C54]/95 via-[#4D2C54]/80 to-[#4D2C54]/70"></div>
                     </div>
 
                     <div className="relative glass-strong p-12 text-center">

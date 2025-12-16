@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BookOpen, Menu, X, Moon, Sun, Search, MessageCircle, Mail } from 'lucide-react';
+import { BookOpen, Menu, X, Moon, Sun, MessageCircle, Mail } from 'lucide-react';
 
 export default function Header({ currentPage, onNavigate, isHidden = false }) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -37,14 +37,14 @@ export default function Header({ currentPage, onNavigate, isHidden = false }) {
   return (
     <>
       <motion.header
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
+        className={`relative z-40 transition-all duration-500 ${
           isScrolled
             ? 'glass-strong shadow-strong border-b border-primary/30 py-3'
             : 'bg-transparent py-5'
         }`}
-        initial={{ y: -100 }}
-        animate={{ y: isHidden ? -100 : 0 }}
-        transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: isHidden ? 0 : 1 }}
+        transition={{ duration: 0.6 }}
       >
         {/* Animated top border */}
         <motion.div
@@ -137,25 +137,6 @@ export default function Header({ currentPage, onNavigate, isHidden = false }) {
               ))}
             </nav>
 
-            {/* Right side - Search Button */}
-            <div className="hidden md:flex items-center gap-2">
-              <motion.button
-                onClick={() => {
-                  const searchInput = document.getElementById('search-input');
-                  if (searchInput) {
-                    searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    setTimeout(() => searchInput.focus(), 500);
-                  }
-                }}
-                className="p-3 rounded-xl glass border border-white/30 hover:border-white/50 transition-all"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Search className="w-5 h-5 text-white" />
-              </motion.button>
-              
-            </div>
-
             {/* Mobile Menu Button */}
             <motion.button
               className="md:hidden p-3 rounded-xl glass border border-primary/20 shadow-soft"
@@ -215,7 +196,7 @@ export default function Header({ currentPage, onNavigate, isHidden = false }) {
                   key={i}
                   className="absolute w-1 h-1 rounded-full"
                   style={{
-                    backgroundColor: ['#8B5CF6', '#10B981', '#F59E0B'][i % 3],
+                    backgroundColor: ['#9F6496', '#BA6E8F', '#D88EA3'][i % 3],
                     left: `${(i * 10) % 100}%`,
                     top: `${(i * 8) % 100}%`,
                   }}

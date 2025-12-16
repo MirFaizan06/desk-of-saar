@@ -88,7 +88,6 @@ export default function BookCard({ book, onClick }) {
                 </div>
               )}
             </div>
-            <span className="bg-primary text-white font-semibold text-xs py-1 px-2.5 rounded-md">eBook</span>
           </div>
         </div>
       </motion.div>

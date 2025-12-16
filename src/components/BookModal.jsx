@@ -1,33 +1,18 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Download, Eye, Loader2, BookOpen, User, Calendar, FileText, BookOpenCheck } from 'lucide-react';
+import { X, Download, Eye, Loader2, BookOpen, User, Calendar, FileText } from 'lucide-react';
 import { tagAtlas } from '../data/tags';
 import { incrementViewCount } from '../lib/bookUtils';
 import { getBookDownloadURL } from '../lib/firebase';
-import ReadingMode from './ReadingMode';
 
 export default function BookModal({ book, isOpen, onClose }) {
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadProgress, setDownloadProgress] = useState(0);
-  const [isReadingMode, setIsReadingMode] = useState(false);
-  const [pdfUrl, setPdfUrl] = useState(null);
 
   useEffect(() => {
     if (isOpen && book) {
       incrementViewCount(book.id);
       document.body.style.overflow = 'hidden';
-
-      // Fetch PDF URL for reading mode
-      const fetchPdfUrl = async () => {
-        try {
-          const url = await getBookDownloadURL(book.file);
-          setPdfUrl(url);
-        } catch (error) {
-          console.error('Error fetching PDF URL:', error);
-          setPdfUrl(null);
-        }
-      };
-      fetchPdfUrl();
 
       // Simulate download progress animation
       if (isDownloading) {
@@ -164,13 +149,6 @@ export default function BookModal({ book, isOpen, onClose }) {
                           e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="600"%3E%3Crect width="400" height="600" fill="%231E293B"/%3E%3Ctext x="50%" y="50%" text-anchor="middle" fill="%238B5CF6" font-size="24" font-family="Arial"%3EBook Cover%3C/text%3E%3C/svg%3E';
                         }}
                       />
-
-                      {/* eBook Badge */}
-                      <div className="absolute bottom-4 right-4">
-                        <div className="bg-primary text-white font-semibold text-sm py-1.5 px-3 rounded-lg shadow-medium">
-                          eBook
-                        </div>
-                      </div>
                     </motion.div>
 
                     {/* Book Stats */}
@@ -271,31 +249,12 @@ export default function BookModal({ book, isOpen, onClose }) {
                       )}
 
                       {/* Action Buttons */}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                        {/* Read Now Button */}
-                        <motion.button
-                          onClick={() => setIsReadingMode(true)}
-                          className="group relative overflow-hidden bg-gradient-to-r from-secondary to-secondary-light text-white font-bold py-3 sm:py-3.5 md:py-4 px-4 sm:px-5 md:px-6 rounded-xl shadow-xl shadow-secondary/30 hover:shadow-2xl hover:shadow-secondary/50 transition-all flex items-center justify-center gap-2 sm:gap-3"
-                          whileHover={{ scale: 1.02, y: -2 }}
-                          whileTap={{ scale: 0.98 }}
-                        >
-                          <BookOpenCheck className="w-5 h-5 sm:w-6 sm:h-6" />
-                          <span className="text-sm sm:text-base md:text-lg">Read Now</span>
-
-                          {/* Shimmer effect */}
-                          <motion.div
-                            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-                            initial={{ x: '-100%' }}
-                            whileHover={{ x: '100%' }}
-                            transition={{ duration: 0.8 }}
-                          />
-                        </motion.button>
-
-                        {/* Download Button */}
+                      <div className="w-full">
+                        {/* Download Button - Full Width */}
                         <motion.button
                           onClick={handleDownload}
                           disabled={isDownloading}
-                          className="relative overflow-hidden gradient-primary text-white font-bold py-3 sm:py-3.5 md:py-4 px-4 sm:px-5 md:px-6 rounded-xl shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/50 transition-all flex items-center justify-center gap-2 sm:gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="w-full relative overflow-hidden gradient-primary text-white font-bold py-3 sm:py-3.5 md:py-4 px-4 sm:px-5 md:px-6 rounded-xl shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/50 transition-all flex items-center justify-center gap-2 sm:gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
                           whileHover={isDownloading ? {} : { scale: 1.02, y: -2 }}
                           whileTap={isDownloading ? {} : { scale: 0.98 }}
                         >
@@ -353,14 +312,6 @@ export default function BookModal({ book, isOpen, onClose }) {
           </motion.div>
         </>
       )}
-
-      {/* Reading Mode */}
-      <ReadingMode
-        book={book}
-        isOpen={isReadingMode}
-        onClose={() => setIsReadingMode(false)}
-        pdfUrl={pdfUrl}
-      />
     </AnimatePresence>
   );
 }

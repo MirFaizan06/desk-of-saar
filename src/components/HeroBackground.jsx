@@ -19,11 +19,11 @@ function SageParticles() {
 
   const colors = useMemo(() => {
     const colors = new Float32Array(count * 3);
-    // Sage green themed colors
+    // Purple/Mauve themed colors
     const colorPalette = [
       new THREE.Color('#FFFFFF'),
-      new THREE.Color('#E8F0ED'),
-      new THREE.Color('#D5E3DC'),
+      new THREE.Color('#E8DDE8'),
+      new THREE.Color('#D8C8D8'),
     ];
 
     for (let i = 0; i < count * 3; i += 3) {
@@ -81,11 +81,11 @@ export default function HeroBackground() {
         <ambientLight intensity={0.4} />
         <pointLight position={[10, 10, 10]} intensity={0.3} color="#FFFFFF" />
         <SageParticles />
-        <fog attach="fog" args={['#8E9E93', 30, 80]} />
+        <fog attach="fog" args={['#5D3C64', 30, 80]} />
       </Canvas>
 
-      {/* Sage green gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#8E9E93]/30"></div>
+      {/* Purple/Mauve gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#5D3C64]/30"></div>
     </div>
   );
 }

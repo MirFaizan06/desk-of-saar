@@ -1,7 +1,37 @@
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, ArrowRight } from 'lucide-react';
 
 export default function Hero() {
+  const bookCovers = [
+    {
+      image: "/covers/This is Why I DON'T Read Romance.jpg",
+      title: "This is Why I Don't Read Romance"
+    },
+    {
+      image: "/covers/Exiled-I-Belong-To-Her.jpeg",
+      title: "Exiled I Belong To Her"
+    },
+    {
+      image: "/covers/The Ghost's Love Story.jpeg",
+      title: "The Ghost's Love Story"
+    },
+    {
+      image: "/covers/The-Art-of-Not-Erasing.jpeg",
+      title: "The Art of Not Erasing"
+    }
+  ];
+
+  const [currentCoverIndex, setCurrentCoverIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentCoverIndex((prevIndex) => (prevIndex + 1) % bookCovers.length);
+    }, 6000); // Change every 6 seconds
+
+    return () => clearInterval(interval);
+  }, [bookCovers.length]);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center px-4 py-20 overflow-hidden">
       <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-16 items-center z-10">
@@ -36,15 +66,6 @@ export default function Hero() {
             transition={{ delay: 0.7, duration: 0.8 }}
           >
             "A room without books is like a body without a soul."
-          </motion.p>
-
-          <motion.p
-            className="text-lg lg:text-xl text-white/90 leading-relaxed max-w-xl font-medium drop-shadow-sm"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9, duration: 0.8 }}
-          >
-            Explore our curated collection of timeless books. Download instantly, no sign-up required.
           </motion.p>
 
           {/* Start Reading Button with Glassmorphism */}
@@ -86,39 +107,62 @@ export default function Hero() {
           transition={{ delay: 0.4, duration: 1, type: "spring" }}
         >
           <div className="relative w-full h-[400px] sm:h-[500px] lg:h-[600px] flex items-center justify-center">
-            {/* Book Cover Image */}
-            <motion.div
-              className="relative max-w-[280px] sm:max-w-[320px] lg:max-w-[400px] w-full px-4"
-              initial={{ opacity: 0, scale: 0.8, rotateY: -30 }}
-              animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-              transition={{ delay: 0.6, duration: 0.8, type: "spring" }}
-              whileHover={{ scale: 1.05, rotateY: 5, transition: { duration: 0.3 } }}
-            >
-              <div className="relative rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl border-2 sm:border-4 border-white/20">
-                <img
-                  src="/covers/This is Why I DON'T Read Romance.jpg"
-                  alt="This is Why I Don't Read Romance"
-                  className="w-full h-auto object-cover"
-                  style={{ aspectRatio: '3/4' }}
-                />
-                {/* Glow effect */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none"></div>
-              </div>
+            {/* Book Cover Carousel */}
+            <div className="relative max-w-[280px] sm:max-w-[320px] lg:max-w-[400px] w-full px-4">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentCoverIndex}
+                  initial={{ opacity: 0, scale: 0.8, rotateY: -30 }}
+                  animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+                  exit={{ opacity: 0, scale: 0.8, rotateY: 30 }}
+                  transition={{ duration: 1.2, type: "spring", damping: 20 }}
+                  whileHover={{ scale: 1.05, rotateY: 5, transition: { duration: 0.3 } }}
+                  className="relative"
+                >
+                  <div className="relative rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl border-2 sm:border-4 border-white/20">
+                    <img
+                      src={bookCovers[currentCoverIndex].image}
+                      alt={bookCovers[currentCoverIndex].title}
+                      className="w-full h-auto object-cover"
+                      style={{ aspectRatio: '3/4' }}
+                    />
+                    {/* Glow effect */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none"></div>
+                  </div>
 
-              {/* Floating shadow */}
-              <motion.div
-                className="absolute -bottom-2 sm:-bottom-4 left-1/2 -translate-x-1/2 w-3/4 h-6 sm:h-8 bg-black/30 blur-2xl rounded-full"
-                animate={{
-                  scale: [1, 1.1, 1],
-                  opacity: [0.3, 0.5, 0.3]
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              />
-            </motion.div>
+                  {/* Floating shadow */}
+                  <motion.div
+                    className="absolute -bottom-2 sm:-bottom-4 left-1/2 -translate-x-1/2 w-3/4 h-6 sm:h-8 bg-black/30 blur-2xl rounded-full"
+                    animate={{
+                      scale: [1, 1.1, 1],
+                      opacity: [0.3, 0.5, 0.3]
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                  />
+                </motion.div>
+              </AnimatePresence>
+
+              {/* Carousel Indicators */}
+              <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
+                {bookCovers.map((_, index) => (
+                  <motion.button
+                    key={index}
+                    onClick={() => setCurrentCoverIndex(index)}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      index === currentCoverIndex
+                        ? 'bg-white w-8'
+                        : 'bg-white/40 hover:bg-white/60'
+                    }`}
+                    whileHover={{ scale: 1.2 }}
+                    whileTap={{ scale: 0.9 }}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </motion.div>
 
@@ -132,14 +176,14 @@ export default function Hero() {
           <div className="relative w-full h-[600px] flex items-end justify-center">
             <div className="relative flex flex-col-reverse items-center">
               {[
-                { color: 'linear-gradient(135deg, #E57373 0%, #F06292 100%)', width: 180, height: 40, delay: 0 },
-                { color: 'linear-gradient(135deg, #BA68C8 0%, #9575CD 100%)', width: 200, height: 45, delay: 0.1 },
-                { color: 'linear-gradient(135deg, #4FC3F7 0%, #4DD0E1 100%)', width: 170, height: 42, delay: 0.2 },
-                { color: 'linear-gradient(135deg, #81C784 0%, #66BB6A 100%)', width: 190, height: 38, delay: 0.3 },
-                { color: 'linear-gradient(135deg, #FFD54F 0%, #FFCA28 100%)', width: 175, height: 44, delay: 0.4 },
-                { color: 'linear-gradient(135deg, #FF8A65 0%, #FF7043 100%)', width: 185, height: 41, delay: 0.5 },
-                { color: 'linear-gradient(135deg, #A1887F 0%, #8D6E63 100%)', width: 195, height: 39, delay: 0.6 },
-                { color: 'linear-gradient(135deg, #90A4AE 0%, #78909C 100%)', width: 165, height: 43, delay: 0.7 },
+                { color: 'linear-gradient(135deg, #D88EA3 0%, #C97E9F 100%)', width: 180, height: 40, delay: 0 },
+                { color: 'linear-gradient(135deg, #BA6E8F 0%, #9F6496 100%)', width: 200, height: 45, delay: 0.1 },
+                { color: 'linear-gradient(135deg, #9F6496 0%, #8F5486 100%)', width: 170, height: 42, delay: 0.2 },
+                { color: 'linear-gradient(135deg, #8F5486 0%, #7B466A 100%)', width: 190, height: 38, delay: 0.3 },
+                { color: 'linear-gradient(135deg, #7B466A 0%, #6B3C5A 100%)', width: 175, height: 44, delay: 0.4 },
+                { color: 'linear-gradient(135deg, #6B3C5A 0%, #5D3C64 100%)', width: 185, height: 41, delay: 0.5 },
+                { color: 'linear-gradient(135deg, #5D3C64 0%, #4D2C54 100%)', width: 195, height: 39, delay: 0.6 },
+                { color: 'linear-gradient(135deg, #C97E9F 0%, #BA6E8F 100%)', width: 165, height: 43, delay: 0.7 },
               ].map((book, i) => (
                 <motion.div
                   key={i}

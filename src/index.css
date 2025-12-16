@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600;700&family=Pacifico&display=swap');
 @import "tailwindcss";
 
 @theme {
-  /* Sage Green Theme Colors - DARKENED */
-  --color-bg: #6B7C71;  /* Darkened from #8E9E93 */
-  --color-bg-soft: #78897E;  /* Darkened from #9BAA9F */
+  /* Purple/Mauve Theme Colors - EXTRA DARKENED */
+  --color-bg: #3A1F40;  /* Deep Purple - extra darkened primary background */
+  --color-bg-soft: #4D2C54;  /* Deep Purple - darkened softer background */
   --color-bg-card: rgba(255, 255, 255, 0.15);
 
   /* Light Mode Colors - Clean White Theme */
@@ -12,38 +12,38 @@
   --color-bg-soft-light: #F9FAFB;
   --color-bg-card-light: #FFFFFF;
 
-  /* Main Colors - Sage Green Theme - DARKENED */
-  --color-blue: #557265;  /* Darkened from #6B8E7F */
-  --color-blue-dark: #446155;  /* Darkened from #5A7D6E */
-  --color-blue-light: #668577;  /* Darkened from #7C9F90 */
-  --color-orange: #A08050;  /* Darkened from #B89968 */
-  --color-orange-light: #B19060;  /* Darkened from #C9AA79 */
-  --color-yellow: #BC964A;  /* Darkened from #D4AF6A */
-  --color-yellow-light: #CDA75B;  /* Darkened from #E0BF7B */
+  /* Main Colors - Purple/Mauve Theme - DARKENED */
+  --color-blue: #6B3C5A;  /* Muted Mauve - darkened */
+  --color-blue-dark: #5D3C64;  /* Deep Purple - darker variant */
+  --color-blue-light: #7B466A;  /* Muted Mauve - original */
+  --color-orange: #8F5486;  /* Dusty Rose - darkened */
+  --color-orange-light: #9F6496;  /* Dusty Rose - original */
+  --color-yellow: #BA6E8F;  /* Pink accent */
+  --color-yellow-light: #C97E9F;  /* Pink - lighter variant */
 
-  /* Primary Colors - Sage Green Theme - DARKENED */
-  --color-primary: #557265;  /* Darkened from #6B8E7F */
-  --color-primary-dark: #446155;  /* Darkened from #5A7D6E */
-  --color-primary-light: #668577;  /* Darkened from #7C9F90 */
-  --color-secondary: #6B7C71;  /* Darkened from #8E9E93 */
-  --color-secondary-light: #78897E;  /* Darkened from #A0AFA5 */
-  --color-accent: #A08050;  /* Darkened from #B89968 */
-  --color-accent-light: #B19060;  /* Darkened from #C9AA79 */
-  --color-mystic: #5D887F;  /* Darkened from #7BA098 */
-  --color-mystic-light: #6E998F;  /* Darkened from #8CB1A9 */
-  --color-arcane: #7B6B5E;  /* Darkened from #9B8B7E */
-  --color-arcane-light: #8C7C6F;  /* Darkened from #AC9C8F */
+  /* Primary Colors - Purple/Mauve Theme - DARKENED */
+  --color-primary: #5D3C64;  /* Deep Purple */
+  --color-primary-dark: #4D2C54;  /* Deep Purple - darkened */
+  --color-primary-light: #6B3C5A;  /* Muted Mauve - darkened */
+  --color-secondary: #7B466A;  /* Muted Mauve */
+  --color-secondary-light: #8F5486;  /* Dusty Rose - darkened */
+  --color-accent: #9F6496;  /* Dusty Rose */
+  --color-accent-light: #BA6E8F;  /* Pink */
+  --color-mystic: #8F5486;  /* Dusty Rose - darkened */
+  --color-mystic-light: #9F6496;  /* Dusty Rose */
+  --color-arcane: #7B466A;  /* Muted Mauve */
+  --color-arcane-light: #8F5486;  /* Dusty Rose - darkened */
 
-  /* Light Mode Primary Colors - New Palette */
-  --color-primary-light-mode: #0D9488;
-  --color-primary-dark-light-mode: #0F766E;
-  --color-secondary-light-mode: #F59E0B;
-  --color-secondary-dark-light-mode: #D97706;
-  --color-accent-light-mode: #8B5CF6;
-  --color-accent-dark-light-mode: #7C3AED;
-  --color-mystic-light-mode: #14B8A6;
-  --color-emerald-light-mode: #10B981;
-  --color-olive-light-mode: #84CC16;
+  /* Light Mode Primary Colors - Purple/Mauve Palette */
+  --color-primary-light-mode: #9F6496;
+  --color-primary-dark-light-mode: #8F5486;
+  --color-secondary-light-mode: #BA6E8F;
+  --color-secondary-dark-light-mode: #AA5E7F;
+  --color-accent-light-mode: #D88EA3;
+  --color-accent-dark-light-mode: #C97E9F;
+  --color-mystic-light-mode: #9F6496;
+  --color-emerald-light-mode: #BA6E8F;
+  --color-olive-light-mode: #D88EA3;
 
   /* Text Colors - Improved contrast for darker background */
   --color-text: #FFFFFF;
@@ -58,9 +58,9 @@
   --font-serif: 'Playfair Display', serif;
 }
 
-/* Sage Green Theme (default) - UPDATED with darker gradient */
+/* Purple/Mauve Theme (default) - EXTRA DARKENED gradient */
 :root, .dark {
-  background: linear-gradient(135deg, #6B7C71 0%, #8B9C91 100%);  /* Darkened gradient */
+  background: linear-gradient(135deg, #2D1833 0%, #4D2C54 100%);  /* Extra Dark Purple gradient */
   background-attachment: fixed;
   color: var(--color-text);
   min-height: 100vh;
@@ -74,25 +74,25 @@
 
 .light .glass {
   background: #FFFFFF;
-  border-color: rgba(13, 148, 136, 0.15);
+  border-color: rgba(159, 100, 150, 0.15);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .light .glass-strong {
   background: #FFFFFF;
-  border-color: rgba(13, 148, 136, 0.2);
+  border-color: rgba(159, 100, 150, 0.2);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .light .glass-soft {
   background: #FFFFFF;
-  border-color: rgba(13, 148, 136, 0.1);
+  border-color: rgba(159, 100, 150, 0.1);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
 .light .glass-dark {
   background: #F9FAFB;
-  border-color: rgba(13, 148, 136, 0.15);
+  border-color: rgba(159, 100, 150, 0.15);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
@@ -113,7 +113,7 @@
 }
 
 .light .gradient-accent {
-  background: linear-gradient(120deg, var(--color-accent-light-mode) 0%, var(--color-arcane) 100%);
+  background: linear-gradient(120deg, var(--color-accent-light-mode) 0%, var(--color-secondary-light-mode) 100%);
 }
 
 .light .gradient-text {
@@ -214,54 +214,54 @@ body {
 }
 
 .light ::-webkit-scrollbar-thumb {
-  background: rgba(13, 148, 136, 0.3);
+  background: rgba(159, 100, 150, 0.3);
   border-radius: 10px;
 }
 
 .light ::-webkit-scrollbar-thumb:hover {
-  background: rgba(13, 148, 136, 0.5);
+  background: rgba(159, 100, 150, 0.5);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #446155;  /* Darkened scrollbar thumb */
+  background: #5D3C64;  /* Deep Purple scrollbar thumb */
   border-radius: 10px;
   border: 2px solid rgba(255, 255, 255, 0.4);  /* Brighter border for contrast */
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #355044;  /* Even darker on hover */
+  background: #4D2C54;  /* Darker purple on hover */
   border: 2px solid rgba(255, 255, 255, 0.6);  /* Brighter border on hover */
 }
 
-/* Glass Effects - Updated for darker background */
+/* Glass Effects - Darkened for darker background */
 .glass {
-  background: rgba(255, 255, 255, 0.25);  /* Increased opacity for better contrast */
+  background: rgba(255, 255, 255, 0.12);  /* More opaque, darker glass */
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.35);  /* Brighter border */
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);  /* Softer border */
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
 }
 
 .glass-strong {
-  background: rgba(255, 255, 255, 0.3);  /* Increased opacity */
+  background: rgba(255, 255, 255, 0.15);  /* Darker, more opaque */
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.45);  /* Brighter border */
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);  /* Darker shadow */
+  border: 1px solid rgba(255, 255, 255, 0.3);  /* Softer border */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);  /* Darker shadow */
 }
 
 .glass-soft {
-  background: rgba(255, 255, 255, 0.2);  /* Increased opacity */
+  background: rgba(255, 255, 255, 0.1);  /* Darker glass */
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.3);  /* Brighter border */
+  border: 1px solid rgba(255, 255, 255, 0.2);  /* Softer border */
 }
 
 .glass-dark {
-  background: rgba(255, 255, 255, 0.22);  /* Increased opacity */
+  background: rgba(255, 255, 255, 0.13);  /* Darker glass */
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.4);  /* Brighter border */
+  border: 1px solid rgba(255, 255, 255, 0.28);  /* Softer border */
 }
 
 .light .glass-dark {
@@ -270,17 +270,17 @@ body {
   box-shadow: 0 8px 32px rgba(74, 144, 226, 0.12);
 }
 
-/* Gradients - Updated with darker colors */
+/* Gradients - Purple/Mauve Theme */
 .gradient-primary {
-  background: linear-gradient(120deg, #557265 0%, #668577 100%);  /* Darkened */
+  background: linear-gradient(120deg, #5D3C64 0%, #7B466A 100%);  /* Deep Purple to Muted Mauve */
 }
 
 .gradient-secondary {
-  background: linear-gradient(120deg, #6B7C71 0%, #78897E 100%);  /* Darkened */
+  background: linear-gradient(120deg, #7B466A 0%, #8F5486 100%);  /* Muted Mauve to Dusty Rose */
 }
 
 .gradient-accent {
-  background: linear-gradient(120deg, #A08050 0%, #B19060 100%);  /* Darkened */
+  background: linear-gradient(120deg, #9F6496 0%, #BA6E8F 100%);  /* Dusty Rose to Pink */
 }
 
 .gradient-text {
@@ -304,7 +304,7 @@ body {
 }
 
 .shadow-glow {
-  box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+  box-shadow: 0 0 20px rgba(159, 100, 150, 0.5);
 }
 
 .light .shadow-soft {
@@ -320,7 +320,7 @@ body {
 }
 
 .light .shadow-glow {
-  box-shadow: 0 0 0 1px rgba(13, 148, 136, 0.1), 0 2px 8px rgba(13, 148, 136, 0.15);
+  box-shadow: 0 0 0 1px rgba(159, 100, 150, 0.1), 0 2px 8px rgba(159, 100, 150, 0.15);
 }
 
 /* Light mode border overrides - Very subtle */
@@ -333,15 +333,15 @@ body {
 }
 
 .light .border-primary\/30 {
-  border-color: rgba(13, 148, 136, 0.2);
+  border-color: rgba(159, 100, 150, 0.2);
 }
 
 .light .border-primary\/40 {
-  border-color: rgba(13, 148, 136, 0.3);
+  border-color: rgba(159, 100, 150, 0.3);
 }
 
 .light .border-primary\/50 {
-  border-color: rgba(13, 148, 136, 0.4);
+  border-color: rgba(159, 100, 150, 0.4);
 }
 
 /* Better text contrast in light mode */
@@ -372,7 +372,7 @@ body {
 }
 
 .light .hover\:border-primary\/40:hover {
-  border-color: rgba(13, 148, 136, 0.45);
+  border-color: rgba(159, 100, 150, 0.45);
 }
 
 .light .group:hover .group-hover\:text-primary {
@@ -385,7 +385,7 @@ body {
 }
 
 .light .group:hover .group-hover\:shadow-glow\/20 {
-  box-shadow: 0 0 0 1px rgba(13, 148, 136, 0.1);
+  box-shadow: 0 0 0 1px rgba(159, 100, 150, 0.1);
 }
 
 /* Hero Title */
@@ -395,47 +395,15 @@ body {
   letter-spacing: -0.02em;
 }
 
+/* Studio Name - Cursive Font */
+.studio-name {
+  font-family: 'Pacifico', cursive;
+  font-weight: 400;
+}
+
 /* Optimized animations - reduced complexity */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
-/* Range Input Styling for Reading Mode */
-input[type="range"] {
-  -webkit-appearance: none;
-  appearance: none;
-}
-
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: #8B5CF6;
-  cursor: pointer;
-  box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
-  transition: all 0.2s ease;
-}
-
-input[type="range"]::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
-  box-shadow: 0 0 12px rgba(139, 92, 246, 0.8);
-}
-
-input[type="range"]::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: #8B5CF6;
-  cursor: pointer;
-  border: none;
-  box-shadow: 0 0 8px rgba(139, 92, 246, 0.5);
-  transition: all 0.2s ease;
-}
-
-input[type="range"]::-moz-range-thumb:hover {
-  transform: scale(1.2);
-  box-shadow: 0 0 12px rgba(139, 92, 246, 0.8);
-}

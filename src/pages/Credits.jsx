@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Image, Music, Type, ExternalLink, Heart, Download } from 'lucide-react';
+import { Image, Type, ExternalLink, Heart, Download } from 'lucide-react';
 
 export default function Credits() {
   const images = [
@@ -41,44 +41,13 @@ export default function Credits() {
       url: 'https://fonts.google.com/specimen/Playfair+Display',
       license: 'SIL Open Font License',
     },
-  ];
-
-  const musicPlaceHolder = [
     {
-      title: "Chopin - Nocturne in E Flat Major (Op. 9 No. 2)",
-      author: "Rousseau",
-      source: "YouTube",
-      url: "https://www.youtube.com/watch?v=p29JUpsOSTE&list=RDp29JUpsOSTE&start_radio=1",
-      license: "Royalty-Free Music"
+      title: 'Pacifico',
+      author: 'Vernon Adams',
+      source: 'Google Fonts',
+      url: 'https://fonts.google.com/specimen/Pacifico',
+      license: 'SIL Open Font License',
     },
-    {
-      title: "Liszt - Liebestraum No. 3 (Love Dream)",
-      author: "Rousseau",
-      source: "YouTube",
-      url: "https://www.youtube.com/watch?v=MBOa-2b4uQQ&list=RDMBOa-2b4uQQ&start_radio=1",
-      license: "Royalty-Free Music"
-    },
-    {
-      title: "Chopin – Waltz in A minor, B. 150, Op. Posth.",
-      author: "Kassia",
-      source: "YouTube",
-      url: "https://www.youtube.com/watch?v=eN5z1mu6j4M&list=RDeN5z1mu6j4M&start_radio=1",
-      license: "Royalty-Free Music"
-    },
-    {
-      title: "Chopin - Nocturne Op. 55 No. 1",
-      author: "Kassia",
-      source: "YouTube",
-      url: "https://www.youtube.com/watch?v=olFHFbijAjM&list=RDolFHFbijAjM&start_radio=1",
-      license: "Royalty-Free Music"
-    },
-    {
-      title: "Chopin - Nocturne in C Sharp Minor (No. 20)",
-      author: "Rousseau",
-      source: "YouTube",
-      url: "https://www.youtube.com/watch?v=DqpPRj6UZqc&list=RDDqpPRj6UZqc&start_radio=1",
-      license: "Royalty-Free Music"
-    }
   ];
 
   return (
@@ -158,67 +127,6 @@ export default function Credits() {
                 </div>
               </motion.div>
             ))}
-          </div>
-        </motion.section>
-
-        {/* Music Section */}
-        <motion.section
-          className="mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-3 rounded-xl glass border border-primary/20">
-              <Music className="w-6 h-6 text-secondary" />
-            </div>
-            <h2 className="text-3xl font-bold text-text">Music</h2>
-          </div>
-
-          <div className="glass border border-primary/20 rounded-2xl p-6">
-            <p className="text-text-light mb-4">
-              Background music tracks for Reading Mode:
-            </p>
-            <div className="space-y-3">
-              {musicPlaceHolder.map((item, index) => (
-                <motion.div
-                  key={index}
-                  className="glass border border-primary/20 rounded-2xl p-4 hover:shadow-glow transition-all flex items-center justify-between"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.2 + index * 0.08 }}
-                  whileHover={{ scale: 1.01 }}
-                >
-                  <div className="flex-1 pr-4">
-                    <p className="font-medium text-text-light">{item.title}</p>
-                    <div className="text-sm text-text-dim mt-1">
-                      <p className="italic">{item.author} · {item.source}</p>
-                      <p className="mt-1"><span className="text-text-light">License:</span> {item.license}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <motion.a
-                      href={item.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-2 rounded-lg glass border border-primary/20 hover:border-primary/40 transition-colors text-primary font-medium"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <span>View</span>
-                      <ExternalLink className="w-4 h-4" />
-                    </motion.a>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-            <div className="mt-4 p-4 rounded-lg bg-secondary/10 border border-secondary/20">
-              <p className="text-sm text-text-dim">
-                <span className="font-semibold text-secondary">For Site Admin:</span> Music tracks are yet to be configured. Update the credits file once you add your background music.
-              </p>
-            </div>
           </div>
         </motion.section>
 

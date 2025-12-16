@@ -77,7 +77,7 @@ export default function Bookshelf({ title, subtitle, books, onBookClick, icon, c
                             whileHover={{ scale: 1.1, rotate: 360 }}
                             transition={{ duration: 0.5 }}
                           >
-                            <Download className="w-7 h-7 text-[#6B8E7F]" />
+                            <Download className="w-7 h-7 text-[#7B466A]" />
                           </motion.div>
                         </div>
 
@@ -103,7 +103,7 @@ export default function Bookshelf({ title, subtitle, books, onBookClick, icon, c
                   <div className="mt-4 px-1 h-[120px] flex flex-col">
                     {/* Title - Fixed height container */}
                     <div className="h-[48px] mb-3">
-                      <h3 className="text-white font-bold text-base leading-tight line-clamp-2 drop-shadow-md group-hover:text-[#D4AF6A] transition-colors">
+                      <h3 className="text-white font-bold text-base leading-tight line-clamp-2 drop-shadow-md group-hover:text-[#D88EA3] transition-colors">
                         {book.title}
                       </h3>
                     </div>
@@ -126,16 +126,6 @@ export default function Bookshelf({ title, subtitle, books, onBookClick, icon, c
                           </motion.span>
                         );
                       })}
-                    </div>
-
-                    {/* eBook badge - Always aligned at same position */}
-                    <div>
-                      <motion.div
-                        className="inline-block bg-white/25 text-white font-semibold text-[10px] py-1.5 px-3 rounded-md border border-white/35 backdrop-blur-sm shadow-sm"
-                        whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.3)' }}
-                      >
-                        eBook
-                      </motion.div>
                     </div>
                   </div>
                 </motion.div>

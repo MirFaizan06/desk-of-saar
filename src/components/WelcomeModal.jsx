@@ -72,7 +72,7 @@ export default function WelcomeModal({ onClose, onAutoScrollChange, onModalState
                     key={i}
                     className="absolute w-1 h-1 rounded-full"
                     style={{
-                      backgroundColor: ['#8B5CF6', '#10B981', '#F59E0B'][i % 3],
+                      backgroundColor: ['#9F6496', '#BA6E8F', '#D88EA3'][i % 3],
                       left: `${Math.random() * 100}%`,
                       top: `${Math.random() * 100}%`,
                     }}
