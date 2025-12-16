@@ -35,17 +35,10 @@ export default function Credits() {
       license: 'SIL Open Font License',
     },
     {
-      title: 'Playfair Display',
-      author: 'Claus Eggers Sørensen',
+      title: 'Cormorant Garamond',
+      author: 'Christian Thalmann',
       source: 'Google Fonts',
-      url: 'https://fonts.google.com/specimen/Playfair+Display',
-      license: 'SIL Open Font License',
-    },
-    {
-      title: 'Pacifico',
-      author: 'Vernon Adams',
-      source: 'Google Fonts',
-      url: 'https://fonts.google.com/specimen/Pacifico',
+      url: 'https://fonts.google.com/specimen/Cormorant+Garamond',
       license: 'SIL Open Font License',
     },
   ];

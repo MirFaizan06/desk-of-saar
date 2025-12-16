@@ -152,7 +152,7 @@ function App() {
               </p>
               <p className="text-white text-sm text-center mb-3 font-medium drop-shadow-sm">
                 This website is a part of{' '}
-                <span className="studio-name text-white">
+                <span className="font-bold text-white">
                   The NxT LvL Studios
                 </span>
                 {' '}© 2025-2026. All Rights Reserved.
