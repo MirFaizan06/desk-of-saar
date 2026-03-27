@@ -1,10 +1,19 @@
-function Header() {
+function Header({ activeTab, setActiveTab }) {
   const handleScroll = (e, targetId) => {
     e.preventDefault();
     const element = document.getElementById(targetId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+  };
+
+  const handleTabNav = (e, tab) => {
+    e.preventDefault();
+    const element = document.getElementById('works');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+    if (setActiveTab) setActiveTab(tab);
   };
 
   return (
@@ -21,11 +30,22 @@ function Header() {
           About
         </a>
         <a
-          href="#books"
-          onClick={(e) => handleScroll(e, 'books')}
-          className="text-[0.85rem] uppercase tracking-[2px] font-bold text-[#1a1a1a] hover:text-[#d4a84b]"
+          href="#works"
+          onClick={(e) => handleTabNav(e, 'books')}
+          className={`text-[0.85rem] uppercase tracking-[2px] font-bold transition-colors ${
+            activeTab === 'books' ? 'text-[#d4a84b]' : 'text-[#1a1a1a] hover:text-[#d4a84b]'
+          }`}
         >
-          The Drafts
+          Books
+        </a>
+        <a
+          href="#works"
+          onClick={(e) => handleTabNav(e, 'code')}
+          className={`text-[0.85rem] uppercase tracking-[2px] font-bold transition-colors ${
+            activeTab === 'code' ? 'text-[#d4a84b]' : 'text-[#1a1a1a] hover:text-[#d4a84b]'
+          }`}
+        >
+          Code
         </a>
         <a
           href="#contact"

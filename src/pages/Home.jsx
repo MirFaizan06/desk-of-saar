@@ -1,47 +1,38 @@
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, BookOpen, Code2 } from 'lucide-react';
+import { createPortal } from 'react-dom';
 import { books } from '../data/books';
+import { projects } from '../data/projects';
 import { contactInfo } from '../data/contact';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import BookCard from '../components/BookCard';
 import PDFReader from '../components/PDFReader';
+import ProjectCard from '../components/ProjectCard';
+import ProjectDetail from '../components/ProjectDetail';
 
 function Home() {
   const [selectedBook, setSelectedBook] = useState(null);
-  const [carouselIndex, setCarouselIndex] = useState(0);
-  const [mobileVisibleCount, setMobileVisibleCount] = useState(4);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [activeTab, setActiveTab] = useState('books'); // null | 'books' | 'code'
 
-  const visibleBooksDesktop = 3;
-  const maxIndex = Math.max(0, books.length - visibleBooksDesktop);
+  // Books carousel state
+  const [bookCarouselIndex, setBookCarouselIndex] = useState(0);
+  const [mobileBookCount, setMobileBookCount] = useState(4);
 
-  const handleReadClick = (book) => {
-    setSelectedBook(book);
-  };
+  // Projects carousel state
+  const [projCarouselIndex, setProjCarouselIndex] = useState(0);
+  const [mobileProjCount, setMobileProjCount] = useState(4);
 
-  const handleCloseReader = () => {
-    setSelectedBook(null);
-  };
-
-  const handlePrev = () => {
-    setCarouselIndex((prev) => Math.max(0, prev - 1));
-  };
-
-  const handleNext = () => {
-    setCarouselIndex((prev) => Math.min(maxIndex, prev + 1));
-  };
-
-  const handleShowMore = () => {
-    setMobileVisibleCount((prev) => Math.min(prev + 4, books.length));
-  };
-
-  const visibleBooksForMobile = books.slice(0, mobileVisibleCount);
-  const hasMoreBooks = mobileVisibleCount < books.length;
+  const visibleDesktop = 3;
+  const bookMaxIndex = Math.max(0, books.length - visibleDesktop);
+  const projMaxIndex = Math.max(0, projects.length - visibleDesktop);
 
   return (
     <>
-      <Header />
+      <Header activeTab={activeTab} setActiveTab={setActiveTab} />
 
+      {/* Hero */}
       <section className="py-24 md:py-32 text-center max-w-[900px] mx-auto px-5 min-h-[80vh] flex flex-col justify-center">
         <div className="text-[1rem] text-[#d4a84b] uppercase tracking-[3px] font-bold mb-5">
           The Portfolio
@@ -54,6 +45,7 @@ function Home() {
         </p>
       </section>
 
+      {/* About */}
       <section id="about" className="section bg-paper border-t border-b border-[#eee]">
         <div className="container">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
@@ -80,103 +72,227 @@ function Home() {
         </div>
       </section>
 
-      <section id="books" className="section">
+      {/* Works — Books / Code toggle */}
+      <section id="works" className="section">
         <div className="container">
           <h3 className="section-title">The Open Drafts</h3>
 
-          {/* Desktop Carousel - Hidden on mobile */}
-          <div className="hidden md:block relative">
-            <div className="flex items-center gap-4">
-              {/* Previous Button */}
+          {/* Toggle */}
+          <div className="flex justify-center mb-12">
+            <div className="inline-flex border border-[#eee] bg-[#f9f9f9] p-1 gap-1">
               <button
-                onClick={handlePrev}
-                disabled={carouselIndex === 0}
-                className={`flex-shrink-0 w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all ${
-                  carouselIndex === 0
-                    ? 'border-[#ddd] text-[#ddd] cursor-not-allowed'
-                    : 'border-[#1a1a1a] text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white'
+                onClick={() => setActiveTab(activeTab === 'books' ? null : 'books')}
+                className={`flex items-center gap-2 px-7 py-2.5 uppercase text-[0.75rem] tracking-[2px] font-bold transition-all ${
+                  activeTab === 'books'
+                    ? 'bg-[#1a1a1a] text-white'
+                    : 'text-[#888] hover:text-[#1a1a1a]'
                 }`}
               >
-                <ChevronLeft size={24} />
+                <BookOpen size={14} />
+                Books
               </button>
+              <button
+                onClick={() => setActiveTab(activeTab === 'code' ? null : 'code')}
+                className={`flex items-center gap-2 px-7 py-2.5 uppercase text-[0.75rem] tracking-[2px] font-bold transition-all ${
+                  activeTab === 'code'
+                    ? 'bg-[#1a1a1a] text-white'
+                    : 'text-[#888] hover:text-[#1a1a1a]'
+                }`}
+              >
+                <Code2 size={14} />
+                Code
+              </button>
+            </div>
+          </div>
 
-              {/* Books Container */}
-              <div className="flex-1 overflow-hidden">
-                <div
-                  className="flex gap-8 transition-transform duration-500 ease-in-out"
-                  style={{
-                    transform: `translateX(-${carouselIndex * (100 / visibleBooksDesktop + 2.67)}%)`,
-                  }}
-                >
-                  {books.map((book) => (
+          {/* Empty state */}
+          {activeTab === null && (
+            <div className="text-center py-16 text-[#bbb]">
+              <div className="flex justify-center gap-6 mb-6 opacity-40">
+                <BookOpen size={36} />
+                <Code2 size={36} />
+              </div>
+              <p className="uppercase tracking-[3px] text-[0.75rem] font-bold">
+                Select a category above
+              </p>
+            </div>
+          )}
+
+          {/* ── BOOKS ── */}
+          {activeTab === 'books' && (
+            <>
+              {/* Desktop Carousel */}
+              <div className="hidden md:block relative">
+                <div className="flex items-center gap-4">
+                  <button
+                    onClick={() => setBookCarouselIndex((p) => Math.max(0, p - 1))}
+                    disabled={bookCarouselIndex === 0}
+                    className={`flex-shrink-0 w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all ${
+                      bookCarouselIndex === 0
+                        ? 'border-[#ddd] text-[#ddd] cursor-not-allowed'
+                        : 'border-[#1a1a1a] text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white'
+                    }`}
+                  >
+                    <ChevronLeft size={24} />
+                  </button>
+
+                  <div className="flex-1 overflow-hidden">
                     <div
-                      key={book.id}
-                      className="flex-shrink-0"
-                      style={{ width: `calc((100% - 4rem) / 3)` }}
+                      className="flex gap-8 transition-transform duration-500 ease-in-out"
+                      style={{
+                        transform: `translateX(-${bookCarouselIndex * (100 / visibleDesktop + 2.67)}%)`,
+                      }}
                     >
-                      <BookCard book={book} onReadClick={handleReadClick} />
+                      {books.map((book) => (
+                        <div
+                          key={book.id}
+                          className="flex-shrink-0"
+                          style={{ width: `calc((100% - 4rem) / 3)` }}
+                        >
+                          <BookCard book={book} onReadClick={setSelectedBook} />
+                        </div>
+                      ))}
                     </div>
+                  </div>
+
+                  <button
+                    onClick={() => setBookCarouselIndex((p) => Math.min(bookMaxIndex, p + 1))}
+                    disabled={bookCarouselIndex >= bookMaxIndex}
+                    className={`flex-shrink-0 w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all ${
+                      bookCarouselIndex >= bookMaxIndex
+                        ? 'border-[#ddd] text-[#ddd] cursor-not-allowed'
+                        : 'border-[#1a1a1a] text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white'
+                    }`}
+                  >
+                    <ChevronRight size={24} />
+                  </button>
+                </div>
+
+                {books.length > visibleDesktop && (
+                  <div className="flex justify-center gap-2 mt-8">
+                    {Array.from({ length: bookMaxIndex + 1 }).map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setBookCarouselIndex(idx)}
+                        className={`w-2 h-2 rounded-full transition-all ${
+                          idx === bookCarouselIndex ? 'bg-[#d4a84b] w-6' : 'bg-[#ddd] hover:bg-[#bbb]'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Mobile Grid */}
+              <div className="md:hidden">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                  {books.slice(0, mobileBookCount).map((book) => (
+                    <BookCard key={book.id} book={book} onReadClick={setSelectedBook} />
                   ))}
                 </div>
+                {mobileBookCount < books.length && (
+                  <div className="text-center mt-10">
+                    <button
+                      onClick={() => setMobileBookCount((p) => Math.min(p + 4, books.length))}
+                      className="px-8 py-3 border-2 border-[#1a1a1a] text-[#1a1a1a] uppercase text-[0.8rem] tracking-[2px] font-bold hover:bg-[#1a1a1a] hover:text-white transition-colors"
+                    >
+                      Show More
+                    </button>
+                  </div>
+                )}
               </div>
+            </>
+          )}
 
-              {/* Next Button */}
-              <button
-                onClick={handleNext}
-                disabled={carouselIndex >= maxIndex}
-                className={`flex-shrink-0 w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all ${
-                  carouselIndex >= maxIndex
-                    ? 'border-[#ddd] text-[#ddd] cursor-not-allowed'
-                    : 'border-[#1a1a1a] text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white'
-                }`}
-              >
-                <ChevronRight size={24} />
-              </button>
-            </div>
-
-            {/* Carousel Indicators */}
-            {books.length > visibleBooksDesktop && (
-              <div className="flex justify-center gap-2 mt-8">
-                {Array.from({ length: maxIndex + 1 }).map((_, idx) => (
+          {/* ── CODE ── */}
+          {activeTab === 'code' && (
+            <>
+              {/* Desktop Carousel */}
+              <div className="hidden md:block relative">
+                <div className="flex items-center gap-4">
                   <button
-                    key={idx}
-                    onClick={() => setCarouselIndex(idx)}
-                    className={`w-2 h-2 rounded-full transition-all ${
-                      idx === carouselIndex ? 'bg-[#d4a84b] w-6' : 'bg-[#ddd] hover:bg-[#bbb]'
+                    onClick={() => setProjCarouselIndex((p) => Math.max(0, p - 1))}
+                    disabled={projCarouselIndex === 0}
+                    className={`flex-shrink-0 w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all ${
+                      projCarouselIndex === 0
+                        ? 'border-[#ddd] text-[#ddd] cursor-not-allowed'
+                        : 'border-[#1a1a1a] text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white'
                     }`}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
+                  >
+                    <ChevronLeft size={24} />
+                  </button>
 
-          {/* Mobile Grid - Hidden on desktop */}
-          <div className="md:hidden">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-              {visibleBooksForMobile.map((book) => (
-                <BookCard
-                  key={book.id}
-                  book={book}
-                  onReadClick={handleReadClick}
-                />
-              ))}
-            </div>
+                  <div className="flex-1 overflow-hidden">
+                    <div
+                      className="flex gap-8 transition-transform duration-500 ease-in-out"
+                      style={{
+                        transform: `translateX(-${projCarouselIndex * (100 / visibleDesktop + 2.67)}%)`,
+                      }}
+                    >
+                      {projects.map((proj) => (
+                        <div
+                          key={proj.id}
+                          className="flex-shrink-0"
+                          style={{ width: `calc((100% - 4rem) / 3)` }}
+                        >
+                          <ProjectCard project={proj} onViewClick={setSelectedProject} />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
 
-            {/* Show More Button */}
-            {hasMoreBooks && (
-              <div className="text-center mt-10">
-                <button
-                  onClick={handleShowMore}
-                  className="px-8 py-3 border-2 border-[#1a1a1a] text-[#1a1a1a] uppercase text-[0.8rem] tracking-[2px] font-bold hover:bg-[#1a1a1a] hover:text-white transition-colors"
-                >
-                  Show More
-                </button>
+                  <button
+                    onClick={() => setProjCarouselIndex((p) => Math.min(projMaxIndex, p + 1))}
+                    disabled={projCarouselIndex >= projMaxIndex}
+                    className={`flex-shrink-0 w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all ${
+                      projCarouselIndex >= projMaxIndex
+                        ? 'border-[#ddd] text-[#ddd] cursor-not-allowed'
+                        : 'border-[#1a1a1a] text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white'
+                    }`}
+                  >
+                    <ChevronRight size={24} />
+                  </button>
+                </div>
+
+                {projects.length > visibleDesktop && (
+                  <div className="flex justify-center gap-2 mt-8">
+                    {Array.from({ length: projMaxIndex + 1 }).map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setProjCarouselIndex(idx)}
+                        className={`w-2 h-2 rounded-full transition-all ${
+                          idx === projCarouselIndex ? 'bg-[#d4a84b] w-6' : 'bg-[#ddd] hover:bg-[#bbb]'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+
+              {/* Mobile Grid */}
+              <div className="md:hidden">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+                  {projects.slice(0, mobileProjCount).map((proj) => (
+                    <ProjectCard key={proj.id} project={proj} onViewClick={setSelectedProject} />
+                  ))}
+                </div>
+                {mobileProjCount < projects.length && (
+                  <div className="text-center mt-10">
+                    <button
+                      onClick={() => setMobileProjCount((p) => Math.min(p + 4, projects.length))}
+                      className="px-8 py-3 border-2 border-[#1a1a1a] text-[#1a1a1a] uppercase text-[0.8rem] tracking-[2px] font-bold hover:bg-[#1a1a1a] hover:text-white transition-colors"
+                    >
+                      Show More
+                    </button>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
         </div>
       </section>
 
+      {/* Contact */}
       <section id="contact" className="section bg-paper border-t border-[#eee]">
         <div className="container max-w-[600px] text-center">
           <h3 className="section-title">Work With Us</h3>
@@ -212,8 +328,14 @@ function Home() {
 
       <Footer />
 
+      {/* Overlays */}
       {selectedBook && (
-        <PDFReader book={selectedBook} onClose={handleCloseReader} />
+        <PDFReader book={selectedBook} onClose={() => setSelectedBook(null)} />
+      )}
+
+      {selectedProject && createPortal(
+        <ProjectDetail project={selectedProject} onClose={() => setSelectedProject(null)} />,
+        document.body
       )}
     </>
   );
