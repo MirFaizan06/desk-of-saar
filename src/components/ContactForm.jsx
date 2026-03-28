@@ -8,6 +8,7 @@ function ContactForm() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(null); // 'success' | 'error' | 'rate-limited'
+  const [errorMsg, setErrorMsg] = useState('');
 
   const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
 
@@ -32,7 +33,13 @@ function ContactForm() {
       markContactSubmitted();
       setStatus('success');
       setForm({ name: '', email: '', subject: '', message: '' });
-    } catch {
+    } catch (err) {
+      const isOffline = !navigator.onLine || err?.code === 'unavailable';
+      setErrorMsg(
+        isOffline
+          ? "You appear to be offline. Please check your connection and try again."
+          : "Our server couldn't receive your message right now. Please try again in a moment or reach out directly via email."
+      );
       setStatus('error');
     } finally {
       setLoading(false);
@@ -93,7 +100,7 @@ function ContactForm() {
       )}
       {status === 'error' && (
         <div className="py-3 px-4 bg-red-50 border border-red-200 text-red-700 text-sm">
-          Failed to send. Please try again.
+          {errorMsg}
         </div>
       )}
       {status === 'rate-limited' && (
