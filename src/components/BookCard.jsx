@@ -13,8 +13,9 @@ import { getLocation } from '../lib/geo';
 
 // ── Star display ──────────────────────────────────────────────────────────────
 function StarDisplay({ rating, count }) {
-  const full = Math.floor(rating);
-  const half = rating % 1 >= 0.5;
+  const safe = isNaN(rating) || rating < 0 ? 0 : Math.min(5, rating);
+  const full = Math.floor(safe);
+  const half = safe % 1 >= 0.5;
   const empty = 5 - full - (half ? 1 : 0);
   return (
     <div className="flex items-center justify-center gap-1 mb-4">
@@ -35,7 +36,7 @@ function StarDisplay({ rating, count }) {
         ))}
       </div>
       {count > 0 ? (
-        <span className="text-[0.8rem] text-[#888] ml-2">{rating.toFixed(1)} ({count})</span>
+        <span className="text-[0.8rem] text-[#888] ml-2">{safe.toFixed(1)} ({count})</span>
       ) : (
         <span className="text-[0.8rem] text-[#aaa] ml-2">No ratings yet</span>
       )}
