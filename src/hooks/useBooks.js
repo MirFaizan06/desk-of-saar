@@ -6,6 +6,7 @@ import { books as fallbackBooks } from '../data/books';
 export function useBooks() {
   const [books, setBooks] = useState(fallbackBooks);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const q = query(
@@ -21,9 +22,11 @@ export function useBooks() {
           setBooks(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
         }
         setLoading(false);
+        setError(null);
       },
-      () => {
-        // Firestore unavailable — keep fallback data
+      (err) => {
+        console.error('Books fetch error:', err);
+        setError('Could not load books from the server. Showing cached data.');
         setLoading(false);
       }
     );
@@ -31,5 +34,5 @@ export function useBooks() {
     return unsub;
   }, []);
 
-  return { books, loading };
+  return { books, loading, error };
 }

@@ -10,6 +10,7 @@ import {
   getUserRating, setUserRatingLocal,
 } from '../lib/fingerprint';
 import { getLocation } from '../lib/geo';
+import { useToast } from '../context/ToastContext';
 
 // ── Star display ──────────────────────────────────────────────────────────────
 function StarDisplay({ rating, count }) {
@@ -46,6 +47,7 @@ function StarDisplay({ rating, count }) {
 
 // ── Rating Modal ──────────────────────────────────────────────────────────────
 function RatingModal({ book, onClose }) {
+  const { showToast } = useToast();
   const existing = getUserRating(book.id);
   const [hovered, setHovered] = useState(0);
   const [selected, setSelected] = useState(existing);
@@ -66,11 +68,9 @@ function RatingModal({ book, onClose }) {
 
       await runTransaction(db, async (tx) => {
         if (existingSnap.exists()) {
-          // Update existing rating — adjust sum
           tx.update(ratingRef, { rating: selected });
           tx.update(bookRef, { ratingSum: increment(selected - oldRating) });
         } else {
-          // First-time rating
           tx.set(ratingRef, {
             bookId: book.id,
             uid,
@@ -88,6 +88,8 @@ function RatingModal({ book, onClose }) {
       setSubmitted(true);
     } catch (err) {
       console.error('Rating error:', err);
+      showToast('Could not save your rating. Please check your connection and try again.', 'error');
+      onClose();
     } finally {
       setLoading(false);
     }

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight, BookOpen, Code2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, BookOpen, Code2, WifiOff } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { contactInfo } from '../data/contact';
 import { useBooks } from '../hooks/useBooks';
@@ -14,8 +14,8 @@ import ContactForm from '../components/ContactForm';
 import SEOInjector from '../components/SEOInjector';
 
 function Home() {
-  const { books } = useBooks();
-  const { projects } = useProjects();
+  const { books, error: booksError } = useBooks();
+  const { projects, error: projectsError } = useProjects();
 
   const [selectedBook, setSelectedBook] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
@@ -34,6 +34,14 @@ function Home() {
     <>
       <SEOInjector books={books} projects={projects} />
       <Header activeTab={activeTab} setActiveTab={setActiveTab} />
+
+      {/* Backend error banner */}
+      {(booksError || projectsError) && (
+        <div className="bg-amber-50 border-b border-amber-200 px-5 py-3 flex items-center justify-center gap-3 text-sm text-amber-800">
+          <WifiOff size={15} className="flex-shrink-0" />
+          <span>{booksError || projectsError}</span>
+        </div>
+      )}
 
       {/* Hero */}
       <section className="py-24 md:py-32 text-center max-w-[900px] mx-auto px-5 min-h-[80vh] flex flex-col justify-center">

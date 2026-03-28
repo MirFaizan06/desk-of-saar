@@ -7,6 +7,7 @@ import {
   getUserLike, setUserLikeLocal,
 } from '../lib/fingerprint';
 import { getLocation } from '../lib/geo';
+import { useToast } from '../context/ToastContext';
 
 async function recordProjectView(projectId) {
   if (!canRecordView(projectId)) return;
@@ -59,6 +60,7 @@ async function toggleLike(projectId, currentlyLiked, setLiked, setCount) {
 }
 
 function ProjectCard({ project, onViewClick }) {
+  const { showToast } = useToast();
   const [liked, setLiked] = useState(getUserLike(project.id));
   const [likeCount, setLikeCount] = useState(project.likeCount || 0);
   const [liking, setLiking] = useState(false);
@@ -72,7 +74,11 @@ function ProjectCard({ project, onViewClick }) {
     e.stopPropagation();
     if (liking || !project.id) return;
     setLiking(true);
-    await toggleLike(project.id, liked, setLiked, setLikeCount);
+    try {
+      await toggleLike(project.id, liked, setLiked, setLikeCount);
+    } catch {
+      showToast('Could not save your like. Please check your connection.', 'error');
+    }
     setLiking(false);
   };
 

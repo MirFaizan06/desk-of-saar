@@ -6,6 +6,7 @@ import { projects as fallbackProjects } from '../data/projects';
 export function useProjects() {
   const [projects, setProjects] = useState(fallbackProjects);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const q = query(
@@ -21,8 +22,11 @@ export function useProjects() {
           setProjects(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
         }
         setLoading(false);
+        setError(null);
       },
-      () => {
+      (err) => {
+        console.error('Projects fetch error:', err);
+        setError('Could not load projects from the server. Showing cached data.');
         setLoading(false);
       }
     );
@@ -30,5 +34,5 @@ export function useProjects() {
     return unsub;
   }, []);
 
-  return { projects, loading };
+  return { projects, loading, error };
 }

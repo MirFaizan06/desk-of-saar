@@ -7,8 +7,6 @@ export const books = [
     cover: "/covers/This is Why I DON'T Read Romance.jpg",
     file: "This-Is-Why-I-Dont-Read-Romance.pdf",
     genre: "Romance",
-    rating: 4.5,
-    ratingCount: 24
   },
   {
     id: "book-002",
@@ -18,8 +16,6 @@ export const books = [
     cover: "/covers/Exiled-I-Belong-To-Her.jpeg",
     file: "Exiled-I-Belong-To-Her.pdf",
     genre: "Poetry",
-    rating: 4.8,
-    ratingCount: 31
   },
   {
     id: "book-003",
@@ -29,8 +25,6 @@ export const books = [
     cover: "/covers/The Ghost's Love Story.jpeg",
     file: "The-Ghost's-Love-Story.pdf",
     genre: "Horror",
-    rating: 4.2,
-    ratingCount: 18
   },
   {
     id: "book-004",
@@ -40,7 +34,5 @@ export const books = [
     cover: "/covers/The-Art-of-Not-Erasing.jpeg",
     file: "The Art of Not Erasing - Full manuscript.pdf",
     genre: "Literary Fiction",
-    rating: 4.7,
-    ratingCount: 42
   }
 ];
