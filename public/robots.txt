@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin/
 Disallow: /admin
 
-Sitemap: https://deskofsaar.com/sitemap.xml
+Sitemap: https://desk-of-saar.netlify.app/sitemap.xml

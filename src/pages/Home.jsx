@@ -11,6 +11,7 @@ import PDFReader from '../components/PDFReader';
 import ProjectCard from '../components/ProjectCard';
 import ProjectDetail from '../components/ProjectDetail';
 import ContactForm from '../components/ContactForm';
+import SEOInjector from '../components/SEOInjector';
 
 function Home() {
   const { books } = useBooks();
@@ -31,6 +32,7 @@ function Home() {
 
   return (
     <>
+      <SEOInjector books={books} projects={projects} />
       <Header activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {/* Hero */}
