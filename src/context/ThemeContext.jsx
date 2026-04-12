@@ -7,10 +7,10 @@ export function ThemeProvider({ children }) {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('theme');
       if (saved) return saved === 'dark';
-      // Default to true (dark) if nothing is saved
-      return true;
+      // Default to false (light) if nothing is saved
+      return false;
     }
-    return true;
+    return false;
   });
 
   useEffect(() => {
