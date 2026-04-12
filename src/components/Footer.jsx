@@ -32,13 +32,13 @@ function Footer() {
   const { dark } = useTheme();
 
   return (
-    <footer className={`py-20 transition-colors duration-500 ${dark ? 'bg-[#080706]' : 'bg-[#111]'}`}>
+    <footer className="py-20 transition-colors duration-500 bg-[#fdfcfa]">
       <div className="container text-center">
         {/* Gold line */}
-        <div className="w-10 h-[1px] bg-[#b8964e]/25 mx-auto mb-10" />
+        <div className="w-10 h-[1px] bg-[#b8964e]/30 mx-auto mb-10" />
 
         {/* Brand */}
-        <p className="text-white/80 tracking-[6px] text-[0.85rem] uppercase font-display mb-8"
+        <p className="text-[#111]/80 tracking-[6px] text-[0.85rem] uppercase font-display mb-8"
           style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 400 }}>
           Desk of Saar
         </p>
@@ -49,14 +49,14 @@ function Footer() {
             const Icon = icons[s.icon] || Github;
             return (
               <a key={s.id} href={s.url} target="_blank" rel="noopener noreferrer" title={s.name}
-                className="w-9 h-9 rounded-full flex items-center justify-center text-white/25 transition-all duration-500 hover:text-[#b8964e] hover:bg-[#b8964e]/10 hover:-translate-y-0.5">
+                className="w-9 h-9 rounded-full flex items-center justify-center text-[#111]/50 transition-all duration-500 hover:text-[#b8964e] hover:bg-[#b8964e]/10 hover:-translate-y-0.5">
                 <Icon size={14} />
               </a>
             );
           })}
         </div>
 
-        <p className="text-white/15 text-[0.7rem] tracking-[1px]">
+        <p className="text-[#111]/40 text-[0.7rem] tracking-[1px]">
           &copy; {new Date().getFullYear()} Saar. All Rights Reserved.
         </p>
       </div>
