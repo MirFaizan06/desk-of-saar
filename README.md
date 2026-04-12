@@ -54,4 +54,4 @@ src/
 
 ## License
 
-All rights reserved. Designed and engineered for MirFaizan06.
+All rights reserved. Designed and engineered by MirFaizan06 and Omar Rashid Lone.
