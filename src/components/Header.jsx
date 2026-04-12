@@ -1,16 +1,34 @@
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function Header({ activeTab, setActiveTab }) {
   const { dark, toggle } = useTheme();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const scroll = (id) => (e) => {
     e.preventDefault();
+    if (location.pathname !== '/') {
+      navigate('/#' + id);
+      // Short delay to allow subpages to unmount and DOM to anchor
+      setTimeout(() => {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+      return;
+    }
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const tabNav = (tab) => (e) => {
     e.preventDefault();
+    if (location.pathname !== '/') {
+      navigate('/#' + 'works');
+      setTimeout(() => {
+        document.getElementById('works')?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+      return;
+    }
     document.getElementById('works')?.scrollIntoView({ behavior: 'smooth' });
     setActiveTab?.(tab);
   };
@@ -29,7 +47,12 @@ function Header({ activeTab, setActiveTab }) {
     }`}>
       <div className="container flex items-center justify-between h-16">
         {/* Brand */}
-        <a href="#" className={`font-display text-[1.35rem] tracking-[5px] font-[500] transition-colors duration-500 hover:text-[#b8964e] ${
+        <a href="/" onClick={(e) => {
+          if (location.pathname === '/') {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        }} className={`font-display text-[1.35rem] tracking-[5px] font-[500] transition-colors duration-500 hover:text-[#b8964e] ${
           dark ? 'text-[#e8e3db]' : 'text-[#111]'
         }`} style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
           SAAR
