@@ -1,274 +1,347 @@
-import { useState } from 'react';
-import { ChevronLeft, ChevronRight, BookOpen, Code2, WifiOff } from 'lucide-react';
-import { createPortal } from 'react-dom';
+import { useState, useEffect, useRef } from 'react';
+import { BookOpen, Code2, WifiOff, ArrowRight } from 'lucide-react';
 import { contactInfo } from '../data/contact';
 import { useBooks } from '../hooks/useBooks';
 import { useProjects } from '../hooks/useProjects';
+import { useTheme } from '../context/ThemeContext';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import BookCard from '../components/BookCard';
-import PDFReader from '../components/PDFReader';
 import ProjectCard from '../components/ProjectCard';
-import ProjectDetail from '../components/ProjectDetail';
-import ContactForm from '../components/ContactForm';
 import SEOInjector from '../components/SEOInjector';
 
+/* ── Scroll Reveal ─────────────────────────────────────────────────────────── */
+function useSR() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { el.classList.add('visible'); io.unobserve(el); }
+    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return ref;
+}
+
+/* ── Skeletons ─────────────────────────────────────────────────────────────── */
+function BookSkel() {
+  return (
+    <div className="rounded-2xl overflow-hidden">
+      <div className="w-full aspect-[2/3] skel" />
+      <div className="pt-4 space-y-2">
+        <div className="h-4 skel w-3/4 mx-auto" />
+        <div className="h-3 skel w-1/2 mx-auto" />
+      </div>
+    </div>
+  );
+}
+
+function ProjSkel({ dark }) {
+  return (
+    <div className={`rounded-2xl border p-6 ${dark ? 'border-[#1a1815] bg-[#0f0e0c]' : 'border-[#eee9e0] bg-white'}`}>
+      <div className="flex gap-4">
+        <div className="w-10 h-10 skel rounded-xl flex-shrink-0" />
+        <div className="flex-1 space-y-3">
+          <div className="h-5 skel w-2/3" />
+          <div className="h-3 skel w-1/3" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   HOME
+   ══════════════════════════════════════════════════════════════════════════════ */
 function Home() {
-  const { books, error: booksError } = useBooks();
-  const { projects, error: projectsError } = useProjects();
+  const { books, loading: booksLoading, error: booksError } = useBooks();
+  const { projects, loading: projLoading, error: projError } = useProjects();
+  const { dark } = useTheme();
 
-  const [selectedBook, setSelectedBook] = useState(null);
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [activeTab, setActiveTab] = useState('books');
+  const [tab, setTab] = useState('books');
+  const [vis, setVis] = useState(true);
+  const [content, setContent] = useState('books');
+  const [count, setCount] = useState(10);
+  const [pCount, setPCount] = useState(6);
 
-  const [bookCarouselIndex, setBookCarouselIndex] = useState(0);
-  const [mobileBookCount, setMobileBookCount] = useState(4);
-  const [projCarouselIndex, setProjCarouselIndex] = useState(0);
-  const [mobileProjCount, setMobileProjCount] = useState(4);
+  // Intro
+  const [ready, setReady] = useState(false);
+  useEffect(() => { setTimeout(() => setReady(true), 120); }, []);
 
-  const visibleDesktop = 3;
-  const bookMaxIndex = Math.max(0, books.length - visibleDesktop);
-  const projMaxIndex = Math.max(0, projects.length - visibleDesktop);
+  // Tab switch
+  const switchTab = (t) => {
+    if (t === tab) return;
+    setVis(false);
+    setTimeout(() => { setTab(t); setContent(t); setTimeout(() => setVis(true), 50); }, 300);
+  };
+
+  const aboutRef = useSR();
+  const worksRef = useSR();
+  const contactRef = useSR();
 
   return (
     <>
       <SEOInjector books={books} projects={projects} />
-      <Header activeTab={activeTab} setActiveTab={setActiveTab} />
+      <div className={ready ? 'anim-enter-down' : 'opacity-0'}><Header activeTab={tab} setActiveTab={switchTab} /></div>
 
-      {/* Backend error banner */}
-      {(booksError || projectsError) && (
-        <div className="bg-amber-50 border-b border-amber-200 px-5 py-3 flex items-center justify-center gap-3 text-sm text-amber-800">
-          <WifiOff size={15} className="flex-shrink-0" />
-          <span>{booksError || projectsError}</span>
+      {(booksError || projError) && (
+        <div className={`fixed top-16 left-0 right-0 z-40 px-5 py-2.5 flex items-center justify-center gap-3 text-[0.8rem] ${
+          dark ? 'bg-amber-900/20 text-amber-400' : 'bg-amber-50 text-amber-800'
+        }`}>
+          <WifiOff size={14} /><span>{booksError || projError}</span>
         </div>
       )}
 
-      {/* Hero */}
-      <section className="py-24 md:py-32 text-center max-w-[900px] mx-auto px-5 min-h-[80vh] flex flex-col justify-center">
-        <div className="text-[1rem] text-[#d4a84b] uppercase tracking-[3px] font-bold mb-5">The Portfolio</div>
-        <h1 className="font-serif text-4xl md:text-6xl leading-tight mb-6 italic text-[#1a1a1a]">
-          Code by Day.<br />Stories by Night.
-        </h1>
-        <p className="text-lg text-[#626262] max-w-[600px] mx-auto">
-          Exploring the intersection of systems and human emotion.
-        </p>
-      </section>
+      {/* ═══════════════════ HERO ═══════════════════ */}
+      <section className="relative min-h-screen flex items-center justify-center pt-16">
+        <div className="text-center max-w-[820px] mx-auto px-6">
+          {/* Ornamental line */}
+          <div className={`mx-auto w-px h-16 mb-10 ${ready ? 'anim-enter-up' : 'opacity-0'} ${
+            dark ? 'bg-gradient-to-b from-transparent to-[#b8964e]/30' : 'bg-gradient-to-b from-transparent to-[#b8964e]/20'
+          }`} style={{ animationDelay: '0.1s' }} />
 
-      {/* About */}
-      <section id="about" className="section bg-paper border-t border-b border-[#eee]">
-        <div className="container">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div className="w-full h-[300px] sm:h-[350px] md:h-[400px] flex items-center justify-center overflow-hidden rounded-lg">
-              <img src="/saar_img.jpeg" alt="Saar - Author" className="w-full h-full object-cover object-center" />
-            </div>
-            <div>
-              <h3 className="section-title text-left mb-8 after:mx-0">Who is Saar?</h3>
-              <p className="mb-5 text-[1.1rem]">
-                <strong className="text-[#1a1a1a]">I am a 21-year-old Computer Science student with a desk full of drafts.</strong>
-              </p>
-              <p className="mb-5">
-                For the past 7 years, I have been writing stories while studying systems. I treat every narrative as a code waiting to be compiled, and every line of code as poetry waiting to be read.
-              </p>
-              <p>
-                This website is not a bookstore—it is an open workshop. These books are drafts. I invite you to read them, rate them, and help me debug the stories.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Works — Books / Code toggle */}
-      <section id="works" className="section">
-        <div className="container">
-          <h3 className="section-title">The Open Drafts</h3>
-
-          {/* Toggle */}
-          <div className="flex justify-center mb-12">
-            <div className="inline-flex border border-[#eee] bg-[#f9f9f9] p-1 gap-1">
-              <button
-                onClick={() => setActiveTab(activeTab === 'books' ? null : 'books')}
-                className={`flex items-center gap-2 px-7 py-2.5 uppercase text-[0.75rem] tracking-[2px] font-bold transition-all ${activeTab === 'books' ? 'bg-[#1a1a1a] text-white' : 'text-[#888] hover:text-[#1a1a1a]'}`}
-              >
-                <BookOpen size={14} />Books
-              </button>
-              <button
-                onClick={() => setActiveTab(activeTab === 'code' ? null : 'code')}
-                className={`flex items-center gap-2 px-7 py-2.5 uppercase text-[0.75rem] tracking-[2px] font-bold transition-all ${activeTab === 'code' ? 'bg-[#1a1a1a] text-white' : 'text-[#888] hover:text-[#1a1a1a]'}`}
-              >
-                <Code2 size={14} />Code
-              </button>
-            </div>
-          </div>
-
-          {/* Empty state */}
-          {activeTab === null && (
-            <div className="text-center py-16 text-[#bbb]">
-              <div className="flex justify-center gap-6 mb-6 opacity-40">
-                <BookOpen size={36} /><Code2 size={36} />
-              </div>
-              <p className="uppercase tracking-[3px] text-[0.75rem] font-bold">Select a category above</p>
-            </div>
-          )}
-
-          {/* ── BOOKS ── */}
-          {activeTab === 'books' && (
-            <>
-              {books.length === 0 ? (
-                <p className="text-center text-[#aaa] py-16 font-serif text-lg italic">No books published yet.</p>
-              ) : (
-                <>
-                  <div className="hidden md:block relative">
-                    <div className="flex items-center gap-4">
-                      <button onClick={() => setBookCarouselIndex((p) => Math.max(0, p - 1))} disabled={bookCarouselIndex === 0}
-                        className={`flex-shrink-0 w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all ${bookCarouselIndex === 0 ? 'border-[#ddd] text-[#ddd] cursor-not-allowed' : 'border-[#1a1a1a] text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white'}`}>
-                        <ChevronLeft size={24} />
-                      </button>
-                      <div className="flex-1 overflow-hidden">
-                        <div className="flex gap-8 transition-transform duration-500 ease-in-out"
-                          style={{ transform: `translateX(-${bookCarouselIndex * (100 / visibleDesktop + 2.67)}%)` }}>
-                          {books.map((book) => (
-                            <div key={book.id} className="flex-shrink-0" style={{ width: `calc((100% - 4rem) / 3)` }}>
-                              <BookCard book={book} onReadClick={setSelectedBook} />
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                      <button onClick={() => setBookCarouselIndex((p) => Math.min(bookMaxIndex, p + 1))} disabled={bookCarouselIndex >= bookMaxIndex}
-                        className={`flex-shrink-0 w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all ${bookCarouselIndex >= bookMaxIndex ? 'border-[#ddd] text-[#ddd] cursor-not-allowed' : 'border-[#1a1a1a] text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white'}`}>
-                        <ChevronRight size={24} />
-                      </button>
-                    </div>
-                    {books.length > visibleDesktop && (
-                      <div className="flex justify-center gap-2 mt-8">
-                        {Array.from({ length: bookMaxIndex + 1 }).map((_, idx) => (
-                          <button key={idx} onClick={() => setBookCarouselIndex(idx)}
-                            className={`w-2 h-2 rounded-full transition-all ${idx === bookCarouselIndex ? 'bg-[#d4a84b] w-6' : 'bg-[#ddd] hover:bg-[#bbb]'}`} />
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <div className="md:hidden">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                      {books.slice(0, mobileBookCount).map((book) => (
-                        <BookCard key={book.id} book={book} onReadClick={setSelectedBook} />
-                      ))}
-                    </div>
-                    {mobileBookCount < books.length && (
-                      <div className="text-center mt-10">
-                        <button onClick={() => setMobileBookCount((p) => Math.min(p + 4, books.length))}
-                          className="px-8 py-3 border-2 border-[#1a1a1a] text-[#1a1a1a] uppercase text-[0.8rem] tracking-[2px] font-bold hover:bg-[#1a1a1a] hover:text-white transition-colors">
-                          Show More
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </>
-              )}
-            </>
-          )}
-
-          {/* ── CODE ── */}
-          {activeTab === 'code' && (
-            <>
-              {projects.length === 0 ? (
-                <p className="text-center text-[#aaa] py-16 font-serif text-lg italic">No projects published yet.</p>
-              ) : (
-                <>
-                  <div className="hidden md:block relative">
-                    <div className="flex items-center gap-4">
-                      <button onClick={() => setProjCarouselIndex((p) => Math.max(0, p - 1))} disabled={projCarouselIndex === 0}
-                        className={`flex-shrink-0 w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all ${projCarouselIndex === 0 ? 'border-[#ddd] text-[#ddd] cursor-not-allowed' : 'border-[#1a1a1a] text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white'}`}>
-                        <ChevronLeft size={24} />
-                      </button>
-                      <div className="flex-1 overflow-hidden">
-                        <div className="flex gap-8 transition-transform duration-500 ease-in-out"
-                          style={{ transform: `translateX(-${projCarouselIndex * (100 / visibleDesktop + 2.67)}%)` }}>
-                          {projects.map((proj) => (
-                            <div key={proj.id} className="flex-shrink-0" style={{ width: `calc((100% - 4rem) / 3)` }}>
-                              <ProjectCard project={proj} onViewClick={setSelectedProject} />
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                      <button onClick={() => setProjCarouselIndex((p) => Math.min(projMaxIndex, p + 1))} disabled={projCarouselIndex >= projMaxIndex}
-                        className={`flex-shrink-0 w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all ${projCarouselIndex >= projMaxIndex ? 'border-[#ddd] text-[#ddd] cursor-not-allowed' : 'border-[#1a1a1a] text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white'}`}>
-                        <ChevronRight size={24} />
-                      </button>
-                    </div>
-                    {projects.length > visibleDesktop && (
-                      <div className="flex justify-center gap-2 mt-8">
-                        {Array.from({ length: projMaxIndex + 1 }).map((_, idx) => (
-                          <button key={idx} onClick={() => setProjCarouselIndex(idx)}
-                            className={`w-2 h-2 rounded-full transition-all ${idx === projCarouselIndex ? 'bg-[#d4a84b] w-6' : 'bg-[#ddd] hover:bg-[#bbb]'}`} />
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  <div className="md:hidden">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                      {projects.slice(0, mobileProjCount).map((proj) => (
-                        <ProjectCard key={proj.id} project={proj} onViewClick={setSelectedProject} />
-                      ))}
-                    </div>
-                    {mobileProjCount < projects.length && (
-                      <div className="text-center mt-10">
-                        <button onClick={() => setMobileProjCount((p) => Math.min(p + 4, projects.length))}
-                          className="px-8 py-3 border-2 border-[#1a1a1a] text-[#1a1a1a] uppercase text-[0.8rem] tracking-[2px] font-bold hover:bg-[#1a1a1a] hover:text-white transition-colors">
-                          Show More
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </>
-              )}
-            </>
-          )}
-        </div>
-      </section>
-
-      {/* Contact */}
-      <section id="contact" className="section bg-paper border-t border-[#eee]">
-        <div className="container max-w-[700px]">
-          <h3 className="section-title">Work With Us</h3>
-          <p className="mb-10 text-[1.1rem] text-center">
-            Looking for illustrators, editors, or creative partners? Get in touch.
+          <p className={`text-[0.72rem] uppercase tracking-[6px] font-medium mb-8 ${
+            ready ? 'anim-enter-up' : 'opacity-0'
+          } ${dark ? 'text-[#5a554c]' : 'text-[#b8964e]'}`} style={{ animationDelay: '0.25s' }}>
+            Writer · Poet · Developer
           </p>
 
-          {/* Static links */}
-          <div className="text-center mb-10 space-y-3">
-            <a href={`mailto:${contactInfo.email}`} className="block font-serif text-2xl text-[#1a1a1a] hover:text-[#d4a84b]">
-              {contactInfo.email}
+          <h1 className={`font-display text-[3.2rem] md:text-[5rem] leading-[1.08] mb-8 font-[300] italic ${
+            ready ? 'anim-enter-up' : 'opacity-0'
+          } ${dark ? 'text-[#e8e3db]' : 'text-[#111]'}`} style={{ animationDelay: '0.4s', fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
+            Stories That Stay<br />After the Last Page.
+          </h1>
+
+          <p className={`text-[1rem] max-w-[440px] mx-auto leading-relaxed font-light ${
+            ready ? 'anim-enter-up' : 'opacity-0'
+          } ${dark ? 'text-[#5a554c]' : 'text-[#999]'}`} style={{ animationDelay: '0.55s' }}>
+            Books that feel like conversations you weren't supposed to overhear.
+          </p>
+
+          {/* Scroll arrow */}
+          <div className={`mt-16 ${ready ? 'anim-enter-up' : 'opacity-0'}`} style={{ animationDelay: '0.75s' }}>
+            <a href="#about" onClick={(e) => { e.preventDefault(); document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }); }}
+              className={`inline-flex flex-col items-center gap-2 group transition-colors ${
+                dark ? 'text-[#3a3630] hover:text-[#b8964e]' : 'text-[#ccc] hover:text-[#b8964e]'
+              }`}>
+              <span className="text-[0.6rem] uppercase tracking-[4px]">Scroll</span>
+              <div className={`w-px h-8 transition-all duration-500 group-hover:h-12 ${
+                dark ? 'bg-[#b8964e]/20 group-hover:bg-[#b8964e]/50' : 'bg-[#b8964e]/15 group-hover:bg-[#b8964e]/40'
+              }`} />
             </a>
-            <p className="text-[#888]">
-              or find me on{' '}
-              {contactInfo.socials.map((s, i) => (
-                <span key={s.id}>
-                  <a href={s.url} target="_blank" rel="noopener noreferrer" className="text-[#1a1a1a] hover:text-[#d4a84b] underline">{s.name}</a>
-                  {i < contactInfo.socials.length - 1 && ', '}
-                </span>
-              ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════ ABOUT ═══════════════════ */}
+      <section id="about" ref={aboutRef} className={`sr py-28 md:py-36 ${dark ? 'bg-[#0f0e0c]' : 'bg-[#f6f4f0]'}`}>
+        <div className="container">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-center">
+            {/* Image */}
+            <div className="relative">
+              <div className="aspect-[3/4] max-h-[540px] overflow-hidden rounded-3xl">
+                <img src="/saar_img.jpeg" alt="Omar Rashid Lone" className="w-full h-full object-cover" />
+              </div>
+              {/* Accent frame */}
+              <div className={`absolute -z-10 inset-4 rounded-3xl border ${dark ? 'border-[#b8964e]/10' : 'border-[#b8964e]/15'}`} />
+            </div>
+
+            {/* Text */}
+            <div>
+              <p className={`text-[0.68rem] uppercase tracking-[4px] font-medium mb-6 ${dark ? 'text-[#b8964e]/60' : 'text-[#b8964e]'}`}>
+                About
+              </p>
+              <h2 className={`font-display text-[2.6rem] md:text-[3.2rem] leading-[1.1] mb-3 font-[300] ${
+                dark ? 'text-[#e8e3db]' : 'text-[#111]'
+              }`} style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
+                Omar Rashid Lone
+              </h2>
+              <div className={`w-10 h-[1.5px] mb-8 ${dark ? 'bg-[#b8964e]/40' : 'bg-[#b8964e]'}`} />
+
+              <p className={`text-[1.05rem] leading-relaxed mb-5 ${dark ? 'text-[#a09a90]' : 'text-[#444]'}`}>
+                <strong className={dark ? 'text-[#e8e3db] font-medium' : 'text-[#111] font-medium'}>
+                  A 20-year-old writer and programmer from Kashmir.
+                </strong>
+              </p>
+              <p className={`leading-relaxed mb-5 ${dark ? 'text-[#7a756c]' : ''}`}>
+                I've been writing since I was 13—prose, poetry, stories that didn't always know where they were going but refused to stop. My characters tend to be stubborn, emotionally honest people who love too much and say too little.
+              </p>
+              <p className={`leading-relaxed mb-5 ${dark ? 'text-[#7a756c]' : ''}`}>
+                Most of these books are drafts—unfinished, imperfect, still breathing. I put them here because I believe stories get better when they're read, not when they're hidden in folders.
+              </p>
+              <p className={`leading-relaxed italic ${dark ? 'text-[#5a554c]' : 'text-[#aaa]'}`}>
+                If something I wrote made you feel something, I'd love to hear about it. And if it didn't—tell me that too.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════ WORKS ═══════════════════ */}
+      <section id="works" ref={worksRef} className="sr py-28 md:py-36">
+        <div className="container">
+          <div className="text-center mb-16">
+            <p className={`text-[0.68rem] uppercase tracking-[4px] font-medium mb-5 ${dark ? 'text-[#b8964e]/60' : 'text-[#b8964e]'}`}>
+              Collection
             </p>
+            <h2 className={`font-display text-[2.6rem] md:text-[3.2rem] font-[300] mb-4 ${
+              dark ? 'text-[#e8e3db]' : 'text-[#111]'
+            }`} style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
+              The Open Drafts
+            </h2>
+            <div className={`w-12 h-[1.5px] mx-auto ${dark ? 'bg-[#b8964e]/30' : 'bg-[#b8964e]/50'}`} />
           </div>
 
-          {/* Divider */}
-          <div className="flex items-center gap-4 mb-10">
-            <div className="flex-1 h-px bg-[#eee]" />
-            <span className="text-[0.75rem] uppercase tracking-[2px] text-[#aaa] font-bold">Or send a message</span>
-            <div className="flex-1 h-px bg-[#eee]" />
+          {/* Tab toggle */}
+          <div className="flex justify-center mb-14">
+            <div className={`inline-flex rounded-full p-1 ${dark ? 'bg-[#161412]' : 'bg-[#f0ece5]'}`}>
+              {[
+                { key: 'books', icon: BookOpen, label: 'Books' },
+                { key: 'code', icon: Code2, label: 'Code' },
+              ].map(({ key, icon: Icon, label }) => (
+                <button
+                  key={key}
+                  onClick={() => switchTab(key)}
+                  className={`flex items-center gap-2 px-8 py-2.5 rounded-full text-[0.7rem] uppercase tracking-[2.5px] font-medium transition-all duration-500 ${
+                    tab === key
+                      ? dark
+                        ? 'bg-[#b8964e] text-[#0c0b09] shadow-[0_4px_20px_rgba(184,150,78,0.2)]'
+                        : 'bg-[#111] text-white shadow-[0_4px_20px_rgba(0,0,0,0.1)]'
+                      : dark
+                        ? 'text-[#5a554c] hover:text-[#b8964e]'
+                        : 'text-[#aaa] hover:text-[#111]'
+                  }`}
+                >
+                  <Icon size={13} strokeWidth={1.5} />{label}
+                </button>
+              ))}
+            </div>
           </div>
 
-          <ContactForm />
+          {/* Content */}
+          <div className="transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)]" style={{
+            opacity: vis ? 1 : 0,
+            transform: vis ? 'translateY(0)' : 'translateY(20px)',
+          }}>
+            {content === 'books' && (
+              <>
+                {booksLoading ? (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 stagger">
+                    {[1,2,3,4,5].map(i => <BookSkel key={i} />)}
+                  </div>
+                ) : books.length === 0 ? (
+                  <div className="text-center py-24">
+                    <BookOpen size={36} strokeWidth={1} className={dark ? 'text-[#1a1815] mx-auto mb-4' : 'text-[#e2ddd5] mx-auto mb-4'} />
+                    <p className={`font-display text-xl italic ${dark ? 'text-[#2a2623]' : 'text-[#ccc]'}`} style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
+                      No books published yet.
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 stagger">
+                      {books.slice(0, count).map((book) => (
+                        <div key={book.id} className="sr visible"><BookCard book={book} /></div>
+                      ))}
+                    </div>
+                    {count < books.length && (
+                      <div className="text-center mt-14">
+                        <button onClick={() => setCount(p => Math.min(p + 10, books.length))}
+                          className={`group inline-flex items-center gap-3 px-10 py-3.5 rounded-full text-[0.72rem] uppercase tracking-[2.5px] font-medium border transition-all duration-500 hover:-translate-y-0.5 ${
+                            dark
+                              ? 'border-[#b8964e]/30 text-[#b8964e] hover:bg-[#b8964e] hover:text-[#0c0b09] hover:border-[#b8964e]'
+                              : 'border-[#ddd] text-[#888] hover:bg-[#111] hover:text-white hover:border-[#111]'
+                          }`}>
+                          Show More <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                        </button>
+                      </div>
+                    )}
+                  </>
+                )}
+              </>
+            )}
+
+            {content === 'code' && (
+              <>
+                {projLoading ? (
+                  <div className="max-w-[800px] mx-auto space-y-4">
+                    {[1,2,3].map(i => <ProjSkel key={i} dark={dark} />)}
+                  </div>
+                ) : projects.length === 0 ? (
+                  <div className="text-center py-24">
+                    <Code2 size={40} strokeWidth={1} className={dark ? 'text-[#1a1815] mx-auto mb-4' : 'text-[#e2ddd5] mx-auto mb-4'} />
+                    <p className={`font-display text-xl italic ${dark ? 'text-[#2a2623]' : 'text-[#ccc]'}`} style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
+                      No projects published yet.
+                    </p>
+                    <p className={`text-[0.85rem] mt-2 ${dark ? 'text-[#1a1815]' : 'text-[#ddd]'}`}>
+                      Add projects through the admin panel.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="max-w-[800px] mx-auto space-y-4">
+                    {projects.slice(0, pCount).map((proj) => (
+                      <div key={proj.id}><ProjectCard project={proj} /></div>
+                    ))}
+                    {pCount < projects.length && (
+                      <div className="text-center mt-14">
+                        <button onClick={() => setPCount(p => Math.min(p + 6, projects.length))}
+                          className={`group inline-flex items-center gap-3 px-10 py-3.5 rounded-full text-[0.72rem] uppercase tracking-[2.5px] font-medium border transition-all duration-500 hover:-translate-y-0.5 ${
+                            dark
+                              ? 'border-[#b8964e]/30 text-[#b8964e] hover:bg-[#b8964e] hover:text-[#0c0b09]'
+                              : 'border-[#ddd] text-[#888] hover:bg-[#111] hover:text-white hover:border-[#111]'
+                          }`}>
+                          Show More <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════ CONTACT ═══════════════════ */}
+      <section id="contact" ref={contactRef} className={`sr py-28 md:py-36 ${dark ? 'bg-[#0f0e0c]' : 'bg-[#f6f4f0]'}`}>
+        <div className="container max-w-[600px] text-center">
+          <p className={`text-[0.68rem] uppercase tracking-[4px] font-medium mb-5 ${dark ? 'text-[#b8964e]/60' : 'text-[#b8964e]'}`}>
+            Say Hello
+          </p>
+          <h2 className={`font-display text-[2.6rem] md:text-[3.2rem] font-[300] mb-4 ${
+            dark ? 'text-[#e8e3db]' : 'text-[#111]'
+          }`} style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
+            Get in Touch
+          </h2>
+          <div className={`w-12 h-[1.5px] mx-auto mb-10 ${dark ? 'bg-[#b8964e]/30' : 'bg-[#b8964e]/50'}`} />
+
+          <p className={`text-[0.95rem] leading-relaxed mb-10 ${dark ? 'text-[#5a554c]' : 'text-[#999]'}`}>
+            Want to collaborate, give feedback, or just say hello?
+          </p>
+
+          <a href={`mailto:${contactInfo.email}`} className={`inline-block font-display text-[1.5rem] md:text-[1.8rem] font-[300] transition-all duration-500 hover:text-[#b8964e] hover:tracking-[1px] ${
+            dark ? 'text-[#a09a90]' : 'text-[#111]'
+          }`} style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
+            {contactInfo.email}
+          </a>
+
+          <div className="flex justify-center gap-2 mt-8 flex-wrap">
+            {contactInfo.socials.map((s) => (
+              <a key={s.id} href={s.url} target="_blank" rel="noopener noreferrer"
+                className={`text-[0.68rem] uppercase tracking-[2px] font-medium px-4 py-2 rounded-full border transition-all duration-400 hover:-translate-y-0.5 ${
+                  dark
+                    ? 'border-[#1a1815] text-[#5a554c] hover:border-[#b8964e]/40 hover:text-[#b8964e]'
+                    : 'border-[#e8e4dc] text-[#aaa] hover:border-[#b8964e]/40 hover:text-[#b8964e]'
+                }`}>
+                {s.name}
+              </a>
+            ))}
+          </div>
         </div>
       </section>
 
       <Footer />
-
-      {selectedBook && <PDFReader book={selectedBook} onClose={() => setSelectedBook(null)} />}
-
-      {selectedProject && createPortal(
-        <ProjectDetail project={selectedProject} onClose={() => setSelectedProject(null)} />,
-        document.body
-      )}
     </>
   );
 }

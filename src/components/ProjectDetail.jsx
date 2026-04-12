@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { X, Github, ExternalLink, FileText, Code2, Twitter, Linkedin, Link2, MessageCircle, Heart } from 'lucide-react';
+import { X, Github, ExternalLink, Code2, Twitter, Linkedin, Link2, MessageCircle, Heart } from 'lucide-react';
 import { doc, setDoc, deleteDoc, updateDoc, increment, serverTimestamp } from 'firebase/firestore';
 import { db } from '../lib/firebase';
 import { getUserId, getUserLike, setUserLikeLocal } from '../lib/fingerprint';
@@ -139,7 +139,7 @@ function ProjectDetail({ project, onClose }) {
             ))}
           </div>
 
-          {(project.sourceUrl || project.demoUrl || project.pdfAttachmentUrl) && (
+          {(project.sourceUrl || project.demoUrl) && (
             <div className="flex flex-wrap gap-3 mb-10 pt-8 border-t border-[#eee]">
               {project.sourceUrl && (
                 <a href={project.sourceUrl} target="_blank" rel="noopener noreferrer"
@@ -153,13 +153,6 @@ function ProjectDetail({ project, onClose }) {
                   className="flex items-center gap-2 px-5 py-2.5 border-2 border-[#1a1a1a] text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white uppercase text-[0.75rem] tracking-[1.5px] font-bold transition-colors"
                 >
                   <ExternalLink size={15} />Live Demo
-                </a>
-              )}
-              {project.pdfAttachmentUrl && (
-                <a href={project.pdfAttachmentUrl} target="_blank" rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-5 py-2.5 border-2 border-[#d4a84b] text-[#d4a84b] hover:bg-[#d4a84b] hover:text-white uppercase text-[0.75rem] tracking-[1.5px] font-bold transition-colors"
-                >
-                  <FileText size={15} />Download PDF
                 </a>
               )}
             </div>

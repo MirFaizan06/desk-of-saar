@@ -4,16 +4,19 @@ import App from './App.jsx';
 import { AuthProvider } from './context/AuthContext.jsx';
 import { ToastProvider } from './context/ToastContext.jsx';
 import { DialogProvider } from './context/DialogContext.jsx';
+import { ThemeProvider } from './context/ThemeContext.jsx';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <AuthProvider>
-      <ToastProvider>
-        <DialogProvider>
-          <App />
-        </DialogProvider>
-      </ToastProvider>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <ToastProvider>
+          <DialogProvider>
+            <App />
+          </DialogProvider>
+        </ToastProvider>
+      </AuthProvider>
+    </ThemeProvider>
   </React.StrictMode>
 );
