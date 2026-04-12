@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { collection, onSnapshot, orderBy, query, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
-import { deleteFromS3 } from '../../lib/s3';
 import { useToast } from '../../context/ToastContext';
 import { useDialog } from '../../context/DialogContext';
 import { Link } from 'react-router-dom';
@@ -26,12 +25,10 @@ function AdminProjects() {
     showDialog({
       type: 'delete',
       title: `Delete "${proj.title}"?`,
-      message: 'This will permanently delete the project and all associated files. This cannot be undone.',
+      message: 'This will permanently delete the project record. This cannot be undone.',
       confirmLabel: 'Delete Project',
       onConfirm: async () => {
         try {
-          if (proj.thumbnailKey) await deleteFromS3(proj.thumbnailKey).catch(() => {});
-          if (proj.pdfAttachmentKey) await deleteFromS3(proj.pdfAttachmentKey).catch(() => {});
           await deleteDoc(doc(db, 'projects', proj.id));
           showToast('Project deleted.', 'success');
         } catch {

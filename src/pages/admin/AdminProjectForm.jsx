@@ -2,10 +2,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { collection, doc, addDoc, updateDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
-import { deleteFromS3 } from '../../lib/s3';
 import { useToast } from '../../context/ToastContext';
 import { useDialog } from '../../context/DialogContext';
-import FileUpload from '../../components/ui/FileUpload';
 import { ArrowLeft, Save, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -13,8 +11,7 @@ const CATEGORIES = ['Web App', 'Mobile / PWA', 'AI / NLP', 'CLI Tool', 'Library'
 
 const EMPTY = {
   title: '', category: '', tags: [], description: '', fullDescription: '',
-  thumbnailUrl: '', thumbnailKey: '',
-  pdfAttachmentUrl: '', pdfAttachmentKey: '',
+  thumbnailUrl: '',
   sourceUrl: '', demoUrl: '',
   published: true, order: 0,
 };
@@ -80,7 +77,6 @@ function AdminProjectForm() {
   const [form, setForm] = useState(EMPTY);
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(isEdit);
-  const [sessionKeys, setSessionKeys] = useState([]);
 
   useEffect(() => {
     if (!isEdit) return;
@@ -98,15 +94,6 @@ function AdminProjectForm() {
 
   const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
 
-  const handleFileUploaded = (urlField, keyField) => ({ url, key }) => {
-    setForm((f) => ({ ...f, [urlField]: url, [keyField]: key }));
-    setSessionKeys((prev) => [...prev, key]);
-  };
-
-  const handleFileRemoved = (urlField, keyField) => () => {
-    setForm((f) => ({ ...f, [urlField]: '', [keyField]: '' }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.title || !form.category) {
@@ -122,9 +109,6 @@ function AdminProjectForm() {
         description: form.description,
         fullDescription: form.fullDescription,
         thumbnailUrl: form.thumbnailUrl,
-        thumbnailKey: form.thumbnailKey,
-        pdfAttachmentUrl: form.pdfAttachmentUrl,
-        pdfAttachmentKey: form.pdfAttachmentKey,
         sourceUrl: form.sourceUrl,
         demoUrl: form.demoUrl,
         published: form.published,
@@ -157,16 +141,9 @@ function AdminProjectForm() {
     showDialog({
       type: 'confirm',
       title: 'Discard changes?',
-      message: 'Any uploaded files during this session will be removed from S3.',
+      message: 'Any unsaved changes will be lost.',
       confirmLabel: 'Discard',
-      onConfirm: async () => {
-        for (const key of sessionKeys) {
-          if (key !== form.thumbnailKey && key !== form.pdfAttachmentKey) {
-            await deleteFromS3(key).catch(() => {});
-          }
-        }
-        navigate('/admin/projects');
-      },
+      onConfirm: () => navigate('/admin/projects'),
     });
   };
 
@@ -215,7 +192,7 @@ function AdminProjectForm() {
             <label className="block text-[0.7rem] uppercase tracking-[1.5px] text-[#888] font-bold mb-2">Full Description</label>
             <p className="text-[0.7rem] text-[#aaa] mb-2">Separate paragraphs with a blank line. Shown on the detail page.</p>
             <textarea value={form.fullDescription} onChange={set('fullDescription')} rows={10}
-              placeholder="Full project writeup…&#10;&#10;Start a new paragraph with a blank line."
+              placeholder={"Full project writeup…\n\nStart a new paragraph with a blank line."}
               className="w-full border border-[#e0e0e0] px-4 py-3 text-sm text-[#1a1a1a] focus:outline-none focus:border-[#d4a84b] transition-colors bg-white resize-none font-mono" />
           </div>
 
@@ -223,6 +200,14 @@ function AdminProjectForm() {
             <InputField label="Source Code URL" type="url" value={form.sourceUrl} onChange={set('sourceUrl')} placeholder="https://github.com/…" />
             <InputField label="Live Demo URL" type="url" value={form.demoUrl} onChange={set('demoUrl')} placeholder="https://…" />
           </div>
+
+          <InputField label="Thumbnail Image URL" type="url" value={form.thumbnailUrl} onChange={set('thumbnailUrl')} placeholder="https://... or /path/to/image.jpg" />
+
+          {form.thumbnailUrl && (
+            <div className="border border-[#eee] p-3 bg-[#f9f9f9]">
+              <img src={form.thumbnailUrl} alt="Thumbnail preview" className="w-full max-h-48 object-contain" />
+            </div>
+          )}
 
           <div className="grid grid-cols-2 gap-4">
             <InputField label="Display Order" type="number" value={form.order} onChange={set('order')} placeholder="0" />
@@ -236,32 +221,6 @@ function AdminProjectForm() {
               </div>
             </div>
           </div>
-        </div>
-
-        <div className="bg-white border border-[#eee] p-6 space-y-6">
-          <h2 className="font-serif text-lg text-[#1a1a1a] mb-4 pb-3 border-b border-[#f5f5f5]">Files</h2>
-
-          <FileUpload
-            folder="thumbnails"
-            accept="image/*"
-            label="Thumbnail Image (optional)"
-            currentUrl={form.thumbnailUrl}
-            currentKey={form.thumbnailKey}
-            onUploaded={handleFileUploaded('thumbnailUrl', 'thumbnailKey')}
-            onRemove={handleFileRemoved('thumbnailUrl', 'thumbnailKey')}
-            maxMB={5}
-          />
-
-          <FileUpload
-            folder="attachments"
-            accept=".pdf"
-            label="PDF Attachment (optional)"
-            currentUrl={form.pdfAttachmentUrl}
-            currentKey={form.pdfAttachmentKey}
-            onUploaded={handleFileUploaded('pdfAttachmentUrl', 'pdfAttachmentKey')}
-            onRemove={handleFileRemoved('pdfAttachmentUrl', 'pdfAttachmentKey')}
-            maxMB={50}
-          />
         </div>
 
         <div className="flex items-center gap-4">

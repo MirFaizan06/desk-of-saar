@@ -1,22 +1,20 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   collection, doc, addDoc, updateDoc, getDoc, serverTimestamp,
 } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
-import { deleteFromS3 } from '../../lib/s3';
 import { useToast } from '../../context/ToastContext';
 import { useDialog } from '../../context/DialogContext';
-import FileUpload from '../../components/ui/FileUpload';
-import { ArrowLeft, Save } from 'lucide-react';
+import { ArrowLeft, Save, Image, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const GENRES = ['Romance', 'Poetry', 'Horror', 'Literary Fiction', 'Fantasy', 'Science Fiction', 'Non-Fiction', 'Mystery', 'Other'];
 
 const EMPTY = {
   title: '', author: '', description: '', genre: '',
-  coverUrl: '', coverKey: '',
-  fileUrl: '', fileKey: '',
+  coverUrl: '',
+  driveUrl: '',
   published: true, order: 0,
 };
 
@@ -25,6 +23,102 @@ function InputField({ label, ...props }) {
     <div>
       <label className="block text-[0.7rem] uppercase tracking-[1.5px] text-[#888] font-bold mb-2">{label}</label>
       <input className="w-full border border-[#e0e0e0] px-4 py-3 text-sm text-[#1a1a1a] focus:outline-none focus:border-[#d4a84b] transition-colors bg-white" {...props} />
+    </div>
+  );
+}
+
+/**
+ * CoverImagePicker — select a local image file, preview it, and store it in /covers/ folder.
+ * The admin picks an image from their local machine. We store only the URL path (relative).
+ * For a simple local setup, the admin places images in public/covers/ manually or we generate a preview.
+ * Here we allow URL input or file selection that creates a base64 preview.
+ */
+function CoverImagePicker({ currentUrl, onChange, onRemove }) {
+  const inputRef = useRef(null);
+  const [preview, setPreview] = useState(currentUrl || '');
+
+  useEffect(() => {
+    setPreview(currentUrl || '');
+  }, [currentUrl]);
+
+  const handleFile = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image must be under 5 MB.');
+      return;
+    }
+
+    // Create a local object URL for preview and store as the cover path
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const dataUrl = ev.target.result;
+      setPreview(dataUrl);
+      onChange(dataUrl);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleRemove = () => {
+    setPreview('');
+    onRemove();
+    if (inputRef.current) inputRef.current.value = '';
+  };
+
+  return (
+    <div>
+      <label className="block text-[0.7rem] uppercase tracking-[1.5px] text-[#888] font-bold mb-2">
+        Cover Image
+      </label>
+
+      {preview ? (
+        <div className="relative border border-[#eee] p-3 bg-[#f9f9f9]">
+          <img src={preview} alt="Cover preview" className="w-full max-h-48 object-contain" />
+          <button
+            type="button"
+            onClick={handleRemove}
+            className="absolute top-2 right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600"
+          >
+            <X size={12} />
+          </button>
+        </div>
+      ) : (
+        <div
+          className="border-2 border-dashed rounded transition-colors cursor-pointer p-6 text-center border-[#ddd] hover:border-[#d4a84b]"
+          onClick={() => inputRef.current?.click()}
+        >
+          <input
+            ref={inputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleFile}
+          />
+          <Image size={28} className="text-[#ccc] mx-auto mb-3" />
+          <p className="text-sm text-[#888]">
+            <span className="text-[#d4a84b] font-bold">Click to select</span> a cover image
+          </p>
+          <p className="text-[0.7rem] text-[#bbb] mt-1">Max 5 MB • JPG, PNG, WebP</p>
+        </div>
+      )}
+
+      <div className="mt-3">
+        <label className="block text-[0.65rem] uppercase tracking-[1.5px] text-[#aaa] font-bold mb-1">
+          Or paste cover image URL
+        </label>
+        <input
+          type="url"
+          value={currentUrl?.startsWith('data:') ? '' : (currentUrl || '')}
+          onChange={(e) => {
+            const val = e.target.value;
+            setPreview(val);
+            onChange(val);
+          }}
+          placeholder="https://... or /covers/my-image.jpg"
+          className="w-full border border-[#e0e0e0] px-4 py-2.5 text-sm text-[#1a1a1a] focus:outline-none focus:border-[#d4a84b] transition-colors bg-white"
+        />
+      </div>
     </div>
   );
 }
@@ -39,8 +133,6 @@ function AdminBookForm() {
   const [form, setForm] = useState(EMPTY);
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(isEdit);
-  // Track keys that were uploaded during this session (for orphan cleanup on cancel)
-  const [sessionKeys, setSessionKeys] = useState([]);
 
   useEffect(() => {
     if (!isEdit) return;
@@ -58,15 +150,6 @@ function AdminBookForm() {
 
   const set = (field) => (e) => setForm((f) => ({ ...f, [field]: e.target.value }));
 
-  const handleFileUploaded = (field, keyField) => ({ url, key }) => {
-    setForm((f) => ({ ...f, [field]: url, [keyField]: key }));
-    setSessionKeys((prev) => [...prev, key]);
-  };
-
-  const handleFileRemoved = (field, keyField) => () => {
-    setForm((f) => ({ ...f, [field]: '', [keyField]: '' }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.title || !form.author || !form.genre) {
@@ -81,9 +164,7 @@ function AdminBookForm() {
         description: form.description,
         genre: form.genre,
         coverUrl: form.coverUrl,
-        coverKey: form.coverKey,
-        fileUrl: form.fileUrl,
-        fileKey: form.fileKey,
+        driveUrl: form.driveUrl,
         published: form.published,
         order: Number(form.order) || 0,
         updatedAt: serverTimestamp(),
@@ -115,17 +196,9 @@ function AdminBookForm() {
     showDialog({
       type: 'confirm',
       title: 'Discard changes?',
-      message: 'Any uploaded files during this session will be removed from S3.',
+      message: 'Any unsaved changes will be lost.',
       confirmLabel: 'Discard',
-      onConfirm: async () => {
-        // Clean up orphaned S3 objects uploaded in this session
-        for (const key of sessionKeys) {
-          if (key !== form.coverKey && key !== form.fileKey) {
-            await deleteFromS3(key).catch(() => {});
-          }
-        }
-        navigate('/admin/books');
-      },
+      onConfirm: () => navigate('/admin/books'),
     });
   };
 
@@ -169,6 +242,14 @@ function AdminBookForm() {
               className="w-full border border-[#e0e0e0] px-4 py-3 text-sm text-[#1a1a1a] focus:outline-none focus:border-[#d4a84b] transition-colors bg-white resize-none" />
           </div>
 
+          <InputField
+            label="Google Drive Link"
+            type="url"
+            value={form.driveUrl}
+            onChange={set('driveUrl')}
+            placeholder="https://drive.google.com/file/d/..."
+          />
+
           <div className="grid grid-cols-2 gap-4">
             <InputField label="Display Order" type="number" value={form.order} onChange={set('order')} placeholder="0" />
             <div>
@@ -183,30 +264,13 @@ function AdminBookForm() {
           </div>
         </div>
 
-        {/* Files */}
-        <div className="bg-white border border-[#eee] p-6 space-y-6">
-          <h2 className="font-serif text-lg text-[#1a1a1a] mb-4 pb-3 border-b border-[#f5f5f5]">Files</h2>
-
-          <FileUpload
-            folder="covers"
-            accept="image/*"
-            label="Book Cover *"
+        {/* Cover Image */}
+        <div className="bg-white border border-[#eee] p-6">
+          <h2 className="font-serif text-lg text-[#1a1a1a] mb-4 pb-3 border-b border-[#f5f5f5]">Cover Image</h2>
+          <CoverImagePicker
             currentUrl={form.coverUrl}
-            currentKey={form.coverKey}
-            onUploaded={handleFileUploaded('coverUrl', 'coverKey')}
-            onRemove={handleFileRemoved('coverUrl', 'coverKey')}
-            maxMB={5}
-          />
-
-          <FileUpload
-            folder="books"
-            accept=".pdf"
-            label="PDF File (optional)"
-            currentUrl={form.fileUrl}
-            currentKey={form.fileKey}
-            onUploaded={handleFileUploaded('fileUrl', 'fileKey')}
-            onRemove={handleFileRemoved('fileUrl', 'fileKey')}
-            maxMB={100}
+            onChange={(url) => setForm((f) => ({ ...f, coverUrl: url }))}
+            onRemove={() => setForm((f) => ({ ...f, coverUrl: '' }))}
           />
         </div>
 

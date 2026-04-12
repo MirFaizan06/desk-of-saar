@@ -1,14 +1,9 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
 export default defineConfig({
   plugins: [
-    nodePolyfills({
-      include: ['buffer', 'stream', 'util', 'crypto'],
-      globals: { Buffer: true, global: true, process: true },
-    }),
     react({
       fastRefresh: true,
       jsxRuntime: 'automatic',
@@ -25,7 +20,6 @@ export default defineConfig({
           'react-vendor': ['react', 'react-dom'],
           'router': ['react-router-dom'],
           'firebase': ['firebase/app', 'firebase/auth', 'firebase/firestore'],
-          'aws-sdk': ['@aws-sdk/client-s3', '@aws-sdk/lib-storage'],
           'icons': ['lucide-react'],
         },
         chunkFileNames: 'assets/js/[name]-[hash].js',

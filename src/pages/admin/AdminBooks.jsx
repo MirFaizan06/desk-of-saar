@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
-import { collection, onSnapshot, orderBy, query, deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { collection, onSnapshot, orderBy, query, deleteDoc, doc, updateDoc, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
-import { deleteFromS3 } from '../../lib/s3';
 import { useToast } from '../../context/ToastContext';
 import { useDialog } from '../../context/DialogContext';
 import { Link } from 'react-router-dom';
-import { Plus, Pencil, Trash2, Eye, EyeOff, Star, BookOpen } from 'lucide-react';
+import { Plus, Pencil, Trash2, Eye, EyeOff, Star, BookOpen, ExternalLink, Upload } from 'lucide-react';
+import { books as fallbackBooks } from '../../data/books';
 
 function AdminBooks() {
   const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [seeding, setSeeding] = useState(false);
   const { showToast } = useToast();
   const { showDialog } = useDialog();
 
@@ -22,16 +23,44 @@ function AdminBooks() {
     return unsub;
   }, []);
 
+  // Seed fallback books into Firestore
+  const handleSeedBooks = async () => {
+    setSeeding(true);
+    try {
+      for (let i = 0; i < fallbackBooks.length; i++) {
+        const fb = fallbackBooks[i];
+        await addDoc(collection(db, 'books'), {
+          title: fb.title,
+          author: fb.author,
+          description: fb.description,
+          genre: fb.genre,
+          coverUrl: fb.cover,
+          driveUrl: fb.driveUrl || '',
+          published: true,
+          order: i,
+          ratingSum: 0,
+          ratingCount: 0,
+          viewCount: 0,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+        });
+      }
+      showToast(`${fallbackBooks.length} books imported to Firestore!`, 'success');
+    } catch (err) {
+      console.error(err);
+      showToast('Failed to import books.', 'error');
+    }
+    setSeeding(false);
+  };
+
   const handleDelete = (book) => {
     showDialog({
       type: 'delete',
       title: `Delete "${book.title}"?`,
-      message: 'This will permanently delete the book and all its files from S3. This cannot be undone.',
+      message: 'This will permanently delete the book record. This cannot be undone.',
       confirmLabel: 'Delete Book',
       onConfirm: async () => {
         try {
-          if (book.coverKey) await deleteFromS3(book.coverKey).catch(() => {});
-          if (book.fileKey) await deleteFromS3(book.fileKey).catch(() => {});
           await deleteDoc(doc(db, 'books', book.id));
           showToast('Book deleted.', 'success');
         } catch {
@@ -67,21 +96,41 @@ function AdminBooks() {
           <h1 className="font-serif text-3xl text-[#1a1a1a] mb-1">Books</h1>
           <p className="text-[#888] text-sm">{books.length} total</p>
         </div>
-        <Link to="/admin/books/new"
-          className="flex items-center gap-2 px-5 py-2.5 bg-[#d4a84b] hover:bg-[#c49a3d] text-white uppercase text-[0.75rem] tracking-[2px] font-bold transition-colors">
-          <Plus size={15} />Add Book
-        </Link>
+        <div className="flex items-center gap-3">
+          {books.length === 0 && (
+            <button
+              onClick={handleSeedBooks}
+              disabled={seeding}
+              className="flex items-center gap-2 px-5 py-2.5 border border-[#d4a84b] text-[#d4a84b] hover:bg-[#d4a84b] hover:text-white uppercase text-[0.75rem] tracking-[2px] font-bold transition-colors disabled:opacity-50"
+            >
+              <Upload size={15} />{seeding ? 'Importing…' : 'Import Template'}
+            </button>
+          )}
+          <Link to="/admin/books/new"
+            className="flex items-center gap-2 px-5 py-2.5 bg-[#d4a84b] hover:bg-[#c49a3d] text-white uppercase text-[0.75rem] tracking-[2px] font-bold transition-colors">
+            <Plus size={15} />Add Book
+          </Link>
+        </div>
       </div>
 
       {books.length === 0 ? (
         <div className="bg-white border border-[#eee] p-16 text-center">
           <BookOpen size={36} className="text-[#ddd] mx-auto mb-4" />
           <p className="font-serif text-xl text-[#bbb] mb-2">No books yet</p>
-          <p className="text-[#ccc] text-sm mb-6">Add your first book to get started.</p>
-          <Link to="/admin/books/new"
-            className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#1a1a1a] text-white uppercase text-[0.75rem] tracking-[2px] font-bold hover:bg-[#d4a84b] transition-colors">
-            <Plus size={14} />Add Book
-          </Link>
+          <p className="text-[#ccc] text-sm mb-6">Click "Import Template" to import your {fallbackBooks.length} hardcoded books, or add new ones manually.</p>
+          <div className="flex items-center justify-center gap-3">
+            <button
+              onClick={handleSeedBooks}
+              disabled={seeding}
+              className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#1a1a1a] text-white uppercase text-[0.75rem] tracking-[2px] font-bold hover:bg-[#d4a84b] transition-colors disabled:opacity-50"
+            >
+              <Upload size={14} />{seeding ? 'Importing…' : `Import ${fallbackBooks.length} Books`}
+            </button>
+            <Link to="/admin/books/new"
+              className="inline-flex items-center gap-2 px-6 py-2.5 border border-[#1a1a1a] text-[#1a1a1a] uppercase text-[0.75rem] tracking-[2px] font-bold hover:bg-[#1a1a1a] hover:text-white transition-colors">
+              <Plus size={14} />Add Manually
+            </Link>
+          </div>
         </div>
       ) : (
         <div className="bg-white border border-[#eee] overflow-x-auto">
@@ -92,6 +141,7 @@ function AdminBooks() {
                 <th className="text-left px-4 py-4 text-[0.7rem] uppercase tracking-[1.5px] text-[#888] font-bold">Genre</th>
                 <th className="text-center px-4 py-4 text-[0.7rem] uppercase tracking-[1.5px] text-[#888] font-bold">Rating</th>
                 <th className="text-center px-4 py-4 text-[0.7rem] uppercase tracking-[1.5px] text-[#888] font-bold">Views</th>
+                <th className="text-center px-4 py-4 text-[0.7rem] uppercase tracking-[1.5px] text-[#888] font-bold">Drive</th>
                 <th className="text-center px-4 py-4 text-[0.7rem] uppercase tracking-[1.5px] text-[#888] font-bold">Status</th>
                 <th className="text-right px-6 py-4 text-[0.7rem] uppercase tracking-[1.5px] text-[#888] font-bold">Actions</th>
               </tr>
@@ -126,6 +176,16 @@ function AdminBooks() {
                   </td>
                   <td className="px-4 py-4 text-center text-sm text-[#626262]">
                     {(book.viewCount || 0).toLocaleString()}
+                  </td>
+                  <td className="px-4 py-4 text-center">
+                    {book.driveUrl ? (
+                      <a href={book.driveUrl} target="_blank" rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-[0.7rem] text-[#d4a84b] hover:text-[#c49a3d] font-bold uppercase tracking-wider">
+                        <ExternalLink size={11} />Link
+                      </a>
+                    ) : (
+                      <span className="text-[0.7rem] text-[#ccc]">—</span>
+                    )}
                   </td>
                   <td className="px-4 py-4 text-center">
                     <button onClick={() => togglePublished(book)}

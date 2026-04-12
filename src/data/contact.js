@@ -5,7 +5,7 @@ export const contactInfo = {
     {
       id: "instagram",
       name: "Instagram",
-      url: "https://instagram.com/saar.archives",
+      url: "https://instagram.com/_umaar_00",
       icon: "instagram"
     },
     {
@@ -23,8 +23,20 @@ export const contactInfo = {
     {
       id: "github",
       name: "GitHub",
-      url: "https://github.com/omarrashidlone",
+      url: "https://github.com/Omar-tech-13",
       icon: "github"
+    },
+    {
+      id: "substack",
+      name: "Substack",
+      url: "https://substack.com/@omarrashidlone",
+      icon: "substack"
+    },
+    {
+      id: "medium",
+      name: "Medium",
+      url: "https://medium.com/@mail.omarrashidlone",
+      icon: "medium"
     }
   ]
 };
