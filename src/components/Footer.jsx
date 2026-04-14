@@ -32,7 +32,7 @@ function Footer() {
   const { dark } = useTheme();
 
   return (
-    <footer className={`py-8 md:py-10 transition-colors duration-500 border-t ${dark ? 'bg-[#0f0e0c] border-[#1a1815]' : 'bg-[#fdfcfa] border-[#eee9e0]'}`}>
+    <footer id="footer" className={`py-8 md:py-10 transition-colors duration-500 border-t ${dark ? 'bg-[#0f0e0c] border-[#1a1815]' : 'bg-[#fdfcfa] border-[#eee9e0]'}`}>
       <div className="container max-w-[1100px] px-6">
         
         <div className="flex flex-col md:flex-row gap-8 pb-8">
