@@ -32,33 +32,79 @@ function Footer() {
   const { dark } = useTheme();
 
   return (
-    <footer className="py-20 transition-colors duration-500 bg-[#fdfcfa]">
-      <div className="container text-center">
-        {/* Gold line */}
-        <div className="w-10 h-[1px] bg-[#b8964e]/30 mx-auto mb-10" />
+    <footer className={`py-8 md:py-10 transition-colors duration-500 border-t ${dark ? 'bg-[#0f0e0c] border-[#1a1815]' : 'bg-[#fdfcfa] border-[#eee9e0]'}`}>
+      <div className="container max-w-[1100px] px-6">
+        
+        <div className="flex flex-col md:flex-row gap-8 pb-8">
+          
+          {/* Left: Detailed About */}
+          <div className="w-full md:w-1/2">
+            <p className={`text-[0.65rem] uppercase tracking-[4px] font-medium mb-3 ${dark ? 'text-[#b8964e]/60' : 'text-[#b8964e]'}`}>
+              About The Desk
+            </p>
+            <h2 className={`font-display text-[1.8rem] font-[300] mb-3 ${
+              dark ? 'text-[#e8e3db]' : 'text-[#111]'
+            }`} style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
+              Omar Rashid Lone
+            </h2>
+            <div className="space-y-2 text-[0.95rem]">
+              <p className={`leading-snug ${dark ? 'text-[#7a756c]' : 'text-[#666]'}`}>
+                I've been writing since I was 16—prose, poetry, stories that didn't always know where they were going but refused to stop. My characters tend to be stubborn, emotionally honest people who love too much and say too little.
+              </p>
+              <p className={`leading-snug ${dark ? 'text-[#7a756c]' : 'text-[#666]'}`}>
+                Most of these books are drafts—unfinished, imperfect, still breathing. I put them here because I believe stories get better when they're read, not when they're hidden in folders.
+              </p>
+            </div>
+          </div>
 
-        {/* Brand */}
-        <p className="text-[#111]/80 tracking-[6px] text-[0.85rem] uppercase font-display mb-8"
-          style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 400 }}>
-          Desk of Saar
-        </p>
-
-        {/* Social icons */}
-        <div className="flex justify-center gap-2.5 mb-10">
-          {contactInfo.socials.map((s) => {
-            const Icon = icons[s.icon] || Github;
-            return (
-              <a key={s.id} href={s.url} target="_blank" rel="noopener noreferrer" title={s.name}
-                className="w-9 h-9 rounded-full flex items-center justify-center text-[#111]/50 transition-all duration-500 hover:text-[#b8964e] hover:bg-[#b8964e]/10 hover:-translate-y-0.5">
-                <Icon size={14} />
+          {/* Right: Contact */}
+          <div className="w-full md:w-1/2 md:text-right flex flex-col md:items-end justify-between">
+            <div>
+              <p className={`text-[0.65rem] uppercase tracking-[4px] font-medium mb-2 ${dark ? 'text-[#b8964e]/60' : 'text-[#b8964e]'}`}>
+                Say Hello
+              </p>
+              <a href={`mailto:${contactInfo.email}`} className={`inline-block font-display text-[1.3rem] font-[300] transition-all duration-500 mb-6 hover:text-[#b8964e] hover:tracking-[1px] ${
+                dark ? 'text-[#a09a90]' : 'text-[#111]'
+              }`} style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
+                {contactInfo.email}
               </a>
-            );
-          })}
+            </div>
+
+            {/* Social icons */}
+            <div className="flex flex-wrap md:justify-end gap-3 mb-8">
+              {contactInfo.socials.map((s) => {
+                const Icon = icons[s.icon] || Github;
+                return (
+                  <a key={s.id} href={s.url} target="_blank" rel="noopener noreferrer" title={s.name}
+                    className={`flex items-center gap-2 px-5 py-2.5 rounded-full border text-[0.65rem] uppercase tracking-[2px] transition-all duration-500 hover:-translate-y-0.5 ${
+                      dark 
+                        ? 'border-[#1a1815] text-[#5a554c] hover:border-[#b8964e] hover:text-[#b8964e] bg-[#161412]' 
+                        : 'border-[#eee9e0] text-[#888] hover:border-[#b8964e] hover:text-[#b8964e] bg-white'
+                    }`}>
+                    <Icon size={14} />
+                    {s.name}
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+
+        </div>
+        
+        {/* Bottom Line */}
+        <div className={`w-full h-[1px] mb-6 ${dark ? 'bg-[#b8964e]/10' : 'bg-[#eee9e0]'}`} />
+
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className={`text-[0.65rem] uppercase font-display tracking-[4px] ${dark ? 'text-[#e8e3db]' : 'text-[#222]'}`}
+            style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontWeight: 400 }}>
+            Desk of Saar
+          </p>
+
+          <p className={`text-[0.6rem] tracking-[1px] ${dark ? 'text-[#5a554c]' : 'text-[#aaa]'}`}>
+            &copy; 2026 Omar Rashid Lone. All Rights Reserved.
+          </p>
         </div>
 
-        <p className="text-[#111]/40 text-[0.7rem] tracking-[1px]">
-          &copy; {new Date().getFullYear()} Saar. All Rights Reserved.
-        </p>
       </div>
     </footer>
   );
