@@ -1,62 +1,45 @@
-import { useTheme } from '../context/ThemeContext';
+
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
+import CatLogo from './CatLogo';
 import { contactInfo } from '../data/contact';
 
 function Header() {
-  const { dark } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleScroll = (e, targetId) => {
-    if (location.pathname !== '/') {
-      // If not on home page, let the default link behavior take us to home with hash
-      return;
-    }
-    e.preventDefault();
-    const el = document.getElementById(targetId);
-    if (el) {
-      const y = el.getBoundingClientRect().top + window.scrollY - 80;
-      window.scrollTo({ top: y, behavior: 'smooth' });
-    }
-  };
-
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 hover:bg-opacity-100 ${
-      dark ? 'bg-[#0c0b09]/80 backdrop-blur-xl' : 'bg-[#fdfcfa]/85 backdrop-blur-xl'
-    }`}>
-      <div className="container max-w-[1100px] mx-auto flex items-center justify-between h-[80px] px-6">
-        <a href="/" onClick={(e) => {
-          if (location.pathname === '/') {
+    <header
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-700 bg-[var(--color-shiro)]/85 backdrop-blur-xl border-b border-[var(--color-kinu)]/40 shadow-[0_4px_30px_rgba(0,0,0,0.02)]"
+    >
+      <div className="container flex items-center justify-between h-[90px] md:h-[100px]">
+        {/* Left: Desk of Saar branding */}
+        <a
+          href="/"
+          onClick={(e) => {
             e.preventDefault();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }
-        }} className={`font-display text-[1.2rem] md:text-[1.35rem] tracking-[5px] transition-all duration-500 hover:text-[#b8964e] hover:tracking-[7px] ${
-          dark ? 'text-[#e8e3db]' : 'text-[#111]'
-        }`} style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
-          <span className="font-[300]">DESK OF</span> <strong className="font-[600]">SAAR</strong>
+            if (location.pathname === '/') {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+              navigate('/');
+            }
+          }}
+          className="flex items-center gap-4 group cursor-pointer"
+        >
+          <CatLogo className="w-12 h-12 md:w-14 md:h-14 text-[var(--color-sumi)] group-hover:text-[var(--color-kaki)] transition-colors duration-500" />
+          <span className="text-[0.85rem] tracking-[4px] uppercase font-bold text-[var(--color-sumi)] group-hover:text-[var(--color-kaki)] transition-colors duration-500">
+            Desk of Saar
+          </span>
         </a>
 
-        {/* Navigation */}
-        <div className="hidden md:flex items-center gap-10">
-          <a href="/#works" onClick={(e) => handleScroll(e, 'works')} className={`group relative inline-block text-[0.62rem] uppercase tracking-[3px] font-medium transition-colors hover:text-[#b8964e] py-2 ${
-            dark ? 'text-[#a09a90]' : 'text-[#666]'
-          }`}>
-            The Drafts
-            <span className={`absolute bottom-0 left-0 block w-full h-[1.5px] transform origin-left scale-x-0 transition-transform duration-500 ease-out group-hover:scale-x-100 ${dark ? 'bg-[#b8964e]' : 'bg-[#b8964e]'}`} />
-          </a>
-          
-          <a href="/#footer" onClick={(e) => handleScroll(e, 'footer')} className={`px-6 py-2.5 rounded-full border text-[0.62rem] uppercase tracking-[2px] font-medium transition-all duration-500 hover:-translate-y-[2px] shadow-sm hover:shadow-md ${
-            dark 
-              ? 'border-[#b8964e]/40 text-[#b8964e] hover:bg-[#b8964e] hover:text-[#0c0b09] hover:shadow-[#b8964e]/20' 
-              : 'border-[#222] text-[#222] hover:bg-[#222] hover:text-white'
-          }`}>
-            Say Hello
-          </a>
-        </div>
+        {/* Right: Say Hello Button */}
+        <a
+          href={`mailto:${contactInfo.email}`}
+          className="text-[0.65rem] tracking-[2px] uppercase font-bold text-[var(--color-sumi)] border border-[var(--color-sumi)] px-7 py-3 rounded-full hover:bg-[var(--color-sumi)] hover:text-white transition-all duration-500 cursor-pointer relative z-50 inline-block"
+        >
+          Say Hello
+        </a>
       </div>
-
-      {/* Bottom rule */}
-      <div className={`h-[1px] w-full transition-colors duration-500 ${dark ? 'bg-[#1a1815]' : 'bg-[#eee9e0]'}`} />
     </header>
   );
 }

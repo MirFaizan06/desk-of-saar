@@ -9,10 +9,8 @@ import { useDialog } from '../../context/DialogContext';
 import { ArrowLeft, Save, Image, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const GENRES = ['Romance', 'Poetry', 'Horror', 'Literary Fiction', 'Fantasy', 'Science Fiction', 'Non-Fiction', 'Mystery', 'Other'];
-
 const EMPTY = {
-  title: '', author: '', description: '', genre: '',
+  title: '', author: '', description: '', genre: [],
   coverUrl: '',
   driveUrl: '',
   published: true, order: 0,
@@ -21,8 +19,8 @@ const EMPTY = {
 function InputField({ label, ...props }) {
   return (
     <div>
-      <label className="block text-[0.7rem] uppercase tracking-[1.5px] text-[#888] font-bold mb-2">{label}</label>
-      <input className="w-full border border-[#e0e0e0] px-4 py-3 text-sm text-[#1a1a1a] focus:outline-none focus:border-[#d4a84b] transition-colors bg-white" {...props} />
+      <label className="block text-[0.7rem] uppercase tracking-[1.5px] text-[var(--color-hai)] font-bold mb-2">{label}</label>
+      <input className="w-full border border-[var(--color-kinu)] px-4 py-3 text-sm text-[var(--color-sumi)] focus:outline-none focus:border-[var(--color-kaki)] transition-colors bg-white rounded-sm" {...props} />
     </div>
   );
 }
@@ -68,13 +66,13 @@ function CoverImagePicker({ currentUrl, onChange, onRemove }) {
 
   return (
     <div>
-      <label className="block text-[0.7rem] uppercase tracking-[1.5px] text-[#888] font-bold mb-2">
+      <label className="block text-[0.7rem] uppercase tracking-[1.5px] text-[var(--color-hai)] font-bold mb-2">
         Cover Image
       </label>
 
       {preview ? (
-        <div className="relative border border-[#eee] p-3 bg-[#f9f9f9]">
-          <img src={preview} alt="Cover preview" className="w-full max-h-48 object-contain" />
+        <div className="relative border border-[var(--color-kinu)] p-3 bg-[var(--color-kami)] rounded-sm">
+          <img src={preview} alt="Cover preview" className="w-full max-h-48 object-contain rounded-sm" />
           <button
             type="button"
             onClick={handleRemove}
@@ -85,7 +83,7 @@ function CoverImagePicker({ currentUrl, onChange, onRemove }) {
         </div>
       ) : (
         <div
-          className="border-2 border-dashed rounded transition-colors cursor-pointer p-6 text-center border-[#ddd] hover:border-[#d4a84b]"
+          className="border-2 border-dashed rounded-sm transition-colors cursor-pointer p-6 text-center border-[var(--color-kinu)] hover:border-[var(--color-kaki)] bg-white"
           onClick={() => inputRef.current?.click()}
         >
           <input
@@ -95,16 +93,16 @@ function CoverImagePicker({ currentUrl, onChange, onRemove }) {
             className="hidden"
             onChange={handleFile}
           />
-          <Image size={28} className="text-[#ccc] mx-auto mb-3" />
-          <p className="text-sm text-[#888]">
-            <span className="text-[#d4a84b] font-bold">Click to select</span> a cover image
+          <Image size={28} className="text-[var(--color-kinu)] mx-auto mb-3" />
+          <p className="text-sm text-[var(--color-hai)]">
+            <span className="text-[var(--color-kaki)] font-bold">Click to select</span> a cover image
           </p>
-          <p className="text-[0.7rem] text-[#bbb] mt-1">Max 5 MB • JPG, PNG, WebP</p>
+          <p className="text-[0.7rem] text-[var(--color-hai-light)] mt-1">Max 5 MB • JPG, PNG, WebP</p>
         </div>
       )}
 
       <div className="mt-3">
-        <label className="block text-[0.65rem] uppercase tracking-[1.5px] text-[#aaa] font-bold mb-1">
+        <label className="block text-[0.65rem] uppercase tracking-[1.5px] text-[var(--color-hai-light)] font-bold mb-1">
           Or paste cover image URL
         </label>
         <input
@@ -116,7 +114,7 @@ function CoverImagePicker({ currentUrl, onChange, onRemove }) {
             onChange(val);
           }}
           placeholder="https://... or /covers/my-image.jpg"
-          className="w-full border border-[#e0e0e0] px-4 py-2.5 text-sm text-[#1a1a1a] focus:outline-none focus:border-[#d4a84b] transition-colors bg-white"
+          className="w-full border border-[var(--color-kinu)] px-4 py-2.5 text-sm text-[var(--color-sumi)] focus:outline-none focus:border-[var(--color-kaki)] transition-colors bg-white rounded-sm"
         />
       </div>
     </div>
@@ -205,7 +203,7 @@ function AdminBookForm() {
   if (fetching) {
     return (
       <div className="flex items-center justify-center py-32">
-        <div className="w-8 h-8 border-2 border-[#d4a84b] border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-[var(--color-kaki)] border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -213,33 +211,35 @@ function AdminBookForm() {
   return (
     <div className="max-w-3xl">
       <div className="flex items-center gap-3 mb-8">
-        <Link to="/admin/books" className="text-[#888] hover:text-[#1a1a1a] transition-colors">
+        <Link to="/admin/books" className="text-[var(--color-hai)] hover:text-[var(--color-kaki)] transition-colors">
           <ArrowLeft size={20} />
         </Link>
-        <h1 className="font-serif text-3xl text-[#1a1a1a]">{isEdit ? 'Edit Book' : 'Add New Book'}</h1>
+        <h1 className="font-serif text-3xl text-[var(--color-sumi)]" style={{ fontFamily: 'var(--font-display)' }}>{isEdit ? 'Edit Book' : 'Add New Book'}</h1>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="bg-white border border-[#eee] p-6 space-y-5">
-          <h2 className="font-serif text-lg text-[#1a1a1a] mb-4 pb-3 border-b border-[#f5f5f5]">Book Details</h2>
+        <div className="bg-white border border-[var(--color-kinu)] p-6 space-y-5 rounded-sm shadow-sm">
+          <h2 className="font-serif text-lg text-[var(--color-sumi)] mb-4 pb-3 border-b border-[var(--color-kami)]" style={{ fontFamily: 'var(--font-display)' }}>Book Details</h2>
 
           <InputField label="Title *" value={form.title} onChange={set('title')} required placeholder="Enter book title" />
           <InputField label="Author *" value={form.author} onChange={set('author')} required placeholder="Author name" />
 
           <div>
-            <label className="block text-[0.7rem] uppercase tracking-[1.5px] text-[#888] font-bold mb-2">Genre *</label>
-            <select value={form.genre} onChange={set('genre')} required
-              className="w-full border border-[#e0e0e0] px-4 py-3 text-sm text-[#1a1a1a] focus:outline-none focus:border-[#d4a84b] transition-colors bg-white">
-              <option value="">Select genre…</option>
-              {GENRES.map((g) => <option key={g} value={g}>{g}</option>)}
-            </select>
+            <label className="block text-[0.7rem] uppercase tracking-[1.5px] text-[var(--color-hai)] font-bold mb-2">Genres * (comma separated)</label>
+            <input 
+              value={Array.isArray(form.genre) ? form.genre.join(', ') : (form.genre || '')} 
+              onChange={(e) => setForm((f) => ({ ...f, genre: e.target.value.split(',').map(s => s.trim()).filter(Boolean) }))} 
+              required
+              placeholder="e.g. Romance, Slice-of-Life, Horror"
+              className="w-full border border-[var(--color-kinu)] px-4 py-3 text-sm text-[var(--color-sumi)] focus:outline-none focus:border-[var(--color-kaki)] transition-colors bg-white rounded-sm" 
+            />
           </div>
 
           <div>
-            <label className="block text-[0.7rem] uppercase tracking-[1.5px] text-[#888] font-bold mb-2">Description</label>
+            <label className="block text-[0.7rem] uppercase tracking-[1.5px] text-[var(--color-hai)] font-bold mb-2">Description</label>
             <textarea value={form.description} onChange={set('description')} rows={4} maxLength={1000}
               placeholder="Short description shown on the card"
-              className="w-full border border-[#e0e0e0] px-4 py-3 text-sm text-[#1a1a1a] focus:outline-none focus:border-[#d4a84b] transition-colors bg-white resize-none" />
+              className="w-full border border-[var(--color-kinu)] px-4 py-3 text-sm text-[var(--color-sumi)] focus:outline-none focus:border-[var(--color-kaki)] transition-colors bg-white resize-none rounded-sm" />
           </div>
 
           <InputField
@@ -253,20 +253,20 @@ function AdminBookForm() {
           <div className="grid grid-cols-2 gap-4">
             <InputField label="Display Order" type="number" value={form.order} onChange={set('order')} placeholder="0" />
             <div>
-              <label className="block text-[0.7rem] uppercase tracking-[1.5px] text-[#888] font-bold mb-2">Status</label>
+              <label className="block text-[0.7rem] uppercase tracking-[1.5px] text-[var(--color-hai)] font-bold mb-2">Status</label>
               <div className="flex items-center gap-3 h-[46px]">
                 <input type="checkbox" id="published" checked={form.published}
                   onChange={(e) => setForm((f) => ({ ...f, published: e.target.checked }))}
-                  className="w-4 h-4 accent-[#d4a84b]" />
-                <label htmlFor="published" className="text-sm text-[#626262]">Published (visible on website)</label>
+                  className="w-4 h-4 accent-[var(--color-kaki)]" />
+                <label htmlFor="published" className="text-sm text-[var(--color-hai)]">Published (visible on website)</label>
               </div>
             </div>
           </div>
         </div>
 
         {/* Cover Image */}
-        <div className="bg-white border border-[#eee] p-6">
-          <h2 className="font-serif text-lg text-[#1a1a1a] mb-4 pb-3 border-b border-[#f5f5f5]">Cover Image</h2>
+        <div className="bg-white border border-[var(--color-kinu)] p-6 rounded-sm shadow-sm">
+          <h2 className="font-serif text-lg text-[var(--color-sumi)] mb-4 pb-3 border-b border-[var(--color-kami)]" style={{ fontFamily: 'var(--font-display)' }}>Cover Image</h2>
           <CoverImagePicker
             currentUrl={form.coverUrl}
             onChange={(url) => setForm((f) => ({ ...f, coverUrl: url }))}
@@ -277,12 +277,12 @@ function AdminBookForm() {
         {/* Actions */}
         <div className="flex items-center gap-4">
           <button type="submit" disabled={loading}
-            className="flex items-center gap-2 px-8 py-3 bg-[#d4a84b] hover:bg-[#c49a3d] disabled:opacity-50 text-white uppercase text-[0.8rem] tracking-[2px] font-bold transition-colors">
+            className="flex items-center gap-2 px-8 py-3 bg-[var(--color-sumi)] hover:bg-[var(--color-kaki)] rounded-sm shadow-md disabled:opacity-50 text-white uppercase text-[0.8rem] tracking-[2px] font-bold transition-all hover:-translate-y-0.5">
             <Save size={15} />
             {loading ? 'Saving…' : isEdit ? 'Update Book' : 'Create Book'}
           </button>
           <button type="button" onClick={handleDiscard}
-            className="px-8 py-3 border border-[#ddd] text-[#626262] uppercase text-[0.8rem] tracking-[2px] font-bold hover:border-[#1a1a1a] hover:text-[#1a1a1a] transition-colors">
+            className="px-8 py-3 border border-[var(--color-kinu)] text-[var(--color-hai)] uppercase text-[0.8rem] tracking-[2px] font-bold hover:border-[var(--color-sumi)] hover:text-[var(--color-sumi)] rounded-sm transition-colors">
             Cancel
           </button>
         </div>

@@ -12,7 +12,6 @@ import { useDialog } from '../../context/DialogContext';
 const NAV = [
   { to: '/admin', label: 'Dashboard', icon: LayoutDashboard, exact: true },
   { to: '/admin/books', label: 'Books', icon: BookOpen },
-  { to: '/admin/projects', label: 'Code Projects', icon: Code2 },
   { to: '/admin/analytics', label: 'Analytics', icon: BarChart2 },
   { to: '/admin/contacts', label: 'Messages', icon: Mail },
   { to: '/admin/settings', label: 'Settings', icon: Settings },
@@ -44,13 +43,16 @@ function Sidebar({ open, onClose, location }) {
         <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={onClose} />
       )}
 
-      <aside className={`fixed top-0 left-0 h-full w-64 bg-[#1a1a1a] text-white z-50 flex flex-col transition-transform duration-300
+      <aside className={`fixed top-0 left-0 h-full w-64 bg-[var(--color-sumi)] text-[var(--color-shiro)] z-50 flex flex-col transition-transform duration-300
         ${open ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
         {/* Logo */}
         <div className="px-6 py-7 border-b border-white/10 flex items-center justify-between">
           <div>
-            <span className="text-xl uppercase tracking-[3px] font-bold text-white">Saar</span>
-            <p className="text-[0.65rem] text-white/40 uppercase tracking-[1.5px] mt-0.5">Admin Panel</p>
+            <div className="flex items-center gap-2 mb-1">
+              <div className="w-2 h-2 rounded-full bg-[var(--color-kaki)]" />
+              <span className="text-xl uppercase tracking-[3px] font-bold text-white">Saar</span>
+            </div>
+            <p className="text-[0.65rem] text-[var(--color-kinu)] uppercase tracking-[1.5px] mt-0.5">Admin Panel</p>
           </div>
           <button onClick={onClose} className="lg:hidden text-white/50 hover:text-white">
             <X size={18} />
@@ -67,10 +69,10 @@ function Sidebar({ open, onClose, location }) {
                 key={item.to}
                 to={item.to}
                 onClick={onClose}
-                className={`flex items-center gap-3 px-4 py-3 text-[0.8rem] uppercase tracking-[1.5px] font-bold transition-all rounded ${
+                className={`flex items-center gap-3 px-4 py-3 text-[0.8rem] uppercase tracking-[1.5px] font-bold transition-all rounded-sm ${
                   active
-                    ? 'bg-[#d4a84b] text-white'
-                    : 'text-white/50 hover:text-white hover:bg-white/5'
+                    ? 'bg-[var(--color-kaki)] text-white'
+                    : 'text-[var(--color-kinu)] hover:text-white hover:bg-white/5'
                 }`}
               >
                 <Icon size={16} />
@@ -111,10 +113,10 @@ function AdminLayout() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center">
+      <div className="min-h-screen bg-[var(--color-shiro)] flex items-center justify-center">
         <div className="text-center">
-          <div className="w-8 h-8 border-2 border-[#d4a84b] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-[#888] text-sm uppercase tracking-wider">Loading…</p>
+          <div className="w-8 h-8 border-2 border-[var(--color-kaki)] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+          <p className="text-[var(--color-hai)] text-sm uppercase tracking-wider">Loading…</p>
         </div>
       </div>
     );
@@ -128,11 +130,11 @@ function AdminLayout() {
   // Logged in but not an admin
   if (user && !isAdmin && location.pathname !== '/admin/login') {
     return (
-      <div className="min-h-screen bg-[#f5f5f5] flex items-center justify-center">
-        <div className="bg-white p-10 text-center max-w-sm">
-          <p className="font-serif text-xl text-[#1a1a1a] mb-3">Access Denied</p>
-          <p className="text-[#888] text-sm mb-6">Your account is not authorised as an admin.</p>
-          <button onClick={() => signOut(auth)} className="px-6 py-2 bg-[#1a1a1a] text-white text-sm uppercase tracking-wider font-bold">
+      <div className="min-h-screen bg-[var(--color-shiro)] flex items-center justify-center">
+        <div className="bg-[var(--color-kami)] p-10 text-center max-w-sm rounded-sm">
+          <p className="font-serif text-xl text-[var(--color-sumi)] mb-3" style={{ fontFamily: 'var(--font-display)' }}>Access Denied</p>
+          <p className="text-[var(--color-hai)] text-sm mb-6">Your account is not authorised as an admin.</p>
+          <button onClick={() => signOut(auth)} className="px-6 py-2 bg-[var(--color-sumi)] text-white text-sm uppercase tracking-wider font-bold rounded-sm hover:bg-[var(--color-kaki)] transition-colors">
             Sign Out
           </button>
         </div>
@@ -150,22 +152,22 @@ function AdminLayout() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f5f5f5] lg:pl-64">
+    <div className="min-h-screen bg-[var(--color-shiro)] lg:pl-64">
       <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} location={location} />
 
       {/* Mobile header */}
-      <header className="lg:hidden bg-white border-b border-[#eee] px-4 py-3 flex items-center gap-3 sticky top-0 z-30">
-        <button onClick={() => setSidebarOpen(true)} className="text-[#1a1a1a]">
+      <header className="lg:hidden bg-[var(--color-kami)] border-b border-[var(--color-kinu)] px-4 py-3 flex items-center gap-3 sticky top-0 z-30">
+        <button onClick={() => setSidebarOpen(true)} className="text-[var(--color-sumi)]">
           <Menu size={22} />
         </button>
-        <span className="text-sm uppercase tracking-[2px] font-bold text-[#1a1a1a]">Admin Panel</span>
+        <span className="text-sm uppercase tracking-[2px] font-bold text-[var(--color-sumi)]">Admin Panel</span>
       </header>
 
       <main className="p-6 md:p-8">
         <Suspense
           fallback={
             <div className="flex items-center justify-center py-32">
-              <div className="w-8 h-8 border-2 border-[#d4a84b] border-t-transparent rounded-full animate-spin" />
+              <div className="w-8 h-8 border-2 border-[var(--color-kaki)] border-t-transparent rounded-full animate-spin" />
             </div>
           }
         >

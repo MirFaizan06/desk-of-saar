@@ -8,7 +8,6 @@ import {
 } from '../lib/fingerprint';
 import { getLocation } from '../lib/geo';
 import { useToast } from '../context/ToastContext';
-import { useTheme } from '../context/ThemeContext';
 
 async function recordProjectView(projectId) {
   if (!canRecordView(projectId)) return;
@@ -61,7 +60,6 @@ async function toggleLike(projectId, currentlyLiked, setLiked, setCount) {
 }
 
 function ProjectCard({ project }) {
-  const { dark } = useTheme();
   const { showToast } = useToast();
   const [liked, setLiked] = useState(getUserLike(project.id));
   const [likeCount, setLikeCount] = useState(project.likeCount || 0);
@@ -88,38 +86,29 @@ function ProjectCard({ project }) {
   const fullDesc = project.fullDescription || project.description || '';
 
   return (
-    <div className={`border rounded-2xl transition-all duration-500 overflow-hidden ${
-      dark
-        ? 'bg-[#0f0e0c] border-[#1a1815] hover:border-[#b8964e]/15'
-        : 'bg-white border-[#eee9e0] hover:border-[#b8964e]/20'
-    }`}>
+    <div className="border rounded-sm transition-all duration-500 overflow-hidden bg-[var(--color-kami)]/40 border-[var(--color-kinu)] hover:border-[var(--color-kaki)]/30 hover:shadow-lg">
       {/* Header */}
       <div
         onClick={handleExpand}
         className="flex items-start gap-4 px-6 py-5 cursor-pointer group"
       >
-        <div className={`flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center mt-0.5 ${
-          dark ? 'bg-[#1a1815]' : 'bg-[#f6f4f0]'
-        }`}>
-          <Code2 size={16} strokeWidth={1.5} className="text-[#b8964e]" />
+        <div className="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center mt-0.5 bg-[var(--color-kami)]">
+          <Code2 size={16} strokeWidth={1.5} className="text-[var(--color-kaki)]" />
         </div>
 
         <div className="flex-1 min-w-0">
-          <h4 className={`font-display text-[1.1rem] leading-snug font-[400] transition-colors duration-500 group-hover:text-[#b8964e] ${
-            dark ? 'text-[#d0cbc3]' : 'text-[#222]'
-          }`} style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
+          <h4
+            className="text-[1.05rem] leading-snug font-semibold transition-colors duration-500 group-hover:text-[var(--color-kaki)] text-[var(--color-sumi)]"
+            style={{ fontFamily: 'var(--font-display)' }}
+          >
             {project.title}
           </h4>
-          <p className={`text-[0.62rem] font-medium tracking-[2.5px] uppercase mt-1 ${
-            dark ? 'text-[#4a4540]' : 'text-[#ccc]'
-          }`}>
+          <p className="text-[0.62rem] font-medium tracking-[2.5px] uppercase mt-1 text-[var(--color-hai-light)]">
             {project.category}
           </p>
         </div>
 
-        <div className={`flex-shrink-0 transition-colors duration-500 group-hover:text-[#b8964e] mt-1 ${
-          dark ? 'text-[#2a2623]' : 'text-[#ddd]'
-        }`}>
+        <div className="flex-shrink-0 transition-colors duration-500 group-hover:text-[var(--color-kaki)] mt-1 text-[var(--color-kinu)]">
           {expanded ? <ChevronUp size={18} strokeWidth={1.5} /> : <ChevronDown size={18} strokeWidth={1.5} />}
         </div>
       </div>
@@ -132,16 +121,14 @@ function ProjectCard({ project }) {
           opacity: expanded ? 1 : 0,
         }}
       >
-        <div className={`px-6 pb-6 space-y-5 border-t ${dark ? 'border-[#1a1815]' : 'border-[#f0ece5]'}`}>
+        <div className="px-6 pb-6 space-y-5 border-t border-[var(--color-kinu)]">
           {/* Tags */}
           {project.tags?.length > 0 && (
             <div className="flex flex-wrap gap-1.5 pt-5">
               {project.tags.map((tag) => (
                 <span
                   key={tag}
-                  className={`px-3 py-0.5 rounded-full text-[0.6rem] uppercase tracking-[1.5px] font-medium ${
-                    dark ? 'bg-[#1a1815] text-[#5a554c]' : 'bg-[#f6f4f0] text-[#999]'
-                  }`}
+                  className="px-3 py-0.5 rounded-full text-[0.6rem] uppercase tracking-[1.5px] font-medium bg-[var(--color-kami)] text-[var(--color-hai)]"
                 >
                   {tag}
                 </span>
@@ -152,7 +139,7 @@ function ProjectCard({ project }) {
           {/* Description */}
           <div className="space-y-3 pt-1">
             {fullDesc.split('\n\n').map((para, i) => (
-              <p key={i} className={`text-[0.9rem] leading-relaxed ${dark ? 'text-[#7a756c]' : 'text-[#666]'}`}>{para}</p>
+              <p key={i} className="text-[0.9rem] leading-relaxed text-[var(--color-hai)]">{para}</p>
             ))}
           </div>
 
@@ -164,9 +151,7 @@ function ProjectCard({ project }) {
                   href={project.sourceUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`inline-flex items-center gap-2 px-5 py-2 rounded-full text-white uppercase text-[0.65rem] tracking-[2px] font-medium transition-all duration-400 hover:-translate-y-0.5 ${
-                    dark ? 'bg-[#1a1815] hover:bg-[#b8964e]' : 'bg-[#111] hover:bg-[#b8964e]'
-                  }`}
+                  className="inline-flex items-center gap-2 px-5 py-2 rounded-sm text-white uppercase text-[0.65rem] tracking-[2px] font-medium transition-all duration-400 hover:-translate-y-0.5 bg-[var(--color-sumi)] hover:bg-[var(--color-kaki)]"
                 >
                   <Github size={13} /> Source
                 </a>
@@ -176,11 +161,7 @@ function ProjectCard({ project }) {
                   href={project.demoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`inline-flex items-center gap-2 px-5 py-2 rounded-full border uppercase text-[0.65rem] tracking-[2px] font-medium transition-all duration-400 hover:-translate-y-0.5 ${
-                    dark
-                      ? 'border-[#2a2623] text-[#7a756c] hover:bg-[#b8964e] hover:border-[#b8964e] hover:text-white'
-                      : 'border-[#ddd] text-[#888] hover:bg-[#111] hover:border-[#111] hover:text-white'
-                  }`}
+                  className="inline-flex items-center gap-2 px-5 py-2 rounded-sm border uppercase text-[0.65rem] tracking-[2px] font-medium transition-all duration-400 hover:-translate-y-0.5 border-[var(--color-kinu)] text-[var(--color-hai)] hover:bg-[var(--color-kaki)] hover:border-[var(--color-kaki)] hover:text-white"
                 >
                   <ExternalLink size={13} /> Live Demo
                 </a>
@@ -189,9 +170,7 @@ function ProjectCard({ project }) {
           )}
 
           {/* Like + stats row */}
-          <div className={`flex items-center gap-4 pt-3 border-t text-[0.8rem] ${
-            dark ? 'border-[#2a2824] text-[#5a5650]' : 'border-[#f5f5f5] text-[#bbb]'
-          }`}>
+          <div className="flex items-center gap-4 pt-3 border-t text-[0.8rem] border-[var(--color-kinu)] text-[var(--color-hai-light)]">
             <button
               onClick={handleLike}
               disabled={liking}

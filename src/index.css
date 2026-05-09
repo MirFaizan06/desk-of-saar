@@ -1,102 +1,180 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Outfit:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700&family=Inter:wght@300;400;500;600;700&family=Noto+Serif+JP:wght@400;500;600;700;900&display=swap');
 @import "tailwindcss";
 
-@theme {
-  --color-bg: #fdfcfa;
-  --color-bg-alt: #f6f4f0;
-  --color-ink: #111;
-  --color-ink-soft: #555;
-  --color-ink-muted: #999;
-  --color-gold: #b8964e;
-  --color-gold-dark: #a07f3c;
-  --color-gold-light: #d4bc7c;
-  --color-rule: #e2ddd5;
+/* ═══════════════════════════════════════════════════════════════════════════
+   SIMPLY OMAR RASHID LONE — Japanese-Inspired Design System
+   Colors: Orange (柿 kaki) + Milky White (白 shiro)
+   ═══════════════════════════════════════════════════════════════════════════ */
 
-  --font-body: 'Outfit', system-ui, sans-serif;
-  --font-display: 'Cormorant Garamond', 'Georgia', serif;
+@theme {
+  /* ── Core Palette ── */
+  --color-kaki: #F25C27;
+  --color-kaki-deep: #D94E1F;
+  --color-kaki-light: #FF7A4D;
+  --color-shiro: #FAF5EF;
+  --color-kami: #F0E8DC;
+  --color-sumi: #1A1714;
+  --color-sumi-soft: #2D2924;
+  --color-hai: #8A8378;
+  --color-hai-light: #B0A99E;
+  --color-kinu: #E8DFD0;
+
+  /* ── Typography ── */
+  --font-display: 'Playfair Display', 'Noto Serif JP', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-jp: 'Noto Serif JP', serif;
 }
 
+/* ── Reset & Base ── */
 *, *::before, *::after { box-sizing: border-box; }
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
 
 body {
-  background: var(--color-bg);
-  color: var(--color-ink-soft);
+  background: var(--color-shiro);
+  color: var(--color-hai);
   font-family: var(--font-body);
-  font-weight: 350;
+  font-weight: 400;
   font-size: 15px;
   line-height: 1.8;
   margin: 0;
   -webkit-font-smoothing: antialiased;
-  transition: background 0.5s, color 0.5s;
+  -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
-  color: var(--color-ink);
-  font-weight: 400;
+  color: var(--color-sumi);
+  font-weight: 700;
   margin: 0;
-  transition: color 0.5s;
+  line-height: 1.15;
 }
 
 img { max-width: 100%; display: block; }
-a { text-decoration: none; color: inherit; transition: all 0.35s; }
+a { text-decoration: none; color: inherit; transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
 
 ::selection {
-  background: var(--color-gold-light);
-  color: var(--color-ink);
-}
-
-/* ── Dark Mode ── */
-html.dark body {
-  background: #0c0b09;
-  color: #7a756c;
-}
-
-html.dark h1, html.dark h2, html.dark h3,
-html.dark h4, html.dark h5, html.dark h6 {
-  color: #e8e3db;
-}
-
-html.dark ::selection {
-  background: rgba(184, 150, 78, 0.3);
-  color: #e8e3db;
+  background: var(--color-kaki);
+  color: #fff;
 }
 
 /* ── Layout ── */
 .container {
-  max-width: 1180px;
+  max-width: 1280px;
   margin: 0 auto;
   padding: 0 clamp(20px, 4vw, 48px);
 }
 
-/* ── Scrollbar ── */
-::-webkit-scrollbar { width: 5px; }
+/* ── Scrollbar (minimal Japanese style) ── */
+::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--color-gold); border-radius: 99px; }
-html.dark ::-webkit-scrollbar-track { background: #0c0b09; }
+::-webkit-scrollbar-thumb { background: var(--color-kaki); border-radius: 99px; }
 
-/* ── Animations ── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   CAMERA LENS REVEAL ANIMATION
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes lens-open {
+  0% {
+    clip-path: circle(0% at 50% 50%);
+    opacity: 1;
+  }
+  60% {
+    clip-path: circle(55% at 50% 50%);
+    opacity: 1;
+  }
+  100% {
+    clip-path: circle(150% at 50% 50%);
+    opacity: 1;
+  }
+}
+
+@keyframes iris-blade-rotate {
+  0% { transform: rotate(0deg) scale(1.5); opacity: 1; }
+  100% { transform: rotate(90deg) scale(0); opacity: 0; }
+}
+
+.lens-reveal {
+  animation: lens-open 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  clip-path: circle(0% at 50% 50%);
+}
+
+.lens-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--color-sumi);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+@keyframes lens-overlay-out {
+  0% { clip-path: circle(100% at 50% 50%); }
+  100% { clip-path: circle(0% at 50% 50%); }
+}
+
+.lens-overlay-exit {
+  animation: lens-overlay-out 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: 0.3s;
+}
+
+/* ── Iris blades ── */
+.iris-container {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes iris-shrink {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0); opacity: 0; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GENERAL ANIMATIONS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 @keyframes enter-up {
-  from { opacity: 0; transform: translateY(32px); }
+  from { opacity: 0; transform: translateY(40px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes enter-down {
-  from { opacity: 0; transform: translateY(-16px); }
+  from { opacity: 0; transform: translateY(-20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes scale-up {
-  from { opacity: 0; transform: scale(0.94); }
+@keyframes enter-left {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes enter-right {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.92); }
   to { opacity: 1; transform: scale(1); }
 }
 
-@keyframes fade {
-  from { opacity: 0; }
-  to { opacity: 1; }
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
 }
 
 @keyframes shimmer {
@@ -104,53 +182,178 @@ html.dark ::-webkit-scrollbar-track { background: #0c0b09; }
   100% { background-position: 200% 0; }
 }
 
-@keyframes float-line {
-  0%, 100% { transform: scaleY(1); opacity: 0.5; }
-  50% { transform: scaleY(1.3); opacity: 1; }
+@keyframes brush-stroke {
+  0% { width: 0; }
+  100% { width: 100%; }
 }
 
-@keyframes reveal {
-  from { opacity: 0; transform: translateY(48px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes kanji-fade {
+  0% { opacity: 0; transform: translateY(20px) scale(0.95); }
+  100% { opacity: 0.04; transform: translateY(0) scale(1); }
 }
 
-.anim-enter-up { animation: enter-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-.anim-enter-down { animation: enter-down 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-.anim-scale-up { animation: scale-up 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-.anim-fade { animation: fade 0.3s ease forwards; }
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
 
-/* Scroll reveal */
-.sr { opacity: 0; transform: translateY(48px); transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
-.sr.visible { opacity: 1; transform: translateY(0); }
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(242, 92, 39, 0.3); }
+  50% { box-shadow: 0 0 20px 4px rgba(242, 92, 39, 0.15); }
+}
 
-/* Stagger children */
+@keyframes slide-in-book {
+  from { opacity: 0; transform: translateX(60px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes name-reveal {
+  0% { 
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+  100% { 
+    clip-path: inset(0 0% 0 0);
+    opacity: 1;
+  }
+}
+
+/* ── Animation Classes ── */
+.anim-enter-up { animation: enter-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-enter-down { animation: enter-down 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-enter-left { animation: enter-left 0.8s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-enter-right { animation: enter-right 0.8s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-fade { animation: fade-in 0.5s ease both; }
+.anim-scale { animation: scale-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.animate-fade-in { animation: fade-in 0.3s ease both; }
+.animate-scale-in { animation: scale-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-float { animation: float 4s ease-in-out infinite; }
+.anim-brush { animation: brush-stroke 1s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.animate-spin { animation: spin 0.8s linear infinite; }
+
+/* ── Scroll Reveal ── */
+.sr {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1), transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.sr.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Stagger children ── */
 .stagger > *:nth-child(1) { transition-delay: 0s; }
-.stagger > *:nth-child(2) { transition-delay: 0.06s; }
-.stagger > *:nth-child(3) { transition-delay: 0.12s; }
-.stagger > *:nth-child(4) { transition-delay: 0.18s; }
-.stagger > *:nth-child(5) { transition-delay: 0.24s; }
-.stagger > *:nth-child(6) { transition-delay: 0.3s; }
-.stagger > *:nth-child(7) { transition-delay: 0.36s; }
-.stagger > *:nth-child(8) { transition-delay: 0.42s; }
-.stagger > *:nth-child(9) { transition-delay: 0.48s; }
-.stagger > *:nth-child(10) { transition-delay: 0.54s; }
+.stagger > *:nth-child(2) { transition-delay: 0.08s; }
+.stagger > *:nth-child(3) { transition-delay: 0.16s; }
+.stagger > *:nth-child(4) { transition-delay: 0.24s; }
+.stagger > *:nth-child(5) { transition-delay: 0.32s; }
+.stagger > *:nth-child(6) { transition-delay: 0.40s; }
+.stagger > *:nth-child(7) { transition-delay: 0.48s; }
+.stagger > *:nth-child(8) { transition-delay: 0.56s; }
 
-/* Skeleton */
+/* ── Skeleton Loading ── */
 .skel {
-  background: linear-gradient(90deg, #efece7 25%, #f7f5f1 50%, #efece7 75%);
+  background: linear-gradient(90deg, var(--color-kinu) 25%, var(--color-kami) 50%, var(--color-kinu) 75%);
   background-size: 200% 100%;
-  animation: shimmer 1.6s ease-in-out infinite;
-  border-radius: 12px;
+  animation: shimmer 1.8s ease-in-out infinite;
+  border-radius: 4px;
 }
 
-html.dark .skel {
-  background: linear-gradient(90deg, #161412 25%, #1e1c19 50%, #161412 75%);
-  background-size: 200% 100%;
-}
-
-/* Clamp */
+/* ── Text Utilities ── */
 .clamp-2 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; }
+.clamp-3 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; }
 .clamp-1 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; line-clamp: 1; }
 
-@keyframes spin { to { transform: rotate(360deg); } }
-.animate-spin { animation: spin 0.8s linear infinite; }
+/* ── Japanese Decorative Elements ── */
+.jp-border-top {
+  position: relative;
+}
+.jp-border-top::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 2px;
+  background: var(--color-kaki);
+}
+
+/* Washi paper texture overlay */
+.washi-texture {
+  position: relative;
+}
+.washi-texture::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+/* Torii gate decorative horizontal line */
+.torii-line {
+  position: relative;
+  display: inline-block;
+}
+.torii-line::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--color-kaki);
+  border-radius: 2px;
+}
+
+/* Genre tag pill */
+.genre-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 14px;
+  background: rgba(242, 92, 39, 0.08);
+  color: var(--color-kaki);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border: 1px solid rgba(242, 92, 39, 0.15);
+  border-radius: 99px;
+  transition: all 0.3s ease;
+}
+
+.genre-tag:hover {
+  background: var(--color-kaki);
+  color: white;
+  border-color: var(--color-kaki);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HERO — Samurai-Inspired Title Sizing
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.hero-title {
+  font-size: clamp(4.5rem, 12vw, 10rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 640px) {
+  .hero-title {
+    font-size: clamp(3rem, 14vw, 5rem);
+  }
+}
+
+/* Scroll indicator line animation */
+@keyframes scroll-line {
+  0% { transform: translateY(-100%); }
+  50% { transform: translateY(0); }
+  100% { transform: translateY(100%); }
+}
+
+.animate-scroll-line {
+  animation: scroll-line 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}

@@ -11,7 +11,6 @@ export function useBooks() {
   useEffect(() => {
     const q = query(
       collection(db, 'books'),
-      where('published', '==', true),
       orderBy('order', 'asc')
     );
 
@@ -21,13 +20,15 @@ export function useBooks() {
         if (!snap.empty) {
           setBooks(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
         }
+        // If Firestore returns empty, keep using fallback — no error
         setLoading(false);
         setError(null);
       },
       (err) => {
-        console.error('Books fetch error:', err);
-        setError('Could not load books from the server. Showing cached data.');
+        console.warn('Books: Firestore unavailable, using local data.', err.message);
+        // Silently fall back — no error banner
         setLoading(false);
+        setError(null);
       }
     );
 

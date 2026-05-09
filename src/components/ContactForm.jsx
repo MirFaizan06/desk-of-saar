@@ -46,7 +46,7 @@ function ContactForm() {
     }
   };
 
-  const inputClass = 'w-full border border-[#e0e0e0] bg-white px-4 py-3 text-[0.9rem] text-[#1a1a1a] placeholder-[#bbb] focus:outline-none focus:border-[#d4a84b] transition-colors';
+  const inputClass = 'w-full border border-[var(--color-kinu)] bg-[var(--color-shiro)] px-4 py-3 text-[0.9rem] text-[var(--color-sumi)] placeholder-[var(--color-hai-light)] focus:outline-none focus:border-[var(--color-kaki)] transition-colors duration-400 rounded-sm';
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 text-left">
@@ -94,17 +94,17 @@ function ContactForm() {
       />
 
       {status === 'success' && (
-        <div className="py-3 px-4 bg-green-50 border border-green-200 text-green-700 text-sm">
+        <div className="py-3 px-4 bg-green-50 border border-green-200 text-green-700 text-sm rounded-sm">
           Message sent! I'll get back to you soon.
         </div>
       )}
       {status === 'error' && (
-        <div className="py-3 px-4 bg-red-50 border border-red-200 text-red-700 text-sm">
+        <div className="py-3 px-4 bg-red-50 border border-red-200 text-red-700 text-sm rounded-sm">
           {errorMsg}
         </div>
       )}
       {status === 'rate-limited' && (
-        <div className="py-3 px-4 bg-orange-50 border border-orange-200 text-orange-700 text-sm">
+        <div className="py-3 px-4 bg-orange-50 border border-orange-200 text-orange-700 text-sm rounded-sm">
           Please wait 10 minutes before sending another message.
         </div>
       )}
@@ -112,7 +112,7 @@ function ContactForm() {
       <button
         type="submit"
         disabled={loading}
-        className="flex items-center gap-2 px-8 py-3 bg-[#d4a84b] hover:bg-[#c49a3d] disabled:opacity-50 text-white uppercase text-[0.8rem] tracking-[2px] font-bold transition-colors"
+        className="flex items-center gap-2 px-8 py-3 bg-[var(--color-sumi)] hover:bg-[var(--color-kaki)] disabled:opacity-50 text-white uppercase text-[0.68rem] tracking-[2.5px] font-bold transition-all duration-500 hover:-translate-y-0.5 rounded-sm"
       >
         <Send size={14} />
         {loading ? 'Sending…' : 'Send Message'}

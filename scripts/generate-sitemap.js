@@ -79,16 +79,24 @@ async function run() {
   }
 
   // Collect all cover/thumbnail images for the image sitemap extension
+  // Filter out data: URIs (base64 images) — only include real HTTP URLs
+  const isHttpUrl = (url) => typeof url === 'string' && url.startsWith('http');
+  const normalizeUrl = (url) => url.startsWith('/') ? `${BASE_URL}${url}` : url;
+
   const images = [
     { url: `${BASE_URL}/saar_img.jpeg`, title: 'Omar Rashid Lone — Author and Developer' },
     ...books
-      .map(d => field(d, 'coverUrl'))
+      .map(d => field(d, 'coverUrl') || field(d, 'cover'))
       .filter(Boolean)
-      .map(url => ({ url, title: xmlEscape(field(books.find(d => field(d, 'coverUrl') === url), 'title') || 'Book cover') })),
+      .map(normalizeUrl)
+      .filter(isHttpUrl)
+      .map(url => ({ url, title: xmlEscape(field(books.find(d => (field(d, 'coverUrl') || field(d, 'cover')) && normalizeUrl(field(d, 'coverUrl') || field(d, 'cover')) === url), 'title') || 'Book cover') })),
     ...projects
       .map(d => field(d, 'thumbnailUrl'))
       .filter(Boolean)
-      .map(url => ({ url, title: xmlEscape(field(projects.find(d => field(d, 'thumbnailUrl') === url), 'title') || 'Project thumbnail') })),
+      .map(normalizeUrl)
+      .filter(isHttpUrl)
+      .map(url => ({ url, title: xmlEscape(field(projects.find(d => field(d, 'thumbnailUrl') && normalizeUrl(field(d, 'thumbnailUrl')) === url), 'title') || 'Project thumbnail') })),
   ];
 
   const imageXml = images

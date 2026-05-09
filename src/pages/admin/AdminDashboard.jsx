@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
 import { collection, getDocs, query, where, orderBy, limit } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
-import { BookOpen, Code2, Eye, Mail, TrendingUp, Clock } from 'lucide-react';
+import { BookOpen, Eye, Mail, TrendingUp, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 function StatCard({ icon: Icon, label, value, color, to }) {
   const content = (
-    <div className="bg-white p-6 border border-[#eee] hover:shadow-md transition-shadow flex items-center gap-5">
+    <div className="bg-white p-6 border border-[var(--color-kinu)] hover:shadow-md transition-shadow flex items-center gap-5 rounded-sm">
       <div className={`w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 ${color}`}>
         <Icon size={20} className="text-white" />
       </div>
       <div>
-        <p className="text-[0.7rem] uppercase tracking-[1.5px] text-[#888] font-bold mb-1">{label}</p>
-        <p className="font-serif text-3xl text-[#1a1a1a]">{value ?? '—'}</p>
+        <p className="text-[0.7rem] uppercase tracking-[1.5px] text-[var(--color-hai)] font-bold mb-1">{label}</p>
+        <p className="font-serif text-3xl text-[var(--color-sumi)]" style={{ fontFamily: 'var(--font-display)' }}>{value ?? '—'}</p>
       </div>
     </div>
   );
@@ -28,20 +28,17 @@ function AdminDashboard() {
   useEffect(() => {
     async function load() {
       try {
-        const [booksSnap, projSnap, contactsSnap, unreadSnap] = await Promise.all([
+        const [booksSnap, contactsSnap, unreadSnap] = await Promise.all([
           getDocs(collection(db, 'books')),
-          getDocs(collection(db, 'projects')),
           getDocs(query(collection(db, 'contacts'), orderBy('createdAt', 'desc'), limit(5))),
           getDocs(query(collection(db, 'contacts'), where('read', '==', false))),
         ]);
 
         let totalViews = 0;
         booksSnap.docs.forEach((d) => { totalViews += d.data().viewCount || 0; });
-        projSnap.docs.forEach((d) => { totalViews += d.data().viewCount || 0; });
 
         setStats({
           books: booksSnap.size,
-          projects: projSnap.size,
           totalViews,
           unreadMessages: unreadSnap.size,
         });
@@ -84,10 +81,9 @@ function AdminDashboard() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-10">
-        <StatCard icon={BookOpen} label="Total Books" value={stats?.books} color="bg-[#1a1a1a]" to="/admin/books" />
-        <StatCard icon={Code2} label="Code Projects" value={stats?.projects} color="bg-[#d4a84b]" to="/admin/projects" />
-        <StatCard icon={Eye} label="Total Views" value={stats?.totalViews?.toLocaleString()} color="bg-slate-500" to="/admin/analytics" />
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+        <StatCard icon={BookOpen} label="Total Books" value={stats?.books} color="bg-[var(--color-sumi)]" to="/admin/books" />
+        <StatCard icon={Eye} label="Total Views" value={stats?.totalViews?.toLocaleString()} color="bg-[var(--color-kaki)]" to="/admin/analytics" />
         <StatCard icon={Mail} label="Unread Messages" value={stats?.unreadMessages} color="bg-emerald-600" to="/admin/contacts" />
       </div>
 

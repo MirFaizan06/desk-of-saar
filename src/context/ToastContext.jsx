@@ -12,16 +12,16 @@ const ICONS = {
 };
 
 const COLORS = {
-  success: 'border-l-green-500 bg-white',
-  error: 'border-l-red-500 bg-white',
-  info: 'border-l-[#d4a84b] bg-white',
-  warning: 'border-l-orange-400 bg-white',
+  success: 'border-l-green-600 bg-[var(--color-shiro)]',
+  error: 'border-l-red-500 bg-[var(--color-shiro)]',
+  info: 'border-l-[var(--color-kaki)] bg-[var(--color-shiro)]',
+  warning: 'border-l-orange-400 bg-[var(--color-shiro)]',
 };
 
 const ICON_COLORS = {
-  success: 'text-green-500',
+  success: 'text-green-600',
   error: 'text-red-500',
-  info: 'text-[#d4a84b]',
+  info: 'text-[var(--color-kaki)]',
   warning: 'text-orange-400',
 };
 
@@ -29,11 +29,11 @@ function ToastItem({ toast, onRemove }) {
   const Icon = ICONS[toast.type] || Info;
   return (
     <div
-      className={`flex items-start gap-3 w-80 p-4 shadow-lg border-l-4 animate-scale-in ${COLORS[toast.type]}`}
+      className={`flex items-start gap-3 w-80 p-4 shadow-lg border-l-4 animate-scale-in rounded-sm ${COLORS[toast.type]}`}
     >
       <Icon size={18} className={`flex-shrink-0 mt-0.5 ${ICON_COLORS[toast.type]}`} />
-      <p className="flex-1 text-sm text-[#1a1a1a] leading-relaxed">{toast.message}</p>
-      <button onClick={() => onRemove(toast.id)} className="text-[#aaa] hover:text-[#1a1a1a]">
+      <p className="flex-1 text-sm text-[var(--color-sumi)] leading-relaxed">{toast.message}</p>
+      <button onClick={() => onRemove(toast.id)} className="text-[var(--color-hai)] hover:text-[var(--color-sumi)]">
         <X size={14} />
       </button>
     </div>

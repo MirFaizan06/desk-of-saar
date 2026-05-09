@@ -7,9 +7,9 @@ const BASE_URL = 'https://desk-of-saar.netlify.app';
  * for every book and project loaded from Firestore.
  * Re-runs whenever the data changes (new admin additions are picked up automatically).
  */
-function SEOInjector({ books = [], projects = [] }) {
+function SEOInjector({ books = [] }) {
   useEffect(() => {
-    if (books.length === 0 && projects.length === 0) return;
+    if (books.length === 0) return;
 
     const bookSchemas = books.map((book) => ({
       '@type': 'Book',
@@ -29,26 +29,7 @@ function SEOInjector({ books = [], projects = [] }) {
       ...(book.coverUrl ? { 'image': book.coverUrl } : {}),
     }));
 
-    const projectSchemas = projects.map((proj) => ({
-      '@type': 'SoftwareApplication',
-      'name': proj.title,
-      'author': {
-        '@type': 'Person',
-        'name': 'Omar Rashid Lone',
-        'alternateName': 'Saar',
-        'url': BASE_URL,
-      },
-      'url': BASE_URL,
-      'applicationCategory': proj.category || 'WebApplication',
-      'description': proj.description || '',
-      'keywords': (proj.tags || []).join(', '),
-      'isAccessibleForFree': true,
-      ...(proj.thumbnailUrl ? { 'image': proj.thumbnailUrl } : {}),
-      ...(proj.sourceUrl ? { 'codeRepository': proj.sourceUrl } : {}),
-      ...(proj.demoUrl ? { 'installUrl': proj.demoUrl } : {}),
-    }));
-
-    const allSchemas = [...bookSchemas, ...projectSchemas];
+    const allSchemas = [...bookSchemas];
     if (allSchemas.length === 0) return;
 
     const jsonld = {
@@ -68,7 +49,7 @@ function SEOInjector({ books = [], projects = [] }) {
     return () => {
       document.getElementById('seo-dynamic-jsonld')?.remove();
     };
-  }, [books, projects]);
+  }, [books]);
 
   return null;
 }

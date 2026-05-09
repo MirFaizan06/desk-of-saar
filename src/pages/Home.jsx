@@ -1,15 +1,33 @@
-import { useState, useEffect, useRef } from 'react';
-import { BookOpen, Code2, WifiOff, ArrowRight } from 'lucide-react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { BookOpen, WifiOff, ArrowRight, ArrowDown, ChevronRight, ChevronLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useBooks } from '../hooks/useBooks';
-import { useProjects } from '../hooks/useProjects';
-import { useTheme } from '../context/ThemeContext';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import BookCard from '../components/BookCard';
-import ProjectCard from '../components/ProjectCard';
 import SEOInjector from '../components/SEOInjector';
 
-/* ── Scroll Reveal ─────────────────────────────────────────────────────────── */
+/* ── Camera Lens Intro ─────────────────────────────────────────────────── */
+function LensOverlay({ onComplete }) {
+  const [phase, setPhase] = useState('closed');
+  useEffect(() => {
+    const t1 = setTimeout(() => setPhase('opening'), 400);
+    const t2 = setTimeout(() => { setPhase('done'); onComplete(); }, 2400);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, [onComplete]);
+  if (phase === 'done') return null;
+  return (
+    <div className={`lens-overlay ${phase === 'opening' ? 'lens-overlay-exit' : ''}`}>
+      <div className={`flex flex-col items-center gap-3 transition-all duration-700 ${phase === 'opening' ? 'opacity-0 scale-75' : 'opacity-100'}`}>
+        <div className="w-4 h-4 rounded-full bg-[var(--color-kaki)]" />
+        <p className="text-[0.65rem] uppercase tracking-[8px] text-white/40 font-semibold">Welcome to</p>
+        <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight" style={{ fontFamily: 'var(--font-display)' }}>Desk of Saar</h1>
+      </div>
+    </div>
+  );
+}
+
+/* ── Scroll Reveal Hook ────────────────────────────────────────────────── */
 function useSR() {
   const ref = useRef(null);
   useEffect(() => {
@@ -24,246 +42,280 @@ function useSR() {
   return ref;
 }
 
-/* ── Skeletons ─────────────────────────────────────────────────────────────── */
+/* ── Skeletons ─────────────────────────────────────────────────────────── */
 function BookSkel() {
   return (
-    <div className="rounded-2xl overflow-hidden">
-      <div className="w-full aspect-[2/3] skel" />
-      <div className="pt-4 space-y-2">
-        <div className="h-4 skel w-3/4 mx-auto" />
-        <div className="h-3 skel w-1/2 mx-auto" />
-      </div>
+    <div className="overflow-hidden" style={{ borderRadius: '6px' }}>
+      <div className="w-full aspect-[3/4] skel" />
+      <div className="pt-4 space-y-2 px-1"><div className="h-5 skel w-3/4" /><div className="h-3 skel w-1/2" /></div>
     </div>
   );
 }
 
-function ProjSkel({ dark }) {
+function ProjSkel() {
   return (
-    <div className={`rounded-2xl border p-6 ${dark ? 'border-[#1a1815] bg-[#0f0e0c]' : 'border-[#eee9e0] bg-white'}`}>
+    <div className="rounded-sm border border-[var(--color-kinu)] p-6 bg-[var(--color-kami)]/40">
       <div className="flex gap-4">
-        <div className="w-10 h-10 skel rounded-xl flex-shrink-0" />
-        <div className="flex-1 space-y-3">
-          <div className="h-5 skel w-2/3" />
-          <div className="h-3 skel w-1/3" />
-        </div>
+        <div className="w-10 h-10 skel rounded-lg flex-shrink-0" />
+        <div className="flex-1 space-y-3"><div className="h-5 skel w-2/3" /><div className="h-3 skel w-1/3" /></div>
       </div>
     </div>
   );
 }
 
-/* ══════════════════════════════════════════════════════════════════════════════
-   HOME
-   ══════════════════════════════════════════════════════════════════════════════ */
+/* ── Hero Slide Data ───────────────────────────────────────────────────── */
+const heroSlides = [
+  {
+    label: 'Writer · Poet · Developer',
+    titleLine1: 'DESK',
+    titleLine2: 'OF SAAR',
+    desc: 'Stories that refuse to follow the usual script. Prose, poetry, and code from a 20-year-old writer in Kashmir.',
+    cta: { text: 'Explore Works', action: 'works' },
+  },
+  {
+    label: 'Free to Read · Open to All',
+    titleLine1: 'STORIES',
+    titleLine2: 'UNBOUND',
+    desc: 'Every draft, every confession, every unfinished thought — shared freely because stories get better when they\'re read.',
+    cta: { text: 'Read Now', action: 'works' },
+  },
+  {
+    label: 'About the Writer',
+    titleLine1: 'OMAR',
+    titleLine2: 'RASHID',
+    desc: 'A Computer Science student who writes literary fiction, romance, horror, and poetry. Building at the intersection of systems and human emotion.',
+    cta: { text: 'About Me', action: '/about' },
+  },
+];
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HOME — Samurai-inspired Hero + Works + Footer
+   ═══════════════════════════════════════════════════════════════════════════ */
 function Home() {
+  const navigate = useNavigate();
   const { books, loading: booksLoading, error: booksError } = useBooks();
-  const { projects, loading: projLoading, error: projError } = useProjects();
-  const { dark } = useTheme();
 
-  const [tab, setTab] = useState('books');
-  const [vis, setVis] = useState(true);
-  const [content, setContent] = useState('books');
-  const [count, setCount] = useState(10);
-  const [pCount, setPCount] = useState(6);
-
-  // Intro
-  const [ready, setReady] = useState(false);
-  useEffect(() => { setTimeout(() => setReady(true), 120); }, []);
-
-  // Tab switch
-  const switchTab = (t) => {
-    if (t === tab) return;
-    setVis(false);
-    setTimeout(() => { setTab(t); setContent(t); setTimeout(() => setVis(true), 50); }, 300);
-  };
+  const [count, setCount] = useState(20);
+  const [introComplete, setIntroComplete] = useState(() => sessionStorage.getItem('introPlayed') === 'true');
+  const [heroVisible, setHeroVisible] = useState(() => sessionStorage.getItem('introPlayed') === 'true');
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [slideTransition, setSlideTransition] = useState(true);
 
   const worksRef = useSR();
 
+  const handleIntroComplete = useCallback(() => {
+    setIntroComplete(true);
+    sessionStorage.setItem('introPlayed', 'true');
+    setTimeout(() => setHeroVisible(true), 200);
+  }, []);
+
+  const goToSlide = (dir) => {
+    setSlideTransition(false);
+    setTimeout(() => {
+      setCurrentSlide((prev) => {
+        if (dir === 'next') return (prev + 1) % heroSlides.length;
+        return prev === 0 ? heroSlides.length - 1 : prev - 1;
+      });
+      setTimeout(() => setSlideTransition(true), 20);
+    }, 200);
+  };
+
+  const handleHeroCta = (action) => {
+    if (action.startsWith('/')) {
+      navigate(action);
+    } else {
+      const el = document.getElementById(action);
+      if (el) {
+        const y = el.getBoundingClientRect().top + window.scrollY - 80;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }
+  };
+
+  const slide = heroSlides[currentSlide];
+
   return (
-    <>
-      <SEOInjector books={books} projects={projects} />
-      <div className={ready ? 'anim-enter-down' : 'opacity-0'}><Header /></div>
+    <div className="bg-[var(--color-shiro)]">
+      <SEOInjector books={books} />
+      {!introComplete && <LensOverlay onComplete={handleIntroComplete} />}
+      <div className={`relative z-50 ${introComplete ? 'anim-enter-down' : 'opacity-0'}`}><Header /></div>
 
-      {(booksError || projError) && (
-        <div className={`fixed top-16 left-0 right-0 z-40 px-5 py-2.5 flex items-center justify-center gap-3 text-[0.8rem] ${dark ? 'bg-amber-900/20 text-amber-400' : 'bg-amber-50 text-amber-800'
-          }`}>
-          <WifiOff size={14} /><span>{booksError || projError}</span>
+      {/* ═══════════════ HERO SECTION — Samurai-Inspired ═══════════════ */}
+      <section className={`relative min-h-[85vh] pt-[100px] lg:pt-[120px] flex items-center overflow-hidden ${introComplete ? 'lens-reveal' : 'opacity-0'}`}>
+
+        {/* Washi paper subtle texture */}
+        <div className="absolute inset-0 opacity-[0.02]" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`
+        }} />
+
+        {/* Brush stroke decoration — positioned behind the title area */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-[35%] -translate-y-[55%] w-[700px] h-[500px] opacity-[0.12] pointer-events-none select-none z-0">
+          <img src="/brush_stroke.png" alt="" className="w-full h-full object-contain" draggable={false} />
         </div>
-      )}
 
-      {/* ═══════════════════ SPLIT HERO / ABOUT ═══════════════════ */}
-      <section className="relative min-h-[calc(100vh-80px)] flex flex-col justify-center pt-24 pb-16">
-        <div className="container max-w-[1100px] mx-auto px-6">
+        {/* Vertical Japanese text decoration */}
+        <div className="absolute top-1/2 right-8 -translate-y-1/2 hidden lg:block z-0">
+          <p className="text-[var(--color-kinu)] text-[0.7rem] tracking-[6px] font-medium" style={{
+            writingMode: 'vertical-rl',
+            fontFamily: 'var(--font-jp)',
+          }}>
+            物語の始まり
+          </p>
+        </div>
 
-          <div className="flex flex-col md:flex-row items-center gap-14 md:gap-20">
+        {/* Main hero content */}
+        <div className="container relative z-10 py-32 lg:py-0 lg:mt-20 xl:mt-28">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-12 lg:gap-20">
 
-            {/* Left: About Intro / Image */}
-            <div className={`w-full md:w-[45%] relative ${ready ? 'anim-enter-up' : 'opacity-0'}`} style={{ animationDelay: '0.1s' }}>
-              <div className="aspect-[3/4] max-h-[520px] overflow-hidden rounded-3xl relative z-10 shadow-lg">
-                <img src="/saar_img.jpeg" alt="Omar Rashid Lone" className="w-full h-full object-cover" />
+            {/* LEFT — Title + description + CTA */}
+            <div className="flex-1 max-w-2xl">
+              {/* Big angular title */}
+              <div className={`mb-8 transition-opacity duration-300 ${
+                heroVisible && slideTransition ? 'opacity-100' : 'opacity-0'
+              }`}>
+                <h1 className="hero-title text-[var(--color-sumi)] leading-[0.85]" style={{ fontFamily: 'var(--font-display)' }}>
+                  <span className="block">{slide.titleLine1}</span>
+                  <span className="block text-[var(--color-kaki)]">{slide.titleLine2}</span>
+                </h1>
+              </div>
+
+              {/* Description */}
+              <p className={`text-[0.95rem] text-[var(--color-hai)] max-w-md leading-[1.9] mb-10 transition-opacity duration-300 h-[80px] ${
+                heroVisible && slideTransition ? 'opacity-100' : 'opacity-0'
+              }`}>
+                {slide.desc}
+              </p>
+
+              {/* CTA Button */}
+              <div className={`transition-opacity duration-300 ${
+                heroVisible && slideTransition ? 'opacity-100' : 'opacity-0'
+              }`}>
+                <button
+                  onClick={() => handleHeroCta(slide.cta.action)}
+                  className="group inline-flex items-center gap-4 px-8 py-4 border-2 border-[var(--color-sumi)] text-[var(--color-sumi)] hover:bg-[var(--color-sumi)] hover:text-white uppercase text-[0.72rem] tracking-[4px] font-bold transition-all duration-500 hover:-translate-y-1"
+                >
+                  {slide.cta.text}
+                  <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
+
+              {/* Tags (Moved below hero text) */}
+              <div className={`mt-12 flex flex-wrap items-center gap-3 transition-opacity duration-300 ${
+                heroVisible && slideTransition ? 'opacity-100' : 'opacity-0'
+              }`}>
+                {slide.label.split('·').map((tag, i) => (
+                  <span key={i} className="text-[0.55rem] uppercase tracking-[2px] font-bold text-[var(--color-hai)] border border-[var(--color-kinu)] px-4 py-1.5 rounded-full">
+                    {tag.trim()}
+                  </span>
+                ))}
               </div>
             </div>
 
-            {/* Right: Hero Text */}
-            <div className={`w-full md:w-[55%] flex flex-col justify-center text-left ${ready ? 'anim-enter-up' : 'opacity-0'}`} style={{ animationDelay: '0.3s' }}>
-              <p className={`text-[0.68rem] uppercase tracking-[6px] font-medium mb-6 ${dark ? 'text-[#b8964e]/80' : 'text-[#b8964e]'}`}>
-                Writer · Poet · Developer
-              </p>
-
-              <h1 className={`font-display text-[3.2rem] md:text-[4.2rem] leading-[1.08] mb-6 font-[300] italic ${dark ? 'text-[#e8e3db]' : 'text-[#111]'
-                }`} style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
-                Stories That Stay<br />After the Last Page.
-              </h1>
-
-              <div className={`w-12 h-[1.5px] mb-8 ${dark ? 'bg-[#b8964e]/40' : 'bg-[#b8964e]'}`} />
-
-              <p className={`text-[1.05rem] leading-relaxed mb-4 ${dark ? 'text-[#a09a90]' : 'text-[#444]'}`}>
-                <strong className={dark ? 'text-[#e8e3db] font-medium' : 'text-[#111] font-medium'}>
-                  Omar Rashid Lone — Kashmir/Gurez
-                </strong>
-              </p>
-
-              <p className={`leading-relaxed mb-4 ${dark ? 'text-[#7a756c]' : 'text-[#666]'}`}>
-                I've been writing since I was 16—prose, poetry, stories that didn't always know where they were going but refused to stop. Books that feel like conversations you weren't supposed to overhear.
-              </p>
-
-              <div className={`mt-8 flex items-center gap-5 ${ready ? 'anim-enter-up' : 'opacity-0'}`} style={{ animationDelay: '0.5s' }}>
-                <a href="#works" onClick={(e) => { e.preventDefault(); document.getElementById('works')?.scrollIntoView({ behavior: 'smooth' }); }}
-                  className={`inline-flex items-center gap-3 px-8 py-3.5 rounded-full text-[0.65rem] uppercase tracking-[2.5px] font-medium transition-all duration-400 hover:-translate-y-0.5 ${dark
-                      ? 'bg-[#b8964e] hover:bg-[#cba85a] shadow-[0_4px_20px_rgba(184,150,78,0.2)]'
-                      : 'bg-[#111] hover:bg-[#333] shadow-[0_4px_20px_rgba(0,0,0,0.1)]'
+            {/* RIGHT — Slide counter + navigation (like 01/02 + arrows) */}
+            <div className={`flex flex-row lg:flex-col items-center lg:items-end gap-6 lg:gap-8 transition-[opacity,transform] duration-500 ${
+              heroVisible ? 'opacity-100' : 'opacity-0'
+            }`} style={{ transitionDelay: '0.5s' }}>
+              {/* Slide numbers */}
+              <div className="flex flex-row lg:flex-col items-center gap-3">
+                {heroSlides.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => {
+                      setSlideTransition(false);
+                      setTimeout(() => {
+                        setCurrentSlide(i);
+                        setTimeout(() => setSlideTransition(true), 20);
+                      }, 200);
+                    }}
+                    className={`text-[1.4rem] font-bold transition-all duration-400 ${
+                      i === currentSlide
+                        ? 'text-[var(--color-sumi)] scale-110'
+                        : 'text-[var(--color-kinu)] hover:text-[var(--color-hai)]'
                     }`}
-                  style={{ color: '#ffffff' }}>
-                  Explore The Drafts <ArrowRight size={14} color="#ffffff" />
-                </a>
+                    style={{ fontFamily: 'var(--font-display)' }}
+                  >
+                    {String(i + 1).padStart(2, '0')}
+                  </button>
+                ))}
+              </div>
+
+              {/* Navigation arrows */}
+              <div className="flex flex-row lg:flex-col gap-2">
+                <button
+                  onClick={() => goToSlide('next')}
+                  className="w-12 h-12 flex items-center justify-center bg-[var(--color-kami)] hover:bg-[var(--color-sumi)] hover:text-white text-[var(--color-hai)] transition-all duration-400"
+                >
+                  <ChevronRight size={20} />
+                </button>
+                <button
+                  onClick={() => goToSlide('prev')}
+                  className="w-12 h-12 flex items-center justify-center bg-[var(--color-kami)] hover:bg-[var(--color-sumi)] hover:text-white text-[var(--color-hai)] transition-all duration-400"
+                >
+                  <ChevronLeft size={20} />
+                </button>
               </div>
             </div>
+          </div>
+        </div>
 
+        {/* Bottom scroll indicator */}
+        <div className={`absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 transition-all duration-700 ${
+          heroVisible ? 'opacity-100' : 'opacity-0'
+        }`} style={{ transitionDelay: '0.6s' }}>
+          <span className="text-[0.6rem] uppercase tracking-[4px] text-[var(--color-hai-light)] font-medium">Scroll</span>
+          <div className="w-[1px] h-8 bg-[var(--color-kinu)] relative overflow-hidden">
+            <div className="absolute inset-x-0 top-0 h-full bg-[var(--color-kaki)] animate-scroll-line" />
           </div>
         </div>
       </section>
 
-      {/* ═══════════════════ WORKS ═══════════════════ */}
-      <section id="works" ref={worksRef} className={`sr py-10 md:py-14 ${dark ? 'bg-[#0f0e0c]' : 'bg-[#f6f4f0]'}`}>
-        <div className="container">
-          <div className="text-center mb-8">
-            <p className={`text-[0.68rem] uppercase tracking-[4px] font-medium mb-3 ${dark ? 'text-[#b8964e]/60' : 'text-[#b8964e]'}`}>
-              Collection
-            </p>
-            <h2 className={`font-display text-[2.6rem] md:text-[3.2rem] font-[300] mb-4 ${dark ? 'text-[#e8e3db]' : 'text-[#111]'
-              }`} style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
-              The Open Drafts
-            </h2>
-            <div className={`w-12 h-[1.5px] mx-auto ${dark ? 'bg-[#b8964e]/30' : 'bg-[#b8964e]/50'}`} />
-          </div>
-
-          {/* Tab toggle */}
-          <div className="flex justify-center mb-8">
-            <div className={`inline-flex rounded-full p-1 ${dark ? 'bg-[#161412]' : 'bg-white shadow-sm'}`}>
-              {[
-                { key: 'books', icon: BookOpen, label: 'Books' },
-                { key: 'code', icon: Code2, label: 'Code' },
-              ].map(({ key, icon: Icon, label }) => (
-                <button
-                  key={key}
-                  onClick={() => switchTab(key)}
-                  className={`flex items-center gap-2 px-8 py-2.5 rounded-full text-[0.7rem] uppercase tracking-[2.5px] font-medium transition-all duration-500 ${tab === key
-                      ? dark
-                        ? 'bg-[#b8964e] text-[#0c0b09] shadow-[0_4px_20px_rgba(184,150,78,0.2)]'
-                        : 'bg-[#111] text-white shadow-[0_4px_20px_rgba(0,0,0,0.1)]'
-                      : dark
-                        ? 'text-[#5a554c] hover:text-[#b8964e]'
-                        : 'text-[#aaa] hover:text-[#111]'
-                    }`}
-                >
-                  <Icon size={13} strokeWidth={1.5} />{label}
-                </button>
-              ))}
+      {/* ═══════════════ WORKS — 4-col grid ═══════════════ */}
+      <section id="works" ref={worksRef} className="sr pt-48 pb-48 md:pt-64 md:pb-64 relative border-t border-[var(--color-kinu)]/30">
+        <div className="container mb-14">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+            <div>
+              <p className="text-[0.65rem] uppercase tracking-[6px] font-semibold text-[var(--color-kaki)] mb-3">Portfolio</p>
+              <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-sumi)] leading-tight" style={{ fontFamily: 'var(--font-display)' }}>Selected Works</h2>
+            </div>
+            <div className="hidden">
             </div>
           </div>
+        </div>
 
-          {/* Content */}
-          <div className="transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)]" style={{
-            opacity: vis ? 1 : 0,
-            transform: vis ? 'translateY(0)' : 'translateY(20px)',
-          }}>
-            {content === 'books' && (
-              <>
+        <div className="container">
+          <div>
                 {booksLoading ? (
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 stagger">
-                    {[1, 2, 3, 4, 5].map(i => <BookSkel key={i} />)}
+                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 md:gap-8 stagger">
+                    {[...Array(20)].map((_, i) => <BookSkel key={i} />)}
                   </div>
                 ) : books.length === 0 ? (
                   <div className="text-center py-24">
-                    <BookOpen size={36} strokeWidth={1} className={dark ? 'text-[#1a1815] mx-auto mb-4' : 'text-[#e2ddd5] mx-auto mb-4'} />
-                    <p className={`font-display text-xl italic ${dark ? 'text-[#2a2623]' : 'text-[#ccc]'}`} style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
-                      No books published yet.
-                    </p>
+                    <BookOpen size={40} className="text-[var(--color-kinu)] mx-auto mb-4" />
+                    <p className="text-xl uppercase tracking-[4px] text-[var(--color-hai)]" style={{ fontFamily: 'var(--font-display)' }}>No books published yet.</p>
                   </div>
                 ) : (
                   <>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 stagger">
-                      {books.slice(0, count).map((book) => (
-                        <div key={book.id} className="sr visible"><BookCard book={book} /></div>
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 md:gap-8 stagger">
+                      {books.slice(0, count).map((book, i) => (
+                        <BookCard key={book.id} book={book} index={i} books={books} />
                       ))}
                     </div>
                     {count < books.length && (
-                      <div className="text-center mt-14">
-                        <button onClick={() => setCount(p => Math.min(p + 10, books.length))}
-                          className={`group inline-flex items-center gap-3 px-10 py-3.5 rounded-full text-[0.72rem] uppercase tracking-[2.5px] font-medium border transition-all duration-500 hover:-translate-y-0.5 ${dark
-                              ? 'border-[#b8964e]/30 text-[#b8964e] hover:bg-[#b8964e] hover:text-[#0c0b09] hover:border-[#b8964e]'
-                              : 'border-[#ddd] text-[#888] hover:bg-[#111] hover:text-white hover:border-[#111]'
-                            }`}>
+                      <div className="text-center mt-16">
+                        <button onClick={() => setCount(p => Math.min(p + 20, books.length))}
+                          className="group inline-flex items-center gap-3 px-10 py-4 border border-[var(--color-kinu)] text-[0.72rem] uppercase tracking-[2.5px] font-bold transition-all duration-500 hover:border-[var(--color-kaki)] hover:text-[var(--color-kaki)] text-[var(--color-hai)] rounded-sm">
                           Show More <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
                         </button>
                       </div>
                     )}
                   </>
                 )}
-              </>
-            )}
-
-            {content === 'code' && (
-              <>
-                {projLoading ? (
-                  <div className="max-w-[800px] mx-auto space-y-4">
-                    {[1, 2, 3].map(i => <ProjSkel key={i} dark={dark} />)}
-                  </div>
-                ) : projects.length === 0 ? (
-                  <div className="text-center py-24">
-                    <Code2 size={40} strokeWidth={1} className={dark ? 'text-[#1a1815] mx-auto mb-4' : 'text-[#e2ddd5] mx-auto mb-4'} />
-                    <p className={`font-display text-xl italic ${dark ? 'text-[#2a2623]' : 'text-[#ccc]'}`} style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}>
-                      No projects published yet.
-                    </p>
-                    <p className={`text-[0.85rem] mt-2 ${dark ? 'text-[#1a1815]' : 'text-[#ddd]'}`}>
-                      Add projects through the admin panel.
-                    </p>
-                  </div>
-                ) : (
-                  <div className="max-w-[800px] mx-auto space-y-4">
-                    {projects.slice(0, pCount).map((proj) => (
-                      <div key={proj.id}><ProjectCard project={proj} /></div>
-                    ))}
-                    {pCount < projects.length && (
-                      <div className="text-center mt-14">
-                        <button onClick={() => setPCount(p => Math.min(p + 6, projects.length))}
-                          className={`group inline-flex items-center gap-3 px-10 py-3.5 rounded-full text-[0.72rem] uppercase tracking-[2.5px] font-medium border transition-all duration-500 hover:-translate-y-0.5 ${dark
-                              ? 'border-[#b8964e]/30 text-[#b8964e] hover:bg-[#b8964e] hover:text-[#0c0b09]'
-                              : 'border-[#ddd] text-[#888] hover:bg-[#111] hover:text-white hover:border-[#111]'
-                            }`}>
-                          Show More <ArrowRight size={14} className="transition-transform group-hover:translate-x-1" />
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </>
-            )}
           </div>
         </div>
       </section>
 
       <Footer />
-    </>
+    </div>
   );
 }
 

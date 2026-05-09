@@ -25,9 +25,9 @@ export function useProjects() {
         setError(null);
       },
       (err) => {
-        console.error('Projects fetch error:', err);
-        setError('Could not load projects from the server. Showing cached data.');
+        console.warn('Projects: Firestore unavailable, using local data.', err.message);
         setLoading(false);
+        setError(null);
       }
     );
 

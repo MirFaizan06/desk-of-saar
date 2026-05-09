@@ -1,13 +1,9 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext } from 'react';
 
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  useEffect(() => {
-    document.documentElement.classList.remove('dark');
-    localStorage.setItem('theme', 'light');
-  }, []);
-
+  // Japanese-inspired design is light-only — no dark mode toggle
   return (
     <ThemeContext.Provider value={{ dark: false, toggle: () => {} }}>
       {children}

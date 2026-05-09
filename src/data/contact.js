@@ -23,13 +23,13 @@ export const contactInfo = {
     {
       id: "github",
       name: "GitHub",
-      url: "https://github.com/Omar-tech-13",
+      url: "https://github.com/Umarr13",
       icon: "github"
     },
     {
       id: "substack",
       name: "Substack",
-      url: "https://substack.com/@omarrashidlone",
+      url: "https://substack.com/@omarrashidlone1",
       icon: "substack"
     },
     {
